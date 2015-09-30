@@ -1,0 +1,24 @@
+
+rootProject.name = 'steamflake'
+
+
+// STEAMFLAKE CORE
+// ---------------
+
+// Presentation
+
+// Application
+
+// Domain
+
+// Persistence
+
+// Infrastructure
+include 'steamflake-core/infrastructure/steamflake-utilities'
+rootProject.children.find { it.name == 'steamflake-core/infrastructure/steamflake-utilities' }.name = 'steamflake-utilities'
+
+
+
+
+
+
