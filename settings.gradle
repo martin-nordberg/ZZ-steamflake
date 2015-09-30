@@ -12,6 +12,8 @@ rootProject.name = 'steamflake'
 // Domain
 
 // Persistence
+include 'steamflake-core/persistence/steamflake-ioutilities'
+rootProject.children.find { it.name == 'steamflake-core/persistence/steamflake-ioutilities' }.name = 'steamflake-ioutilities'
 
 // Infrastructure
 include 'steamflake-core/infrastructure/steamflake-utilities'
