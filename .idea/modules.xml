@@ -4,6 +4,8 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/steamflake.iml" filepath="$PROJECT_DIR$/steamflake.iml" />
       <module fileurl="file://$PROJECT_DIR$/steamflake-core/persistence/steamflake-ioutilities/steamflake-ioutilities.iml" filepath="$PROJECT_DIR$/steamflake-core/persistence/steamflake-ioutilities/steamflake-ioutilities.iml" />
+      <module fileurl="file://$PROJECT_DIR$/steamflake-core/domain/steamflake-javacodegen/steamflake-javacodegen.iml" filepath="$PROJECT_DIR$/steamflake-core/domain/steamflake-javacodegen/steamflake-javacodegen.iml" />
+      <module fileurl="file://$PROJECT_DIR$/steamflake-core/domain/steamflake-javamodel/steamflake-javamodel.iml" filepath="$PROJECT_DIR$/steamflake-core/domain/steamflake-javamodel/steamflake-javamodel.iml" />
       <module fileurl="file://$PROJECT_DIR$/steamflake-core/infrastructure/steamflake-utilities/steamflake-utilities.iml" filepath="$PROJECT_DIR$/steamflake-core/infrastructure/steamflake-utilities/steamflake-utilities.iml" />
     </modules>
   </component>

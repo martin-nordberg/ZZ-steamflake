@@ -11,6 +11,8 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/steamflake-core/domain/steamflake-javacodegen" />
+            <option value="$PROJECT_DIR$/steamflake-core/domain/steamflake-javamodel" />
             <option value="$PROJECT_DIR$/steamflake-core/infrastructure/steamflake-utilities" />
             <option value="$PROJECT_DIR$/steamflake-core/persistence/steamflake-ioutilities" />
           </set>

@@ -10,6 +10,11 @@ rootProject.name = 'steamflake'
 // Application
 
 // Domain
+include 'steamflake-core/domain/steamflake-javacodegen'
+rootProject.children.find { it.name == 'steamflake-core/domain/steamflake-javacodegen' }.name = 'steamflake-javacodegen'
+
+include 'steamflake-core/domain/steamflake-javamodel'
+rootProject.children.find { it.name == 'steamflake-core/domain/steamflake-javamodel' }.name = 'steamflake-javamodel'
 
 // Persistence
 include 'steamflake-core/persistence/steamflake-ioutilities'
