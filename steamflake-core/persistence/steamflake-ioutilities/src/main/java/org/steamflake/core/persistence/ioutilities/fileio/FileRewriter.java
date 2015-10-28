@@ -24,7 +24,7 @@ public class FileRewriter
     }
 
     @Override
-    protected void rewrite( File fileToWrite, String newContent ) throws IOException {
+    protected void rewrite( File fileToWrite, String oldContent, String newContent ) throws IOException {
 
         // Delete the old file if exists.
         if ( fileToWrite.exists() ) {

@@ -10,6 +10,9 @@ rootProject.name = 'steamflake'
 // Application
 
 // Domain
+include 'steamflake-core/domain/steamflake-base-model'
+rootProject.children.find { it.name == 'steamflake-core/domain/steamflake-base-model' }.name = 'steamflake-base-model'
+
 include 'steamflake-core/domain/steamflake-javacodegen'
 rootProject.children.find { it.name == 'steamflake-core/domain/steamflake-javacodegen' }.name = 'steamflake-javacodegen'
 
@@ -25,7 +28,23 @@ include 'steamflake-core/infrastructure/steamflake-utilities'
 rootProject.children.find { it.name == 'steamflake-core/infrastructure/steamflake-utilities' }.name = 'steamflake-utilities'
 
 
+// STEAMFLAKE TEMPLATES
+// --------------------
 
+// Presentation
+
+// Application
+
+// Domain
+include 'steamflake-templates/domain/steamflake-template-model'
+rootProject.children.find { it.name == 'steamflake-templates/domain/steamflake-template-model' }.name = 'steamflake-template-model'
+
+include 'steamflake-templates/domain/steamflake-template-parser'
+rootProject.children.find { it.name == 'steamflake-templates/domain/steamflake-template-parser' }.name = 'steamflake-template-parser'
+
+// Persistence
+
+// Infrastructure
 
 
 

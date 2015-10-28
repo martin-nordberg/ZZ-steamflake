@@ -28,7 +28,7 @@ public interface IJavaAbstractPackage
     }
 
     /**
-     * Creates a package within this one (empty description, not implicitly imported).
+     * Creates a package within this one (given description, not implicitly imported).
      *
      * @param name        the name of the new package.
      * @param description a description of the new package.

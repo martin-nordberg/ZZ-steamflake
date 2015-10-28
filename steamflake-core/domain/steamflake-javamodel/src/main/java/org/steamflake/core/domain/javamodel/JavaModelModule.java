@@ -25,7 +25,6 @@ public class JavaModelModule {
      * @return the newly created root package.
      */
     @Provides
-    @Singleton
     public IJavaRootPackage provideJavaRootPackage() {
         return new JavaRootPackage();
     }

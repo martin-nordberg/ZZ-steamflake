@@ -24,8 +24,9 @@ public class FileWriterComparer
     }
 
     @Override
-    protected void rewrite( File fileToWrite, String newContent ) throws IOException {
+    protected void rewrite( File fileToWrite, String oldContent, String newContent ) throws IOException {
         assert false : "File comparison failed." + fileToWrite.getAbsolutePath();
+        // TODO: more helpful comparsion of old content and new
     }
 
 

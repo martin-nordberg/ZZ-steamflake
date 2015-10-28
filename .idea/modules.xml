@@ -3,9 +3,12 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/steamflake.iml" filepath="$PROJECT_DIR$/steamflake.iml" />
+      <module fileurl="file://$PROJECT_DIR$/steamflake-core/domain/steamflake-base-model/steamflake-base-model.iml" filepath="$PROJECT_DIR$/steamflake-core/domain/steamflake-base-model/steamflake-base-model.iml" />
       <module fileurl="file://$PROJECT_DIR$/steamflake-core/persistence/steamflake-ioutilities/steamflake-ioutilities.iml" filepath="$PROJECT_DIR$/steamflake-core/persistence/steamflake-ioutilities/steamflake-ioutilities.iml" />
       <module fileurl="file://$PROJECT_DIR$/steamflake-core/domain/steamflake-javacodegen/steamflake-javacodegen.iml" filepath="$PROJECT_DIR$/steamflake-core/domain/steamflake-javacodegen/steamflake-javacodegen.iml" />
       <module fileurl="file://$PROJECT_DIR$/steamflake-core/domain/steamflake-javamodel/steamflake-javamodel.iml" filepath="$PROJECT_DIR$/steamflake-core/domain/steamflake-javamodel/steamflake-javamodel.iml" />
+      <module fileurl="file://$PROJECT_DIR$/steamflake-templates/domain/steamflake-template-model/steamflake-template-model.iml" filepath="$PROJECT_DIR$/steamflake-templates/domain/steamflake-template-model/steamflake-template-model.iml" />
+      <module fileurl="file://$PROJECT_DIR$/steamflake-templates/domain/steamflake-template-parser/steamflake-template-parser.iml" filepath="$PROJECT_DIR$/steamflake-templates/domain/steamflake-template-parser/steamflake-template-parser.iml" />
       <module fileurl="file://$PROJECT_DIR$/steamflake-core/infrastructure/steamflake-utilities/steamflake-utilities.iml" filepath="$PROJECT_DIR$/steamflake-core/infrastructure/steamflake-utilities/steamflake-utilities.iml" />
     </modules>
   </component>
