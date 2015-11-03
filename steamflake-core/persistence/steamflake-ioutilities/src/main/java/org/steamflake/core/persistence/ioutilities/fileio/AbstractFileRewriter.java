@@ -19,6 +19,7 @@ public abstract class AbstractFileRewriter
 
     /**
      * Constructs a new file rewriter to the given file.
+     *
      * @param file the file to be written if changed.
      */
     protected AbstractFileRewriter( File file ) {
@@ -63,16 +64,6 @@ public abstract class AbstractFileRewriter
         }
     }
 
-    /**
-     * Handles the case where the new contents of the file differ from the old contents and the file
-     * needs to be overwritten.
-     * @param fileToWrite the file to rewrite new contents in place of old.
-     * @param oldContent the old content of the file (useful if derived class is for file comparison).
-     * @param newContent the new content of the file.
-     * @throws IOException if the rewriting fails.
-     */
-    protected abstract void rewrite( File fileToWrite, String oldContent, String newContent ) throws IOException;
-
     /** Flushes the output for this file writer. */
     @Override
     public void flush() throws IOException {
@@ -85,6 +76,18 @@ public abstract class AbstractFileRewriter
     public void write( char[] buffer, int off, int len ) throws IOException {
         this.writer.write( buffer, off, len );
     }
+
+    /**
+     * Handles the case where the new contents of the file differ from the old contents and the file needs to be
+     * overwritten.
+     *
+     * @param fileToWrite the file to rewrite new contents in place of old.
+     * @param oldContent  the old content of the file (useful if derived class is for file comparison).
+     * @param newContent  the new content of the file.
+     *
+     * @throws IOException if the rewriting fails.
+     */
+    protected abstract void rewrite( File fileToWrite, String oldContent, String newContent ) throws IOException;
 
     /** The file to be written if content changes */
     private final File file;
