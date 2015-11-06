@@ -5,7 +5,7 @@
 
 package org.steamflake.templates.domain.model.impl.tokens.code;
 
-import org.steamflake.core.domain.base.model.api.utilities.IFileOrigin;
+import org.steamflake.core.infrastructure.utilities.files.FileOrigin;
 import org.steamflake.templates.domain.model.api.tokens.code.ISteamflakeTmVariableToken;
 import org.steamflake.templates.domain.model.impl.elements.SteamflakeTmRule;
 import org.steamflake.templates.domain.model.impl.tokens.SteamflakeTmAbstractToken;
@@ -24,7 +24,7 @@ public class SteamflakeTmVariableToken
      *
      * @param parent the parent of this model element.
      */
-    public SteamflakeTmVariableToken( SteamflakeTmRule parent, Optional<IFileOrigin> origin, String path ) {
+    public SteamflakeTmVariableToken( SteamflakeTmRule parent, Optional<FileOrigin> origin, String path ) {
         super( parent, origin );
         this.path = path;
     }

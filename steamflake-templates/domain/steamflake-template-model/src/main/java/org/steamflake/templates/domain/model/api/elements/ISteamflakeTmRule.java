@@ -8,8 +8,8 @@ package org.steamflake.templates.domain.model.api.elements;
 import org.steamflake.core.domain.base.model.api.elements.ESteamflakeAbstractness;
 import org.steamflake.core.domain.base.model.api.elements.ESteamflakeAccessibility;
 import org.steamflake.core.domain.base.model.api.elements.ISteamflakeNamedModelElement;
-import org.steamflake.core.domain.base.model.api.utilities.IFileOrigin;
 import org.steamflake.core.infrastructure.utilities.collections.IIndexable;
+import org.steamflake.core.infrastructure.utilities.files.FileOrigin;
 import org.steamflake.templates.domain.model.api.tokens.ISteamflakeTmAbstractToken;
 import org.steamflake.templates.domain.model.api.tokens.code.ISteamflakeTmVariableToken;
 import org.steamflake.templates.domain.model.api.tokens.text.ISteamflakeTmTextToken;
@@ -33,7 +33,7 @@ public interface ISteamflakeTmRule
      * @return the newly created parameter.
      */
     default ISteamflakeTmParameter addParameter(
-        Optional<IFileOrigin> origin,
+        Optional<FileOrigin> origin,
         String name,
         String description,
         String typeName
@@ -52,7 +52,7 @@ public interface ISteamflakeTmRule
      * @return the newly created parameter.
      */
     ISteamflakeTmParameter addParameter(
-        Optional<IFileOrigin> origin,
+        Optional<FileOrigin> origin,
         String name,
         Optional<String> description,
         String typeName
@@ -66,7 +66,7 @@ public interface ISteamflakeTmRule
      *
      * @return te newly created token.
      */
-    ISteamflakeTmTextToken addTextToken( Optional<IFileOrigin> origin, String text );
+    ISteamflakeTmTextToken addTextToken( Optional<FileOrigin> origin, String text );
 
     /**
      * Creates a new variable token within this rule.
@@ -76,7 +76,7 @@ public interface ISteamflakeTmRule
      *
      * @return te newly created token.
      */
-    ISteamflakeTmVariableToken addVariableToken( Optional<IFileOrigin> origin, String path );
+    ISteamflakeTmVariableToken addVariableToken( Optional<FileOrigin> origin, String path );
 
     /**
      * @return whether this is an abstract or concrete rule.

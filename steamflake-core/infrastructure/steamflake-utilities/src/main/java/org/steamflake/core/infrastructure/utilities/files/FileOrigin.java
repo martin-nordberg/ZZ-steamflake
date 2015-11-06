@@ -3,7 +3,9 @@
 // Apache 2.0 License
 //
 
-package org.steamflake.core.persistence.ioutilities.fileio;
+package org.steamflake.core.infrastructure.utilities.files;
+
+import java.util.Optional;
 
 /**
  * Representation of a source location in a file.
@@ -43,6 +45,11 @@ public class FileOrigin {
     public int getLine() {
         return this.line;
     }
+
+    /**
+     * A convenient origin to use when not parsing a source file.
+     */
+    public static final Optional<FileOrigin> UNUSED = Optional.empty();
 
     private final int column;
 

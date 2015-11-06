@@ -6,9 +6,10 @@
 package org.steamflake.templates.domain.model.impl.elements;
 
 import org.steamflake.core.domain.base.model.api.elements.ESteamflakeAbstractness;
-import org.steamflake.core.domain.base.model.api.utilities.IFileOrigin;
+import org.steamflake.core.domain.base.model.api.elements.ESteamflakeAccessibility;
 import org.steamflake.core.infrastructure.utilities.collections.IIndexable;
 import org.steamflake.core.infrastructure.utilities.collections.ReadOnlyListAdapter;
+import org.steamflake.core.infrastructure.utilities.files.FileOrigin;
 import org.steamflake.templates.domain.model.api.elements.ISteamflakeTmPackage;
 import org.steamflake.templates.domain.model.api.elements.ISteamflakeTmTemplate;
 
@@ -27,7 +28,7 @@ public class SteamflakeTmPackage
      * Constructs a new Java package.
      */
     SteamflakeTmPackage(
-        SteamflakeTmAbstractPackage parent, Optional<IFileOrigin> origin, String name, Optional<String> description
+        SteamflakeTmAbstractPackage parent, Optional<FileOrigin> origin, String name, Optional<String> description
     ) {
         super( parent, origin, name, description );
 
@@ -38,14 +39,15 @@ public class SteamflakeTmPackage
 
     @Override
     public ISteamflakeTmTemplate addTemplate(
-        Optional<IFileOrigin> origin,
+        Optional<FileOrigin> origin,
         String name,
         Optional<String> description,
+        ESteamflakeAccessibility accessibility,
         ESteamflakeAbstractness abstractness,
         Optional<ISteamflakeTmTemplate> baseTemplate
     ) {
         return new SteamflakeTmTemplate(
-            this, origin, name, description, abstractness, baseTemplate
+            this, origin, name, description, accessibility, abstractness, baseTemplate
         );
     }
 

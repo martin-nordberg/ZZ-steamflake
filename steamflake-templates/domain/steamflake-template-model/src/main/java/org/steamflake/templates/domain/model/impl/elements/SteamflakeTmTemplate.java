@@ -7,10 +7,10 @@ package org.steamflake.templates.domain.model.impl.elements;
 
 import org.steamflake.core.domain.base.model.api.elements.ESteamflakeAbstractness;
 import org.steamflake.core.domain.base.model.api.elements.ESteamflakeAccessibility;
-import org.steamflake.core.domain.base.model.api.utilities.IFileOrigin;
 import org.steamflake.core.domain.base.model.impl.elements.SteamflakeNamedModelElement;
 import org.steamflake.core.infrastructure.utilities.collections.IIndexable;
 import org.steamflake.core.infrastructure.utilities.collections.ReadOnlyListAdapter;
+import org.steamflake.core.infrastructure.utilities.files.FileOrigin;
 import org.steamflake.templates.domain.model.api.elements.ISteamflakeTmPackage;
 import org.steamflake.templates.domain.model.api.elements.ISteamflakeTmRootPackage;
 import org.steamflake.templates.domain.model.api.elements.ISteamflakeTmRule;
@@ -30,15 +30,17 @@ public class SteamflakeTmTemplate
     @SuppressWarnings( "TypeMayBeWeakened" )
     public SteamflakeTmTemplate(
         SteamflakeTmPackage parent,
-        Optional<IFileOrigin> origin,
+        Optional<FileOrigin> origin,
         String name,
         Optional<String> description,
+        ESteamflakeAccessibility accessibility,
         ESteamflakeAbstractness abstractness,
         Optional<ISteamflakeTmTemplate> baseTemplate
     ) {
         super( parent, origin, name, description );
 
         this.abstractness = abstractness;
+        this.accessibility = accessibility;
         this.baseTemplate = baseTemplate;
 
         this.rules = new ArrayList<>();
@@ -48,20 +50,25 @@ public class SteamflakeTmTemplate
 
     @Override
     public ISteamflakeTmRule addRule(
-        Optional<IFileOrigin> origin,
+        Optional<FileOrigin> origin,
         String name,
         Optional<String> description,
-        ESteamflakeAccessibility accessibility,
+        ESteamflakeAccessibility ruleAccessibility,
         ESteamflakeAbstractness ruleAbstractness
     ) {
         return new SteamflakeTmRule(
-            this, origin, name, description, accessibility, ruleAbstractness
+            this, origin, name, description, ruleAccessibility, ruleAbstractness
         );
     }
 
     @Override
     public ESteamflakeAbstractness getAbstractness() {
         return this.abstractness;
+    }
+
+    @Override
+    public ESteamflakeAccessibility getAccessibility() {
+        return this.accessibility;
     }
 
     @Override
@@ -87,6 +94,8 @@ public class SteamflakeTmTemplate
     }
 
     private final ESteamflakeAbstractness abstractness;
+
+    private final ESteamflakeAccessibility accessibility;
 
     private Optional<ISteamflakeTmTemplate> baseTemplate;
 

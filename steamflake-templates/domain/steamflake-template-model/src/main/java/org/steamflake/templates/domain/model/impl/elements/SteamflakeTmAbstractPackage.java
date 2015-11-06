@@ -5,8 +5,8 @@
 
 package org.steamflake.templates.domain.model.impl.elements;
 
-import org.steamflake.core.domain.base.model.api.utilities.IFileOrigin;
 import org.steamflake.core.domain.base.model.impl.elements.SteamflakeAbstractPackage;
+import org.steamflake.core.infrastructure.utilities.files.FileOrigin;
 import org.steamflake.templates.domain.model.api.elements.ISteamflakeTmAbstractPackage;
 import org.steamflake.templates.domain.model.api.elements.ISteamflakeTmPackage;
 import org.steamflake.templates.domain.model.api.elements.ISteamflakeTmRootPackage;
@@ -27,7 +27,7 @@ public abstract class SteamflakeTmAbstractPackage
     @SuppressWarnings( "TypeMayBeWeakened" )
     protected SteamflakeTmAbstractPackage(
         ISteamflakeTmAbstractPackage parent,
-        Optional<IFileOrigin> origin,
+        Optional<FileOrigin> origin,
         String name,
         Optional<String> description
     ) {
@@ -36,7 +36,7 @@ public abstract class SteamflakeTmAbstractPackage
 
     @Override
     public ISteamflakeTmPackage addPackage(
-        Optional<IFileOrigin> origin, String name, Optional<String> description
+        Optional<FileOrigin> origin, String name, Optional<String> description
     ) {
         return new SteamflakeTmPackage( this, origin, name, description );
     }

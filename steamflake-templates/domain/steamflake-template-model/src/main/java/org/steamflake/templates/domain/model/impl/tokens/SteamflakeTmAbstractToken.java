@@ -5,8 +5,8 @@
 
 package org.steamflake.templates.domain.model.impl.tokens;
 
-import org.steamflake.core.domain.base.model.api.utilities.IFileOrigin;
 import org.steamflake.core.domain.base.model.impl.elements.SteamflakeModelElement;
+import org.steamflake.core.infrastructure.utilities.files.FileOrigin;
 import org.steamflake.templates.domain.model.api.elements.ISteamflakeTmPackage;
 import org.steamflake.templates.domain.model.api.elements.ISteamflakeTmRootPackage;
 import org.steamflake.templates.domain.model.api.tokens.ISteamflakeTmAbstractToken;
@@ -28,7 +28,7 @@ public abstract class SteamflakeTmAbstractToken
      */
     protected SteamflakeTmAbstractToken(
         SteamflakeTmRule parent,
-        Optional<IFileOrigin> origin
+        Optional<FileOrigin> origin
     ) {
         super( parent, origin, Optional.empty() );
 

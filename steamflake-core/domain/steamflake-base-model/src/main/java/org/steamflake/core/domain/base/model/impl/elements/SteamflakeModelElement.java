@@ -7,7 +7,7 @@ package org.steamflake.core.domain.base.model.impl.elements;
 
 import org.steamflake.core.domain.base.model.api.elements.ISteamflakeAbstractPackage;
 import org.steamflake.core.domain.base.model.api.elements.ISteamflakeModelElement;
-import org.steamflake.core.domain.base.model.api.utilities.IFileOrigin;
+import org.steamflake.core.infrastructure.utilities.files.FileOrigin;
 
 import java.util.Optional;
 
@@ -29,7 +29,7 @@ public abstract class SteamflakeModelElement<
      */
     protected SteamflakeModelElement(
         ISteamflakeModelElement<IRootPackage, IConcretePackage> parent,
-        Optional<IFileOrigin> origin,
+        Optional<FileOrigin> origin,
         Optional<String> description
     ) {
         super();
@@ -44,7 +44,7 @@ public abstract class SteamflakeModelElement<
     }
 
     @Override
-    public final Optional<IFileOrigin> getOrigin() {
+    public final Optional<FileOrigin> getOrigin() {
         return this.origin;
     }
 
@@ -60,7 +60,7 @@ public abstract class SteamflakeModelElement<
 
     private final Optional<String> description;
 
-    private final Optional<IFileOrigin> origin;
+    private final Optional<FileOrigin> origin;
 
     private final ISteamflakeModelElement<IRootPackage, IConcretePackage> parent;
 

@@ -6,9 +6,9 @@
 package org.steamflake.core.domain.base.model.impl.elements;
 
 import org.steamflake.core.domain.base.model.api.elements.ISteamflakeAbstractPackage;
-import org.steamflake.core.domain.base.model.api.utilities.IFileOrigin;
 import org.steamflake.core.infrastructure.utilities.collections.IIndexable;
 import org.steamflake.core.infrastructure.utilities.collections.ReadOnlyListAdapter;
+import org.steamflake.core.infrastructure.utilities.files.FileOrigin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +30,7 @@ public abstract class SteamflakeAbstractPackage<
     @SuppressWarnings( "TypeMayBeWeakened" )
     protected SteamflakeAbstractPackage(
         ISteamflakeAbstractPackage<IRootPackage, IConcretePackage> parent,
-        Optional<IFileOrigin> origin,
+        Optional<FileOrigin> origin,
         String name,
         Optional<String> description
     ) {
@@ -61,7 +61,7 @@ public abstract class SteamflakeAbstractPackage<
         }
 
         // not found - create a new sub-package
-        IConcretePackage newPackage = this.addPackage( IFileOrigin.UNUSED, packageNames[0], Optional.empty() );
+        IConcretePackage newPackage = this.addPackage( FileOrigin.UNUSED, packageNames[0], Optional.empty() );
 
         if ( packageNames.length == 1 ) {
             return newPackage;

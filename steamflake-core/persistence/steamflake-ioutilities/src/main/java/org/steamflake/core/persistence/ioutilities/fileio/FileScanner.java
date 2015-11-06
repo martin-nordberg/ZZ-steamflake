@@ -5,6 +5,7 @@
 
 package org.steamflake.core.persistence.ioutilities.fileio;
 
+import org.steamflake.core.infrastructure.utilities.files.FileOrigin;
 import org.steamflake.core.infrastructure.utilities.text.Strings;
 
 import java.util.Optional;
@@ -141,8 +142,67 @@ public class FileScanner {
     }
 
     /**
-     * Consumes the input from the current location up to and including the given delimiter. Returns the text found but
-     * not including the delimiter.
+     * Tries to read a Java-compatible identifier.
+     *
+     * @return the identifier that was scanned.
+     */
+    public Optional<Token> acceptIdentifier() {
+
+        // Quit early if there is no more input.
+        if ( !this.canRead() ) {
+            return Optional.empty();
+        }
+
+        // Read the first character.
+        int index = this.state.nextCharIndex;
+        char idChar = this.text.charAt( index );
+
+        // Check for an acceptable starting character.
+        if ( !Character.isJavaIdentifierStart( idChar ) ) {
+            return Optional.empty();
+        }
+
+        // Read the second character or use a space for EOI.
+        index += 1;
+        if ( index < this.text.length() ) {
+            idChar = this.text.charAt( index );
+        }
+        else {
+            idChar = ' ';
+        }
+
+        // Loop for as long as we see more identifier characters.
+        while ( Character.isJavaIdentifierPart( idChar ) ) {
+            index += 1;
+
+            if ( index >= this.text.length() ) {
+                break;
+            }
+
+            idChar = this.text.charAt( index );
+        }
+
+        // Pack up the result.
+        Optional<Token> result = Optional.of(
+            new Token(
+                this.text.substring(
+                    this.state.nextCharIndex,
+                    index
+                ),
+                this.getCurrentLocation()
+            )
+        );
+
+        // Move the column and current location.
+        this.state.column += index - this.state.nextCharIndex;
+        this.state.nextCharIndex = index;
+
+        return result;
+
+    }
+
+    /**
+     * Consumes the input from the current location up to but excluding the given delimiter.
      *
      * @param delimiter the delimiter to look for (must be non-empty).
      *
@@ -181,9 +241,6 @@ public class FileScanner {
             )
         );
 
-        // Consume the delimiter also.
-        endIndex += delimiter.length();
-
         // Advance through the recognized text, counting lines and columns.
         for ( int i = this.state.nextCharIndex; i < endIndex; i += 1 ) {
 
@@ -220,10 +277,10 @@ public class FileScanner {
         FileOrigin origin = this.getCurrentLocation();
 
         // Loop for as long as we see whitespace.
-        int wsLength = 0;
-        char wsChar = this.text.charAt( this.state.nextCharIndex + wsLength );
+        int index = this.state.nextCharIndex;
+        char wsChar = this.text.charAt( index );
         while ( Character.isWhitespace( wsChar ) ) {
-            wsLength += 1;
+            index += 1;
 
             if ( wsChar == '\n' ) {
                 this.state.line += 1;
@@ -233,29 +290,31 @@ public class FileScanner {
                 this.state.column += 1;
             }
 
-            if ( !this.canRead() ) {
+            if ( index >= this.text.length() ) {
                 break;
             }
 
-            wsChar = this.text.charAt( this.state.nextCharIndex + wsLength );
+            wsChar = this.text.charAt( index );
         }
 
         // Return an empty result if no whitespace was found.
-        if ( wsLength == 0 ) {
+        if ( index == this.state.nextCharIndex ) {
             return Optional.empty();
         }
 
+        // Pack up the result.
         Optional<Token> result = Optional.of(
             new Token(
                 this.text.substring(
                     this.state.nextCharIndex,
-                    this.state.nextCharIndex + wsLength
+                    index
                 ),
                 origin
             )
         );
 
-        this.state.nextCharIndex += wsLength;
+        // Move the current location
+        this.state.nextCharIndex = index;
 
         return result;
 
@@ -349,14 +408,34 @@ public class FileScanner {
     }
 
     /**
+     * Reads a Java-compatible identifier from the input at the current location. Throws an exception if there is no
+     * identifier.
+     *
+     * @return the identifier just read.
+     *
+     * @throws FileScannerException if some unexpected error occurs.
+     */
+    public Token scanIdentifier() throws FileScannerException {
+
+        final Optional<Token> result = this.acceptIdentifier();
+
+        if ( !result.isPresent() ) {
+            throw new FileScannerException( "Expected identifier.", this.getCurrentLocation() );
+        }
+
+        return result.get();
+
+    }
+
+    /**
      * Reads the input from the current location until the given delimiter (exclusive). Throws an exception if the
      * delimiter is not there.
      *
-     * @param delimiter the token to read.
+     * @param delimiter the delimiter to look for.
      *
      * @return the text read.
      *
-     * @throws FileScannerException if the token is not present of some unexpected error occurs.
+     * @throws FileScannerException if the delimiter is not present or some unexpected error occurs.
      */
     public Token scanUntil( String delimiter ) throws FileScannerException {
 

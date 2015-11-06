@@ -8,8 +8,8 @@ package org.steamflake.templates.domain.model.api.elements;
 import org.steamflake.core.domain.base.model.api.elements.ESteamflakeAbstractness;
 import org.steamflake.core.domain.base.model.api.elements.ESteamflakeAccessibility;
 import org.steamflake.core.domain.base.model.api.elements.ISteamflakeNamedModelElement;
-import org.steamflake.core.domain.base.model.api.utilities.IFileOrigin;
 import org.steamflake.core.infrastructure.utilities.collections.IIndexable;
+import org.steamflake.core.infrastructure.utilities.files.FileOrigin;
 
 import java.util.Optional;
 
@@ -29,7 +29,7 @@ public interface ISteamflakeTmTemplate
      * @return the newly created rule.
      */
     default ISteamflakeTmRule addRule(
-        Optional<IFileOrigin> origin,
+        Optional<FileOrigin> origin,
         String name,
         String description
     ) {
@@ -45,20 +45,20 @@ public interface ISteamflakeTmTemplate
     /**
      * Creates a rule within this template.
      *
-     * @param origin           the source file location of the new rule.
-     * @param name             the name of the rule.
-     * @param description      a description of the rule.
-     * @param accessibility    the accessibility of the rule.
-     * @param ruleAbstractness whether the new rule is abstract or concrete.
+     * @param origin            the source file location of the new rule.
+     * @param name              the name of the rule.
+     * @param description       a description of the rule.
+     * @param ruleAccessibility the accessibility of the rule.
+     * @param ruleAbstractness  whether the new rule is abstract or concrete.
      *
      * @return the newly created method.
      */
     @SuppressWarnings( "BooleanParameter" )
     ISteamflakeTmRule addRule(
-        Optional<IFileOrigin> origin,
+        Optional<FileOrigin> origin,
         String name,
         Optional<String> description,
-        ESteamflakeAccessibility accessibility,
+        ESteamflakeAccessibility ruleAccessibility,
         ESteamflakeAbstractness ruleAbstractness
     );
 
@@ -66,6 +66,11 @@ public interface ISteamflakeTmTemplate
      * @return whether this is an abstract or concrete template.
      */
     ESteamflakeAbstractness getAbstractness();
+
+    /**
+     * @return the accessibility of this template.
+     */
+    ESteamflakeAccessibility getAccessibility();
 
     /**
      * @return the base template.

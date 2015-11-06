@@ -5,9 +5,9 @@
 
 package org.steamflake.core.domain.base.model.api.elements;
 
-import org.steamflake.core.domain.base.model.api.utilities.IFileOrigin;
 import org.steamflake.core.domain.base.model.spi.ISteamflakeModelConsumerFactory;
 import org.steamflake.core.domain.base.model.spi.ISteamflakeModelSupplierFactory;
+import org.steamflake.core.infrastructure.utilities.files.FileOrigin;
 
 import java.util.Optional;
 
@@ -39,7 +39,7 @@ public interface ISteamflakeModelElement<
     /**
      * @return the optional origin of this model element from its source file.
      */
-    Optional<IFileOrigin> getOrigin();
+    Optional<FileOrigin> getOrigin();
 
     /**
      * @return The parent of this model element.

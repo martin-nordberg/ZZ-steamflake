@@ -1,0 +1,30 @@
+
+package org.sample.pkg1;
+
+import org.sample.pkg2.Sample2 as Example;
+
+/*
+ * This is a sample template. Here is its documentation similar to a Javadoc comment.
+ */
+public abstract template Sample1
+    extends BaseTemplate {
+
+    /* First rule. */
+    public abstract rule1( String s );
+
+    /* Second rule. */
+    public rule2( Example x ) {{{
+        a b c {{x.y}} d e f
+    }}}
+
+    /* Third rule. */
+    public rule3( Example x ) {{`
+        {{! This template will preserve its leading whitespace (due to use of `). }}
+        q r s {{x.y}} t u v
+    `}}
+
+}
+
+
+
+
