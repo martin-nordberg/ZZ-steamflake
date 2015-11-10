@@ -342,6 +342,32 @@ public class FileScanner {
     }
 
     /**
+     * Looks ahead in the input at the current location to see if the given token is present. Does not change the
+     * current location.
+     *
+     * @param token the token that may be present in the input.
+     *
+     * @return true f the given token is present.
+     */
+    public boolean hasLookAhead( String token ) {
+
+        // Validate the argument.
+        if ( Strings.isNullOrEmpty( token ) ) {
+            throw new IllegalArgumentException( "Token must be non-empty." );
+        }
+
+        final int endIndex = this.state.nextCharIndex + token.length();
+
+        // If there are not enough characters available, then quit early.
+        if ( endIndex > this.text.length() ) {
+            return false;
+        }
+
+        // Compare the input to the token character by character.
+        return token.equals( this.text.substring( this.state.nextCharIndex, endIndex ) );
+    }
+
+    /**
      * Marks the current location in the input for later back-tracking.
      */
     public void mark() {
@@ -381,7 +407,21 @@ public class FileScanner {
         final Optional<Token> result = this.accept( token );
 
         if ( !result.isPresent() ) {
-            throw new FileScannerException( "Expected \"" + token + "\".", this.getCurrentLocation() );
+            String found = "[End of Input]";
+            if ( this.canRead() ) {
+                found = this.text.substring( this.state.nextCharIndex );
+                if ( found.contains( "\n" ) ) {
+                    found = found.substring( 0, found.indexOf( '\n' ) );
+                }
+                if ( found.length() > 10 ) {
+                    found = found.substring( 0, 10 );
+                }
+                found = "\"" + found + "\"...";
+            }
+            throw new FileScannerException(
+                "Expected \"" + token + "\"; found " + found + ".",
+                this.getCurrentLocation()
+            );
         }
 
         return result.get();

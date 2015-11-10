@@ -11,6 +11,7 @@ import org.steamflake.core.domain.base.model.impl.elements.SteamflakeNamedModelE
 import org.steamflake.core.infrastructure.utilities.collections.IIndexable;
 import org.steamflake.core.infrastructure.utilities.collections.ReadOnlyListAdapter;
 import org.steamflake.core.infrastructure.utilities.files.FileOrigin;
+import org.steamflake.templates.domain.model.api.elements.ISteamflakeTmImport;
 import org.steamflake.templates.domain.model.api.elements.ISteamflakeTmPackage;
 import org.steamflake.templates.domain.model.api.elements.ISteamflakeTmRootPackage;
 import org.steamflake.templates.domain.model.api.elements.ISteamflakeTmRule;
@@ -43,9 +44,17 @@ public class SteamflakeTmTemplate
         this.accessibility = accessibility;
         this.baseTemplate = baseTemplate;
 
+        this.imports = new ArrayList<>();
         this.rules = new ArrayList<>();
 
         parent.onAddChild( this );
+    }
+
+    @Override
+    public ISteamflakeTmImport addImport(
+        Optional<FileOrigin> origin, String typeName, Optional<String> alias
+    ) {
+        return new SteamflakeTmImport( this, origin, typeName, alias );
     }
 
     @Override
@@ -77,6 +86,11 @@ public class SteamflakeTmTemplate
     }
 
     @Override
+    public IIndexable<ISteamflakeTmImport> getImports() {
+        return new ReadOnlyListAdapter<>( this.imports );
+    }
+
+    @Override
     public IIndexable<ISteamflakeTmRule> getRules() {
         return new ReadOnlyListAdapter<>( this.rules );
     }
@@ -93,11 +107,19 @@ public class SteamflakeTmTemplate
         this.rules.add( child );
     }
 
+    /** Responds to the event of adding a child rule to this template. */
+    void onAddChild( ISteamflakeTmImport child ) {
+        super.onAddChild( child );
+        this.imports.add( child );
+    }
+
     private final ESteamflakeAbstractness abstractness;
 
     private final ESteamflakeAccessibility accessibility;
 
     private Optional<ISteamflakeTmTemplate> baseTemplate;
+
+    private final List<ISteamflakeTmImport> imports;
 
     private final List<ISteamflakeTmRule> rules;
 

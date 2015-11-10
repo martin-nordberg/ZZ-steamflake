@@ -21,8 +21,8 @@ public final class SteamflakeTmParser {
     public static class SteamflakeTmParserException
         extends Exception {
 
-        public SteamflakeTmParserException( String message, FileOrigin origin ) {
-            super( message );
+        public SteamflakeTmParserException( String message, FileOrigin origin, Exception e ) {
+            super( origin.getFileName() + ":" + origin.getLine() + ": error: " + message, e );
             this.origin = origin;
         }
 

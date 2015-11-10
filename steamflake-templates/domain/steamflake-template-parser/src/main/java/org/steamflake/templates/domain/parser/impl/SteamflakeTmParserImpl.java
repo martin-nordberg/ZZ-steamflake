@@ -7,22 +7,26 @@ package org.steamflake.templates.domain.parser.impl;
 
 import org.steamflake.core.domain.base.model.api.elements.ESteamflakeAbstractness;
 import org.steamflake.core.domain.base.model.api.elements.ESteamflakeAccessibility;
+import org.steamflake.core.infrastructure.utilities.files.FileOrigin;
 import org.steamflake.core.persistence.ioutilities.fileio.FileScanner;
 import org.steamflake.templates.domain.model.api.elements.ISteamflakeTmAbstractPackage;
 import org.steamflake.templates.domain.model.api.elements.ISteamflakeTmPackage;
 import org.steamflake.templates.domain.model.api.elements.ISteamflakeTmRootPackage;
+import org.steamflake.templates.domain.model.api.elements.ISteamflakeTmRule;
 import org.steamflake.templates.domain.model.api.elements.ISteamflakeTmTemplate;
 import org.steamflake.templates.domain.parser.api.SteamflakeTmParser;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Optional;
 
 /**
- * Implementation of Steamflake template parsing
+ * Implementation of Steamflake template parsing.
  */
 public class SteamflakeTmParserImpl {
 
     /**
-     * Consrtucts a new parser for the given input code and output model.
+     * Constructs a new parser for the given input code and output model.
      *
      * @param rootPackage the root of the model to parse the result into.
      * @param code        the code to parse.
@@ -46,9 +50,22 @@ public class SteamflakeTmParserImpl {
             return this.parseTemplate();
         }
         catch ( FileScanner.FileScannerException e ) {
-            throw new SteamflakeTmParser.SteamflakeTmParserException( e.getMessage(), e.getOrigin() );
+            throw new SteamflakeTmParser.SteamflakeTmParserException( e.getMessage(), e.getOrigin(), e );
         }
 
+    }
+
+    /**
+     * Simple data structure to temporarily capture the attributes of an import declaration.
+     */
+    @SuppressWarnings( "InstanceVariableMayNotBeInitialized" )
+    private static class ImportAttributes {
+
+        private Optional<String> alias;
+
+        private Optional<FileOrigin> origin;
+
+        private String typeName;
     }
 
     /**
@@ -88,6 +105,72 @@ public class SteamflakeTmParserImpl {
         }
 
         return ESteamflakeAccessibility.MODULE;
+
+    }
+
+    /**
+     * Parses a documentation comment.
+     *
+     * @return the documentation parsed.
+     */
+    private Optional<String> parseDocumentation() {
+
+        this.scanner.acceptWhitespace();
+
+        // TODO: documentation
+        return Optional.empty();
+
+    }
+
+    /**
+     * Parses zero or more import declarations.
+     *
+     * @return an array of import declaration attributes for later addition to the template.
+     *
+     * @throws FileScanner.FileScannerException if the parsing fails.
+     */
+    private Collection<ImportAttributes> parseImports() throws FileScanner.FileScannerException {
+
+        this.scanner.acceptWhitespace();
+
+        // Start with an empty result.
+        Collection<ImportAttributes> imps = new ArrayList<>();
+
+        // Scan the keyword.
+        Optional<FileScanner.Token> impToken = this.scanner.accept( "import" );
+
+        // While there is another import found...
+        while ( impToken.isPresent() ) {
+
+            // Build the attributes.
+            ImportAttributes imp = new ImportAttributes();
+            imp.origin = Optional.of( impToken.get().getOrigin() );
+
+            this.scanner.scanWhitespace();
+
+            // Scan the name of the imported type.
+            imp.typeName = this.parsePath();
+
+            this.scanner.acceptWhitespace();
+
+            // Scan the optional alias.
+            imp.alias = Optional.empty();
+            if ( this.scanner.accept( "as" ).isPresent() ) {
+                this.scanner.scanWhitespace();
+                imp.alias = Optional.of( this.scanner.scanIdentifier().getText() );
+            }
+
+            this.scanner.scan( ";" );
+
+            imps.add( imp );
+
+            this.scanner.acceptWhitespace();
+
+            impToken = this.scanner.accept( "import" );
+
+        }
+
+        return imps;
 
     }
 
@@ -155,44 +238,35 @@ public class SteamflakeTmParserImpl {
 
         ISteamflakeTmAbstractPackage parentPackage = this.rootPackage;
 
-        // Parse the package declaration to get the parent package
+        // Parse the package declaration to get the parent package.
         if ( this.scanner.accept( "package" ).isPresent() ) {
             parentPackage = this.parsePackageDecl();
         }
 
-        // TODO: Parse import declarations ...
+        // Parse the import declarations.
+        Collection<ImportAttributes> imps = this.parseImports();
 
-        // TODO: documentation
-        Optional<String> description = Optional.empty();
+        // Parse any documentation.
+        Optional<String> description = this.parseDocumentation();
 
-        this.scanner.acceptWhitespace();
-
+        // Parse the template's accessibility.
         ESteamflakeAccessibility accessibility = this.parseAccessibility();
 
+        // Parse the template's abstractness.
         ESteamflakeAbstractness abstractness = this.parseAbstractness();
 
+        // Parse the template keyword.
         this.scanner.scan( "template" );
         this.scanner.scanWhitespace();
 
+        // Parse the template name.
         FileScanner.Token templateToken = this.scanner.scanIdentifier();
 
         // TODO: base template
         Optional<ISteamflakeTmTemplate> baseTemplate = Optional.empty();
 
-        this.scanner.acceptWhitespace();
-
-        this.scanner.scan( "{" );
-
-        // TODO: Parse the template contents ...
-        this.scanner.acceptWhitespace();
-
-        this.scanner.scan( "}" );
-
-        this.scanner.acceptWhitespace();
-
-        this.scanner.scanEndOfInput();
-
-        return ( (ISteamflakeTmPackage) parentPackage ).addTemplate(
+        // Build the result so far.
+        ISteamflakeTmTemplate result = ( (ISteamflakeTmPackage) parentPackage ).addTemplate(
             Optional.of( templateToken.getOrigin() ),
             templateToken.getText(),
             description,
@@ -201,10 +275,86 @@ public class SteamflakeTmParserImpl {
             baseTemplate
         );
 
+        // Add the earlier imports.
+        for ( ImportAttributes imp : imps ) {
+            result.addImport( imp.origin, imp.typeName, imp.alias );
+        }
+
+        // Parse the template contents.
+        this.parseTemplateBody( result );
+
+        // Make sure there is nothing extraneous at the end.
+        this.scanner.acceptWhitespace();
+        this.scanner.scanEndOfInput();
+
+        return result;
     }
 
+    /**
+     * Parses the body of a template (from "{" to "}", including the rules in between).
+     *
+     * @param template the template to add parsed rules to.
+     *
+     * @throws FileScanner.FileScannerException if a syntax error is encountered.
+     */
+    private void parseTemplateBody( ISteamflakeTmTemplate template ) throws FileScanner.FileScannerException {
+
+        this.scanner.acceptWhitespace();
+
+        this.scanner.scan( "{" );
+
+        this.scanner.acceptWhitespace();
+
+        while ( !this.scanner.accept( "}" ).isPresent() ) {
+
+            // Parse any documentation.
+            Optional<String> documentation = this.parseDocumentation();
+
+            // Parse the rule's accessibility.
+            ESteamflakeAccessibility accessibility = this.parseAccessibility();
+
+            // Parse the rule's abstractness.
+            ESteamflakeAbstractness abstractness = this.parseAbstractness();
+
+            // Parse the rule keyword.
+            this.scanner.scan( "rule" );
+            this.scanner.scanWhitespace();
+
+            // Parse the rule name.
+            FileScanner.Token ruleToken = this.scanner.scanIdentifier();
+
+            // Build the rule.
+            ISteamflakeTmRule rule = template.addRule(
+                Optional.of(
+                    ruleToken.getOrigin()
+                ),
+                ruleToken.getText(),
+                documentation,
+                accessibility,
+                abstractness
+            );
+
+            // TODO: Parse the parameter
+            this.scanner.scan( "()" );
+
+            this.scanner.acceptWhitespace();
+
+            this.scanner.scan( "{{{" );  // TODO: flexible delimiters
+
+            this.scanner.acceptWhitespace();  // TODO: parse rule tokens
+
+            this.scanner.scan( "}}}" );  // TODO: matching end delimiter
+
+            this.scanner.acceptWhitespace();
+
+        }
+
+    }
+
+    /** The root package of the model to which the parsed template is to be added. */
     private final ISteamflakeTmRootPackage rootPackage;
 
+    /** The scanner of template file input. */
     private final FileScanner scanner;
 
 }

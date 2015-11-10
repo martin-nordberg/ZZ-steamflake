@@ -20,6 +20,21 @@ public interface ISteamflakeTmTemplate
     extends ISteamflakeNamedModelElement<ISteamflakeTmRootPackage, ISteamflakeTmPackage> {
 
     /**
+     * Adds a new import to this template.
+     *
+     * @param origin   the file and location the import appeared.
+     * @param typeName the fully qualified name of the type imported.
+     * @param alias    a different name used for the type in its parent template.
+     *
+     * @return the newly created import.
+     */
+    ISteamflakeTmImport addImport(
+        Optional<FileOrigin> origin,
+        String typeName,
+        Optional<String> alias
+    );
+
+    /**
      * Creates a rule within this template.
      *
      * @param origin      the source file location of the new rule.
@@ -76,6 +91,11 @@ public interface ISteamflakeTmTemplate
      * @return the base template.
      */
     Optional<ISteamflakeTmTemplate> getBaseTemplate();
+
+    /**
+     * @return the imports within this template.
+     */
+    IIndexable<ISteamflakeTmImport> getImports();
 
     /**
      * @return the rules within this template.
