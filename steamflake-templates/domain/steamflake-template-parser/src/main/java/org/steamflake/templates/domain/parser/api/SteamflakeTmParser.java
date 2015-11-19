@@ -8,7 +8,7 @@ package org.steamflake.templates.domain.parser.api;
 import org.steamflake.core.infrastructure.utilities.files.FileOrigin;
 import org.steamflake.templates.domain.model.api.elements.ISteamflakeTmRootPackage;
 import org.steamflake.templates.domain.model.api.elements.ISteamflakeTmTemplate;
-import org.steamflake.templates.domain.parser.impl.SteamflakeTmParserImpl;
+import org.steamflake.templates.domain.parser.impl.SteamflakeTmTemplateParser;
 
 /**
  * Class parsing a Steamflake template into a template model.
@@ -20,6 +20,11 @@ public final class SteamflakeTmParser {
      */
     public static class SteamflakeTmParserException
         extends Exception {
+
+        public SteamflakeTmParserException( String message, FileOrigin origin ) {
+            super( origin.getFileName() + ":" + origin.getLine() + ": error: " + message );
+            this.origin = origin;
+        }
 
         public SteamflakeTmParserException( String message, FileOrigin origin, Exception e ) {
             super( origin.getFileName() + ":" + origin.getLine() + ": error: " + message, e );
@@ -52,7 +57,7 @@ public final class SteamflakeTmParser {
     public static ISteamflakeTmTemplate parse( ISteamflakeTmRootPackage rootPackage, String code, String fileName )
         throws SteamflakeTmParserException {
 
-        return new SteamflakeTmParserImpl( rootPackage, code, fileName ).parse();
+        return new SteamflakeTmTemplateParser( rootPackage, code, fileName ).parse();
     }
 
 }

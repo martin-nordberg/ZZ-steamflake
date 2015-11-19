@@ -23,7 +23,7 @@ import java.util.Optional;
 /**
  * Implementation of Steamflake template parsing.
  */
-public class SteamflakeTmParserImpl {
+public class SteamflakeTmTemplateParser {
 
     /**
      * Constructs a new parser for the given input code and output model.
@@ -32,7 +32,7 @@ public class SteamflakeTmParserImpl {
      * @param code        the code to parse.
      * @param fileName    the file name containing the code.
      */
-    public SteamflakeTmParserImpl( ISteamflakeTmRootPackage rootPackage, String code, String fileName ) {
+    public SteamflakeTmTemplateParser( ISteamflakeTmRootPackage rootPackage, String code, String fileName ) {
         this.rootPackage = rootPackage;
         this.scanner = new FileScanner( code, fileName );
     }
@@ -149,7 +149,8 @@ public class SteamflakeTmParserImpl {
             this.scanner.scanWhitespace();
 
             // Scan the name of the imported type.
-            imp.typeName = this.parsePath();
+
+            imp.typeName = SteamflakeTmParserUtil.parsePath( this.scanner );
 
             this.scanner.acceptWhitespace();
 
@@ -185,42 +186,11 @@ public class SteamflakeTmParserImpl {
 
         this.scanner.scanWhitespace();
 
-        String parentPackagePath = this.parsePath();
+        String parentPackagePath = SteamflakeTmParserUtil.parsePath( this.scanner );
 
         this.scanner.scan( ";" );
 
         return this.rootPackage.findOrCreatePackage( parentPackagePath );
-
-    }
-
-    /**
-     * Parses a path (a "."-separated sequence of identifiers).
-     *
-     * @return the path that has been read.
-     *
-     * @throws FileScanner.FileScannerException
-     */
-    private String parsePath() throws FileScanner.FileScannerException {
-
-        // Scan the first identifier of the path.
-        StringBuilder path = new StringBuilder( this.scanner.scanIdentifier().getText() );
-
-        this.scanner.acceptWhitespace();
-
-        // While the next character of input is "." scan and append the next identifier of the path.
-        while ( this.scanner.accept( "." ).isPresent() ) {
-
-            path.append( "." );
-
-            this.scanner.acceptWhitespace();
-
-            path.append( this.scanner.scanIdentifier().getText() );
-
-            this.scanner.acceptWhitespace();
-
-        }
-
-        return path.toString();
 
     }
 
@@ -232,7 +202,7 @@ public class SteamflakeTmParserImpl {
      * @throws FileScanner.FileScannerException
      */
     private ISteamflakeTmTemplate parseTemplate()
-        throws FileScanner.FileScannerException {
+        throws FileScanner.FileScannerException, SteamflakeTmParser.SteamflakeTmParserException {
 
         this.scanner.acceptWhitespace();
 
@@ -297,7 +267,8 @@ public class SteamflakeTmParserImpl {
      *
      * @throws FileScanner.FileScannerException if a syntax error is encountered.
      */
-    private void parseTemplateBody( ISteamflakeTmTemplate template ) throws FileScanner.FileScannerException {
+    private void parseTemplateBody( ISteamflakeTmTemplate template )
+        throws FileScanner.FileScannerException, SteamflakeTmParser.SteamflakeTmParserException {
 
         this.scanner.acceptWhitespace();
 
@@ -339,17 +310,75 @@ public class SteamflakeTmParserImpl {
 
             this.scanner.acceptWhitespace();
 
-            this.scanner.scan( "{{{" );  // TODO: flexible delimiters
+            // Parse the opening delimiter of the rule.
+            String ruleOpenDelimiter = this.scanner.scanRegex( SteamflakeTmTemplateParser.RULE_OPEN_DELIMITER_REGEX ).getText();
 
-            this.scanner.acceptWhitespace();  // TODO: parse rule tokens
+            // Compute closing and token delimiters from the opening delimiter
+            String ruleCloseDelimiter = SteamflakeTmTemplateParser.mirrorDelimiter( ruleOpenDelimiter );
 
-            this.scanner.scan( "}}}" );  // TODO: matching end delimiter
+            String tokenOpenDelimiter = ruleOpenDelimiter.substring( 0, 2 );
+            String tokenCloseDelimiter = ruleCloseDelimiter.substring( 1, 3 );
+
+            // Get the body of the rule as a chunk of text to be further parsed.
+            FileScanner.Token ruleBody = this.scanner.scanUntil( ruleCloseDelimiter );
+
+            // Parse the definition of the rule
+            new SteamflakeTmRuleParser( rule, ruleBody, tokenOpenDelimiter, tokenCloseDelimiter ).parse();
+
+            // Parse the closing delimiter of the rule.
+            this.scanner.scan( ruleCloseDelimiter );
 
             this.scanner.acceptWhitespace();
 
         }
 
     }
+
+    /**
+     * Computes the mirror image of a rule opening delimiter.
+     *
+     * @param openDelimiter the opening delimiter.
+     *
+     * @return the mirror image closing delimiter.
+     */
+    private static String mirrorDelimiter( String openDelimiter ) {
+
+        StringBuilder result = new StringBuilder( "" );
+
+        for ( int i = openDelimiter.length()-1; i >= 0; i -= 1 ) {
+            switch ( openDelimiter.charAt( i ) ) {
+                case '{':
+                    result.append( '}' );
+                    break;
+                case '[':
+                    result.append( ']' );
+                    break;
+                case '(':
+                    result.append( ')' );
+                    break;
+                case '<':
+                    result.append( '>' );
+                    break;
+                case '`':
+                    result.append( '`' );
+                    break;
+                case '\'':
+                    result.append( '\'' );
+                    break;
+                case '"':
+                    result.append( '"' );
+                    break;
+                default:
+                    throw new IllegalArgumentException( "Unrecognized delimiter character: '" + openDelimiter
+                                                                            .charAt( i ) + "'." );
+            }
+        }
+
+        return result.toString();
+    }
+
+    /** Regular expression for the opening delimiter of a rule. */
+    public static final String RULE_OPEN_DELIMITER_REGEX = "(\\{|\\[|\\(|<)(\\{|\\[|\\(|<)(\\{|\\[|\\(|<|'|\"|`)";
 
     /** The root package of the model to which the parsed template is to be added. */
     private final ISteamflakeTmRootPackage rootPackage;

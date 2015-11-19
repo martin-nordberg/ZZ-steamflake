@@ -95,4 +95,75 @@ class SteamflakeTmParserSpec
 
     }
 
+    def "A template parser parses a template with specailly delimited rules."() {
+
+        given:
+        def rootPackage = new SteamflakeTmRootPackage();
+        def code = '''
+            package p1.p2;
+
+            public abstract template TSample {
+                rule rule1() {{[ ]}}
+                rule rule2() {({ })}
+                rule rule3() <{{ }}>
+                rule rule4() [[` `]]
+                rule rule5() {{" "}}
+                rule rule6() <<' '>>
+                rule rule7() ({{ }})
+            }
+        ''';
+        def template = SteamflakeTmParser.parse( rootPackage, code, "example.stft" );
+
+        expect:
+        template.abstractness.isAbstract();
+        template.accessibility.isPublic();
+        template.id.name == "TSample";
+        template.rules.size() == 7;
+
+    }
+
+    def "A template parser parses simple variable tokens."() {
+
+        given:
+        def rootPackage = new SteamflakeTmRootPackage();
+        def code = '''
+            package p1.p2;
+
+            public abstract template TSample {
+                rule rule1() {{{ {{x.y}} {{a.b}}{{p.q.r}} }}}
+            }
+        ''';
+        def template = SteamflakeTmParser.parse( rootPackage, code, "example.stft" );
+
+        expect:
+        template.abstractness.isAbstract();
+        template.accessibility.isPublic();
+        template.id.name == "TSample";
+        template.rules.size() == 1;
+        template.rules[0].tokens.size() == 6;
+
+    }
+
+    def "A template parser ignores empty text between tokens."() {
+
+        given:
+        def rootPackage = new SteamflakeTmRootPackage();
+        def code = '''
+            package p1.p2;
+
+            public abstract template TSample {
+                rule rule1() {[{{[a]}{[b]}{[c]}}]}
+            }
+        ''';
+        def template = SteamflakeTmParser.parse( rootPackage, code, "example.stft" );
+
+        expect:
+        template.abstractness.isAbstract();
+        template.accessibility.isPublic();
+        template.id.name == "TSample";
+        template.rules.size() == 1;
+        template.rules[0].tokens.size() == 3;
+
+    }
+
 }

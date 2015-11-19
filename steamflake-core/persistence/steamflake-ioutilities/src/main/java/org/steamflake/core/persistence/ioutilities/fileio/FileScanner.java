@@ -9,6 +9,8 @@ import org.steamflake.core.infrastructure.utilities.files.FileOrigin;
 import org.steamflake.core.infrastructure.utilities.text.Strings;
 
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Implementation of a scanner designed for use by a recursive descent parser.
@@ -68,6 +70,16 @@ public class FileScanner {
      * @param fileName the associated file name for the input.
      */
     public FileScanner( String text, String fileName ) {
+        this( text, fileName, 1, 1 );
+    }
+
+    /**
+     * Constructs a new file scanner.
+     *
+     * @param text     the entire input to scan.
+     * @param fileName the associated file name for the input.
+     */
+    public FileScanner( String text, String fileName, int firstLine, int firstColumn ) {
 
         // Validate the arguments.
         if ( Strings.isNullOrEmpty( text ) ) {
@@ -80,7 +92,7 @@ public class FileScanner {
         this.fileName = fileName;
         this.text = text;
 
-        this.state = new FileScannerState( 1, 1, 0, Optional.empty() );
+        this.state = new FileScannerState( firstLine, firstColumn, 0, Optional.empty() );
 
     }
 
@@ -115,6 +127,46 @@ public class FileScanner {
         if ( !token.equals( this.text.substring( this.state.nextCharIndex, endIndex ) ) ) {
             return Optional.empty();
         }
+
+        // Capture the result before advancing.
+        Optional<Token> result = Optional.of( new Token( token, this.getCurrentLocation() ) );
+
+        // Move the column and current location.
+        this.state.column += token.length();
+        this.state.nextCharIndex += token.length();
+
+        return result;
+    }
+
+    /**
+     * Tries to read the given regular expression from the current location in the input.
+     *
+     * @param regex the token that may be present in the input.
+     *
+     * @return the text and origin of the token if it has been read successfully.
+     */
+    public Optional<Token> acceptRegex( String regex ) { //throws FileScannerException {
+
+        // Validate the argument.
+        if ( Strings.isNullOrEmpty( regex ) ) {
+            throw new IllegalArgumentException( "Regular expression must be non-empty." );
+        }
+        if ( regex.indexOf( '\n' ) >= 0 ) {
+            throw new IllegalArgumentException(
+                "Regular expression may not contain a new line character: '" +
+                    Strings.whitespaceEscaped( regex ) + "'"
+            );
+        }
+
+        Pattern regexPattern = Pattern.compile( "^" + regex );
+
+        Matcher matcher = regexPattern.matcher( this.text.subSequence( this.state.nextCharIndex, this.text.length() ) );
+
+        if ( !matcher.find() ) {
+            return Optional.empty();
+        }
+
+        String token = matcher.group( 0 );
 
         // Capture the result before advancing.
         Optional<Token> result = Optional.of( new Token( token, this.getCurrentLocation() ) );
@@ -420,6 +472,32 @@ public class FileScanner {
             }
             throw new FileScannerException(
                 "Expected \"" + token + "\"; found " + found + ".",
+                this.getCurrentLocation()
+            );
+        }
+
+        return result.get();
+
+    }
+
+    public Token scanRegex( String regex ) throws FileScannerException {
+
+        final Optional<Token> result = this.acceptRegex( regex );
+
+        if ( !result.isPresent() ) {
+            String found = "[End of Input]";
+            if ( this.canRead() ) {
+                found = this.text.substring( this.state.nextCharIndex );
+                if ( found.contains( "\n" ) ) {
+                    found = found.substring( 0, found.indexOf( '\n' ) );
+                }
+                if ( found.length() > 10 ) {
+                    found = found.substring( 0, 10 );
+                }
+                found = "\"" + found + "\"...";
+            }
+            throw new FileScannerException(
+                "Expected /" + regex + "/; found " + found + ".",
                 this.getCurrentLocation()
             );
         }
