@@ -10,15 +10,15 @@ public abstract template Sample1
     extends BaseTemplate {
 
     /* First rule. */
-    public abstract rule1( String s );
+    public abstract rule rule1( String s );
 
     /* Second rule. */
-    public rule2( Example x ) {{{
+    public rule rule2( Example x ) {{{
         a b c {{x.y}} d e f
     }}}
 
     /* Third rule. */
-    public rule3( Example x ) {{`
+    public rule rule3( Example x ) {{`
         {{! This template will preserve its leading whitespace (due to use of `). }}
         q r s {{x.y}} t u v
     `}}

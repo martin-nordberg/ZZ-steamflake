@@ -20,6 +20,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
 
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
+
 /**
  * Implementation of Steamflake template parsing.
  */
@@ -66,6 +69,51 @@ public class SteamflakeTmTemplateParser {
         private Optional<FileOrigin> origin;
 
         private String typeName;
+    }
+
+    /**
+     * Computes the mirror image of a rule opening delimiter.
+     *
+     * @param openDelimiter the opening delimiter.
+     *
+     * @return the mirror image closing delimiter.
+     */
+    private static String mirrorDelimiter( String openDelimiter ) {
+
+        StringBuilder result = new StringBuilder( "" );
+
+        for ( int i = openDelimiter.length() - 1; i >= 0; i -= 1 ) {
+            switch ( openDelimiter.charAt( i ) ) {
+                case '{':
+                    result.append( '}' );
+                    break;
+                case '[':
+                    result.append( ']' );
+                    break;
+                case '(':
+                    result.append( ')' );
+                    break;
+                case '<':
+                    result.append( '>' );
+                    break;
+                case '`':
+                    result.append( '`' );
+                    break;
+                case '\'':
+                    result.append( '\'' );
+                    break;
+                case '"':
+                    result.append( '"' );
+                    break;
+                default:
+                    throw new IllegalArgumentException(
+                        "Unrecognized delimiter character: '" + openDelimiter
+                            .charAt( i ) + "'."
+                    );
+            }
+        }
+
+        return result.toString();
     }
 
     /**
@@ -118,7 +166,7 @@ public class SteamflakeTmTemplateParser {
         this.scanner.acceptWhitespace();
 
         // TODO: documentation
-        return Optional.empty();
+        return empty();
 
     }
 
@@ -144,7 +192,7 @@ public class SteamflakeTmTemplateParser {
 
             // Build the attributes.
             ImportAttributes imp = new ImportAttributes();
-            imp.origin = Optional.of( impToken.get().getOrigin() );
+            imp.origin = of( impToken.get().getOrigin() );
 
             this.scanner.scanWhitespace();
 
@@ -155,10 +203,10 @@ public class SteamflakeTmTemplateParser {
             this.scanner.acceptWhitespace();
 
             // Scan the optional alias.
-            imp.alias = Optional.empty();
+            imp.alias = empty();
             if ( this.scanner.accept( "as" ).isPresent() ) {
                 this.scanner.scanWhitespace();
-                imp.alias = Optional.of( this.scanner.scanIdentifier().getText() );
+                imp.alias = of( this.scanner.scanIdentifier().getText() );
             }
 
             this.scanner.scan( ";" );
@@ -191,6 +239,40 @@ public class SteamflakeTmTemplateParser {
         this.scanner.scan( ";" );
 
         return this.rootPackage.findOrCreatePackage( parentPackagePath );
+
+    }
+
+    /**
+     * Parses the parameters of a rule.
+     *
+     * @param rule the rule whose parameters are being parsed.
+     *
+     * @throws FileScanner.FileScannerException
+     */
+    private void parseParameters( ISteamflakeTmRule rule ) throws FileScanner.FileScannerException {
+
+        this.scanner.scan( "(" );
+
+        do {
+
+            this.scanner.acceptWhitespace();
+
+            FileScanner.Token paramName = this.scanner.scanIdentifier();
+
+            this.scanner.acceptWhitespace();
+            this.scanner.scan( ":" );
+            this.scanner.acceptWhitespace();
+
+            String paramTypeName = SteamflakeTmParserUtil.parsePath( this.scanner );
+
+            rule.addParameter( of( paramName.getOrigin() ), paramName.getText(), empty(), paramTypeName );
+
+            this.scanner.acceptWhitespace();
+
+        } while ( this.scanner.accept( "," ).isPresent() );
+
+        this.scanner.scan( ")" );
+        this.scanner.acceptWhitespace();
 
     }
 
@@ -233,11 +315,11 @@ public class SteamflakeTmTemplateParser {
         FileScanner.Token templateToken = this.scanner.scanIdentifier();
 
         // TODO: base template
-        Optional<ISteamflakeTmTemplate> baseTemplate = Optional.empty();
+        Optional<ISteamflakeTmTemplate> baseTemplate = empty();
 
         // Build the result so far.
         ISteamflakeTmTemplate result = ( (ISteamflakeTmPackage) parentPackage ).addTemplate(
-            Optional.of( templateToken.getOrigin() ),
+            of( templateToken.getOrigin() ),
             templateToken.getText(),
             description,
             accessibility,
@@ -296,22 +378,19 @@ public class SteamflakeTmTemplateParser {
 
             // Build the rule.
             ISteamflakeTmRule rule = template.addRule(
-                Optional.of(
-                    ruleToken.getOrigin()
-                ),
+                of( ruleToken.getOrigin() ),
                 ruleToken.getText(),
                 documentation,
                 accessibility,
                 abstractness
             );
 
-            // TODO: Parse the parameter
-            this.scanner.scan( "()" );
-
-            this.scanner.acceptWhitespace();
+            // Parse the parameters
+            this.parseParameters( rule );
 
             // Parse the opening delimiter of the rule.
-            String ruleOpenDelimiter = this.scanner.scanRegex( SteamflakeTmTemplateParser.RULE_OPEN_DELIMITER_REGEX ).getText();
+            String ruleOpenDelimiter = this.scanner.scanRegex( SteamflakeTmTemplateParser.RULE_OPEN_DELIMITER_REGEX )
+                                                   .getText();
 
             // Compute closing and token delimiters from the opening delimiter
             String ruleCloseDelimiter = SteamflakeTmTemplateParser.mirrorDelimiter( ruleOpenDelimiter );
@@ -323,7 +402,7 @@ public class SteamflakeTmTemplateParser {
             FileScanner.Token ruleBody = this.scanner.scanUntil( ruleCloseDelimiter );
 
             // Parse the definition of the rule
-            new SteamflakeTmRuleParser( rule, ruleBody, tokenOpenDelimiter, tokenCloseDelimiter ).parse();
+            new SteamflakeTmRuleBodyParser( rule, ruleBody, tokenOpenDelimiter, tokenCloseDelimiter ).parse();
 
             // Parse the closing delimiter of the rule.
             this.scanner.scan( ruleCloseDelimiter );
@@ -332,49 +411,6 @@ public class SteamflakeTmTemplateParser {
 
         }
 
-    }
-
-    /**
-     * Computes the mirror image of a rule opening delimiter.
-     *
-     * @param openDelimiter the opening delimiter.
-     *
-     * @return the mirror image closing delimiter.
-     */
-    private static String mirrorDelimiter( String openDelimiter ) {
-
-        StringBuilder result = new StringBuilder( "" );
-
-        for ( int i = openDelimiter.length()-1; i >= 0; i -= 1 ) {
-            switch ( openDelimiter.charAt( i ) ) {
-                case '{':
-                    result.append( '}' );
-                    break;
-                case '[':
-                    result.append( ']' );
-                    break;
-                case '(':
-                    result.append( ')' );
-                    break;
-                case '<':
-                    result.append( '>' );
-                    break;
-                case '`':
-                    result.append( '`' );
-                    break;
-                case '\'':
-                    result.append( '\'' );
-                    break;
-                case '"':
-                    result.append( '"' );
-                    break;
-                default:
-                    throw new IllegalArgumentException( "Unrecognized delimiter character: '" + openDelimiter
-                                                                            .charAt( i ) + "'." );
-            }
-        }
-
-        return result.toString();
     }
 
     /** Regular expression for the opening delimiter of a rule. */

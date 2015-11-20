@@ -11,18 +11,20 @@ import org.steamflake.templates.domain.parser.api.SteamflakeTmParser;
 
 import java.util.Optional;
 
+import static java.util.Optional.of;
+
 /**
  * Implementation of Steamflake template rule body parsing.
  */
-public class SteamflakeTmRuleParser {
+public class SteamflakeTmRuleBodyParser {
 
     /**
      * Constructs a new parser for the given input code and output rule.
      *
-     * @param rule the rule to parse the result into.
-     * @param ruleBody        the code to parse.
+     * @param rule     the rule to parse the result into.
+     * @param ruleBody the code to parse.
      */
-    public SteamflakeTmRuleParser(
+    public SteamflakeTmRuleBodyParser(
         ISteamflakeTmRule rule,
         FileScanner.Token ruleBody,
         String tokenOpenDelimiter,
@@ -30,7 +32,12 @@ public class SteamflakeTmRuleParser {
     ) {
 
         this.rule = rule;
-        this.scanner = new FileScanner( ruleBody.getText(), ruleBody.getOrigin().getFileName(), ruleBody.getOrigin().getLine(), ruleBody.getOrigin().getColumn() );
+        this.scanner = new FileScanner(
+            ruleBody.getText(),
+            ruleBody.getOrigin().getFileName(),
+            ruleBody.getOrigin().getLine(),
+            ruleBody.getOrigin().getColumn()
+        );
         this.tokenOpenDelimiter = tokenOpenDelimiter;
         this.tokenCloseDelimiter = tokenCloseDelimiter;
     }
@@ -58,7 +65,7 @@ public class SteamflakeTmRuleParser {
 
         while ( text.isPresent() ) {
             if ( !text.get().getText().isEmpty() ) {
-                this.rule.addTextToken( Optional.of( text.get().getOrigin() ), text.get().getText() );
+                this.rule.addTextToken( of( text.get().getOrigin() ), text.get().getText() );
             }
 
             this.scanner.scan( this.tokenOpenDelimiter );
@@ -77,7 +84,7 @@ public class SteamflakeTmRuleParser {
         FileScanner.Token remainderText = this.scanner.scanUntilEndOfInput();
 
         if ( !remainderText.getText().isEmpty() ) {
-            this.rule.addTextToken( Optional.of( remainderText.getOrigin() ), remainderText.getText() );
+            this.rule.addTextToken( of( remainderText.getOrigin() ), remainderText.getText() );
         }
 
     }

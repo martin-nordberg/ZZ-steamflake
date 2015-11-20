@@ -37,29 +37,6 @@ public interface ISteamflakeTmTemplate
     /**
      * Creates a rule within this template.
      *
-     * @param origin      the source file location of the new rule.
-     * @param name        the name of the rule.
-     * @param description a description of the rule.
-     *
-     * @return the newly created rule.
-     */
-    default ISteamflakeTmRule addRule(
-        Optional<FileOrigin> origin,
-        String name,
-        String description
-    ) {
-        return this.addRule(
-            origin,
-            name,
-            Optional.of( description ),
-            ESteamflakeAccessibility.PUBLIC,
-            ESteamflakeAbstractness.CONCRETE
-        );
-    }
-
-    /**
-     * Creates a rule within this template.
-     *
      * @param origin            the source file location of the new rule.
      * @param name              the name of the rule.
      * @param description       a description of the rule.

@@ -27,25 +27,6 @@ public interface ISteamflakeTmRule
      *
      * @param origin      the source file location of the new parameter.
      * @param name        the name of the parameter.
-     * @param description a description of the parameter.
-     * @param typeName    the type of the parameter.
-     *
-     * @return the newly created parameter.
-     */
-    default ISteamflakeTmParameter addParameter(
-        Optional<FileOrigin> origin,
-        String name,
-        String description,
-        String typeName
-    ) {
-        return this.addParameter( origin, name, Optional.of( description ), typeName );
-    }
-
-    /**
-     * Creates a parameter for this method.
-     *
-     * @param origin      the source file location of the new parameter.
-     * @param name        the name of the parameter.
      * @param description an optional description of the parameter.
      * @param typeName    the type of the parameter.
      *

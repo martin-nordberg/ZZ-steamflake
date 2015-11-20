@@ -7,7 +7,6 @@ package org.steamflake.core.domain.base.model.impl.utilities;
 
 import org.steamflake.core.domain.base.model.api.utilities.IQualifiedName;
 
-import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -23,8 +22,7 @@ public final class QualifiedName
      * @param parent          the optional parent qualified name.
      */
     public QualifiedName( String unqualifiedName, Optional<IQualifiedName> parent ) {
-        assert !unqualifiedName.isEmpty();
-        Objects.requireNonNull( parent );
+        assert unqualifiedName.isEmpty() != parent.isPresent();
 
         this.unqualifiedName = unqualifiedName;
         this.parent = parent;
@@ -52,6 +50,10 @@ public final class QualifiedName
     @Override
     public String getPath() {
         if ( !this.parent.isPresent() ) {
+            return this.unqualifiedName;
+        }
+
+        if ( this.parent.get().getPath().isEmpty() ) {
             return this.unqualifiedName;
         }
 

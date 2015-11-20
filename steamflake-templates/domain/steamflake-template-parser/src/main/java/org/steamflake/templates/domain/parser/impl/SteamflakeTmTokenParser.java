@@ -10,7 +10,7 @@ import org.steamflake.core.persistence.ioutilities.fileio.FileScanner;
 import org.steamflake.templates.domain.model.api.elements.ISteamflakeTmRule;
 import org.steamflake.templates.domain.parser.api.SteamflakeTmParser;
 
-import java.util.Optional;
+import static java.util.Optional.of;
 
 /**
  * Implementation of Steamflake template rule token parsing.
@@ -20,8 +20,8 @@ public class SteamflakeTmTokenParser {
     /**
      * Constructs a new parser for the given input token and output rule.
      *
-     * @param rule the rule to parse the result into.
-     * @param tokenBody        the code to parse.
+     * @param rule      the rule to parse the result into.
+     * @param tokenBody the code to parse.
      */
     public SteamflakeTmTokenParser(
         ISteamflakeTmRule rule,
@@ -29,7 +29,12 @@ public class SteamflakeTmTokenParser {
     ) {
 
         this.rule = rule;
-        this.scanner = new FileScanner( tokenBody.getText(), tokenBody.getOrigin().getFileName(), tokenBody.getOrigin().getLine(), tokenBody.getOrigin().getColumn() );
+        this.scanner = new FileScanner(
+            tokenBody.getText(),
+            tokenBody.getOrigin().getFileName(),
+            tokenBody.getOrigin().getLine(),
+            tokenBody.getOrigin().getColumn()
+        );
     }
 
     /**
@@ -48,15 +53,40 @@ public class SteamflakeTmTokenParser {
 
     }
 
+    private void parseCodeToken() throws FileScanner.FileScannerException {
+        this.scanner.acceptWhitespace();
+
+        FileOrigin origin = this.scanner.getCurrentLocation();
+        String path = SteamflakeTmParserUtil.parsePath( this.scanner );
+
+        this.rule.addVariableToken( of( origin ), path );
+
+        this.scanner.acceptWhitespace();
+
+        this.scanner.scanEndOfInput();
+    }
+
+    private void parseCommentToken() {
+        // TODO
+    }
+
+    private void parseLogicToken() {
+        // TODO
+    }
+
+    private void parsePartialToken() {
+        // TODO
+    }
+
     private void parseTokenBody() throws FileScanner.FileScannerException {
 
         if ( this.scanner.accept( "#" ).isPresent() ) {
             this.parseLogicToken();
         }
-        else if ( this.scanner.accept( "%").isPresent() ) {
+        else if ( this.scanner.accept( "%" ).isPresent() ) {
             this.parseWhitespaceToken();
         }
-        else if ( this.scanner.accept( "!").isPresent() ) {
+        else if ( this.scanner.accept( "!" ).isPresent() ) {
             this.parseCommentToken();
         }
         else if ( this.scanner.accept( ">" ).isPresent() ) {
@@ -68,32 +98,7 @@ public class SteamflakeTmTokenParser {
 
     }
 
-    private void parseCodeToken() throws FileScanner.FileScannerException {
-        this.scanner.acceptWhitespace();
-
-        FileOrigin origin = this.scanner.getCurrentLocation();
-        String path = SteamflakeTmParserUtil.parsePath( this.scanner );
-
-        this.rule.addVariableToken( Optional.of( origin ), path );
-
-        this.scanner.acceptWhitespace();
-
-        this.scanner.scanEndOfInput();
-    }
-
-    private void parsePartialToken() {
-        // TODO
-    }
-
-    private void parseCommentToken() {
-        // TODO
-    }
-
     private void parseWhitespaceToken() {
-        // TODO
-    }
-
-    private void parseLogicToken() {
         // TODO
     }
 

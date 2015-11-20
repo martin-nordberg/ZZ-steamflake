@@ -74,10 +74,10 @@ class SteamflakeTmParserSpec
 
             public abstract template TSample {
 
-                public rule rule1() {{{
+                public rule rule1(p:Stuff) {{{
                 }}}
 
-                protected abstract rule rule2() {{{
+                protected abstract rule rule2(p:Stuff) {{{
                 }}}
 
             }
@@ -92,10 +92,14 @@ class SteamflakeTmParserSpec
         template.origin.get().line == 4;
         template.origin.get().column == 38;
         template.rules.size() == 2;
+        template.rules[0].id.name == "rule1";
+        template.rules[0].id.path == "p1.p2.TSample.rule1";
+        template.rules[1].id.name == "rule2";
+        template.rules[1].id.path == "p1.p2.TSample.rule2";
 
     }
 
-    def "A template parser parses a template with specailly delimited rules."() {
+    def "A template parser parses a rule with multiple parameters."() {
 
         given:
         def rootPackage = new SteamflakeTmRootPackage();
@@ -103,13 +107,47 @@ class SteamflakeTmParserSpec
             package p1.p2;
 
             public abstract template TSample {
-                rule rule1() {{[ ]}}
-                rule rule2() {({ })}
-                rule rule3() <{{ }}>
-                rule rule4() [[` `]]
-                rule rule5() {{" "}}
-                rule rule6() <<' '>>
-                rule rule7() ({{ }})
+
+                public rule rule1( a : Stuff , b:p1 . p2.Widget, c : p1.MoreStuff ) {{{
+                }}}
+
+            }
+        ''';
+        def template = SteamflakeTmParser.parse( rootPackage, code, "example.stft" );
+
+        expect:
+        template.abstractness.isAbstract();
+        template.accessibility.isPublic();
+        template.id.name == "TSample";
+        template.origin.get().fileName == "example.stft";
+        template.origin.get().line == 4;
+        template.origin.get().column == 38;
+        template.rules.size() == 1;
+        template.rules[0].parameters.size() == 3;
+        template.rules[0].parameters[0].id.name == "a";
+        template.rules[0].parameters[0].typeName == "Stuff";
+        template.rules[0].parameters[1].id.name == "b";
+        template.rules[0].parameters[1].typeName == "p1.p2.Widget";
+        template.rules[0].parameters[2].id.name == "c";
+        template.rules[0].parameters[2].typeName == "p1.MoreStuff";
+
+    }
+
+    def "A template parser parses a template with specially delimited rules."() {
+
+        given:
+        def rootPackage = new SteamflakeTmRootPackage();
+        def code = '''
+            package p1.p2;
+
+            public abstract template TSample {
+                rule rule1(p:Stuff) {{[ ]}}
+                rule rule2(p:Stuff) {({ })}
+                rule rule3(p:Stuff) <{{ }}>
+                rule rule4(p:Stuff) [[` `]]
+                rule rule5(p:Stuff) {{" "}}
+                rule rule6(p:Stuff) <<' '>>
+                rule rule7(p:Stuff) ({{ }})
             }
         ''';
         def template = SteamflakeTmParser.parse( rootPackage, code, "example.stft" );
@@ -130,7 +168,7 @@ class SteamflakeTmParserSpec
             package p1.p2;
 
             public abstract template TSample {
-                rule rule1() {{{ {{x.y}} {{a.b}}{{p.q.r}} }}}
+                rule rule1(p:Stuff) {{{ {{x.y}} {{a.b}}{{p.q.r}} }}}
             }
         ''';
         def template = SteamflakeTmParser.parse( rootPackage, code, "example.stft" );
@@ -152,7 +190,7 @@ class SteamflakeTmParserSpec
             package p1.p2;
 
             public abstract template TSample {
-                rule rule1() {[{{[a]}{[b]}{[c]}}]}
+                rule rule1(p:Stuff) {[{{[a]}{[b]}{[c]}}]}
             }
         ''';
         def template = SteamflakeTmParser.parse( rootPackage, code, "example.stft" );
