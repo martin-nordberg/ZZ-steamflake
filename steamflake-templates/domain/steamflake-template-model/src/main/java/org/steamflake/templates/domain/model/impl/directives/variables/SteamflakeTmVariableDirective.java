@@ -1,0 +1,43 @@
+//
+// (C) Copyright 2015 Martin E. Nordberg III
+// Apache 2.0 License
+//
+
+package org.steamflake.templates.domain.model.impl.directives.variables;
+
+import org.steamflake.core.infrastructure.utilities.files.FileOrigin;
+import org.steamflake.templates.domain.model.api.directives.variables.ISteamflakeTmVariableDirective;
+import org.steamflake.templates.domain.model.impl.directives.SteamflakeTmAbstractDirective;
+import org.steamflake.templates.domain.model.impl.elements.ISteamflakeTmDirectiveContainerMixin;
+
+import java.util.Optional;
+
+/**
+ * Implementation of a Steamflake template variable reference directive.
+ */
+public class SteamflakeTmVariableDirective
+    extends SteamflakeTmAbstractDirective
+    implements ISteamflakeTmVariableDirective {
+
+    /**
+     * Constructs a new Steamflake variable directive.
+     *
+     * @param parent the parent of this directive.
+     */
+    public SteamflakeTmVariableDirective(
+        ISteamflakeTmDirectiveContainerMixin parent,
+        Optional<FileOrigin> origin,
+        String path
+    ) {
+        super( parent, origin );
+        this.path = path;
+    }
+
+    @Override
+    public String getPath() {
+        return this.path;
+    }
+
+    private final String path;
+
+}

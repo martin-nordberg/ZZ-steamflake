@@ -11,16 +11,12 @@ import org.steamflake.core.domain.base.model.impl.elements.SteamflakeNamedModelE
 import org.steamflake.core.infrastructure.utilities.collections.IIndexable;
 import org.steamflake.core.infrastructure.utilities.collections.ReadOnlyListAdapter;
 import org.steamflake.core.infrastructure.utilities.files.FileOrigin;
+import org.steamflake.templates.domain.model.api.directives.ISteamflakeTmAbstractDirective;
 import org.steamflake.templates.domain.model.api.elements.ISteamflakeTmPackage;
 import org.steamflake.templates.domain.model.api.elements.ISteamflakeTmParameter;
 import org.steamflake.templates.domain.model.api.elements.ISteamflakeTmRootPackage;
 import org.steamflake.templates.domain.model.api.elements.ISteamflakeTmRule;
 import org.steamflake.templates.domain.model.api.elements.ISteamflakeTmTemplate;
-import org.steamflake.templates.domain.model.api.tokens.ISteamflakeTmAbstractToken;
-import org.steamflake.templates.domain.model.api.tokens.code.ISteamflakeTmVariableToken;
-import org.steamflake.templates.domain.model.api.tokens.text.ISteamflakeTmTextToken;
-import org.steamflake.templates.domain.model.impl.tokens.code.SteamflakeTmVariableToken;
-import org.steamflake.templates.domain.model.impl.tokens.text.SteamflakeTmTextToken;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +27,7 @@ import java.util.Optional;
  */
 public class SteamflakeTmRule
     extends SteamflakeNamedModelElement<ISteamflakeTmRootPackage, ISteamflakeTmPackage>
-    implements ISteamflakeTmRule {
+    implements ISteamflakeTmRule, ISteamflakeTmDirectiveContainerMixin {
 
     @SuppressWarnings( "TypeMayBeWeakened" )
     public SteamflakeTmRule(
@@ -48,7 +44,7 @@ public class SteamflakeTmRule
         this.abstractness = abstractness;
 
         this.parameters = new ArrayList<>();
-        this.tokens = new ArrayList<>();
+        this.directives = new ArrayList<>();
 
         parent.onAddChild( this );
     }
@@ -58,16 +54,6 @@ public class SteamflakeTmRule
         Optional<FileOrigin> origin, String name, Optional<String> description, String typeName
     ) {
         return new SteamflakeTmParameter( this, origin, name, description, typeName );
-    }
-
-    @Override
-    public ISteamflakeTmTextToken addTextToken( Optional<FileOrigin> origin, String text ) {
-        return new SteamflakeTmTextToken( this, origin, text );
-    }
-
-    @Override
-    public ISteamflakeTmVariableToken addVariableToken( Optional<FileOrigin> origin, String path ) {
-        return new SteamflakeTmVariableToken( this, origin, path );
     }
 
     @Override
@@ -81,6 +67,16 @@ public class SteamflakeTmRule
     }
 
     @Override
+    public IIndexable<ISteamflakeTmAbstractDirective> getDirectives() {
+        return new ReadOnlyListAdapter<>( this.directives );
+    }
+
+    @Override
+    public String getKeyword() {
+        return "rule";
+    }
+
+    @Override
     public IIndexable<ISteamflakeTmParameter> getParameters() {
         return new ReadOnlyListAdapter<>( this.parameters );
     }
@@ -90,15 +86,10 @@ public class SteamflakeTmRule
         return (ISteamflakeTmTemplate) super.getParent();
     }
 
-    @Override
-    public IIndexable<ISteamflakeTmAbstractToken> getTokens() {
-        return new ReadOnlyListAdapter<>( this.tokens );
-    }
-
-    /** Responds to the event of adding a child parameter to this rule. */
-    public void onAddChild( ISteamflakeTmAbstractToken child ) {
+    /** Responds to the event of adding a child directive to this rule. */
+    public void onAddChild( ISteamflakeTmAbstractDirective child ) {
         super.onAddChild( child );
-        this.tokens.add( child );
+        this.directives.add( child );
     }
 
     /** Responds to the event of adding a child parameter to this rule. */
@@ -111,8 +102,8 @@ public class SteamflakeTmRule
 
     private final ESteamflakeAccessibility accessibility;
 
-    private final List<ISteamflakeTmParameter> parameters;
+    private final List<ISteamflakeTmAbstractDirective> directives;
 
-    private final List<ISteamflakeTmAbstractToken> tokens;
+    private final List<ISteamflakeTmParameter> parameters;
 
 }

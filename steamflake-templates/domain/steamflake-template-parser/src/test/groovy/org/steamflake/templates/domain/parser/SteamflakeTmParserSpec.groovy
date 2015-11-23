@@ -1,5 +1,8 @@
 package org.steamflake.templates.domain.parser
 
+import org.steamflake.templates.domain.model.api.directives.comments.ISteamflakeTmCommentDirective
+import org.steamflake.templates.domain.model.api.directives.logic.ISteamflakeTmIfDirective
+import org.steamflake.templates.domain.model.api.directives.text.ISteamflakeTmTextDirective
 import org.steamflake.templates.domain.model.impl.elements.SteamflakeTmRootPackage
 import org.steamflake.templates.domain.parser.api.SteamflakeTmParser
 import spock.lang.Specification
@@ -160,7 +163,7 @@ class SteamflakeTmParserSpec
 
     }
 
-    def "A template parser parses simple variable tokens."() {
+    def "A template parser parses simple variable directives."() {
 
         given:
         def rootPackage = new SteamflakeTmRootPackage();
@@ -178,11 +181,11 @@ class SteamflakeTmParserSpec
         template.accessibility.isPublic();
         template.id.name == "TSample";
         template.rules.size() == 1;
-        template.rules[0].tokens.size() == 6;
+        template.rules[0].directives.size() == 6;
 
     }
 
-    def "A template parser ignores empty text between tokens."() {
+    def "A template parser ignores empty text between directives."() {
 
         given:
         def rootPackage = new SteamflakeTmRootPackage();
@@ -200,7 +203,54 @@ class SteamflakeTmParserSpec
         template.accessibility.isPublic();
         template.id.name == "TSample";
         template.rules.size() == 1;
-        template.rules[0].tokens.size() == 3;
+        template.rules[0].directives.size() == 3;
+
+    }
+
+    def "A template parser parses comment directives."() {
+
+        given:
+        def rootPackage = new SteamflakeTmRootPackage();
+        def code = '''
+            package p1.p2;
+
+            public template TSample {
+                rule rule1(p:Stuff) {{{ Hello {{! Here be comments. }}world. }}}
+            }
+        ''';
+        def template = SteamflakeTmParser.parse( rootPackage, code, "example.stft" );
+
+        expect:
+        template.rules.size() == 1;
+        template.rules[0].directives.size() == 3;
+        ( (ISteamflakeTmTextDirective) template.rules[0].directives[0] ).text == " Hello ";
+        ( (ISteamflakeTmCommentDirective) template.rules[0].directives[1] ).text == "Here be comments.";
+        ( (ISteamflakeTmTextDirective) template.rules[0].directives[2] ).text == "world. ";
+
+    }
+
+    def "A template parser parses a simple if directive."() {
+
+        given:
+        def rootPackage = new SteamflakeTmRootPackage();
+        def code = '''
+            package p1.p2;
+
+            public template TSample {
+                rule rule1(p:Stuff) {{{ abc {{#if p.condition }} def {{/if}} ghi }}}
+            }
+        ''';
+        def template = SteamflakeTmParser.parse( rootPackage, code, "example.stft" );
+
+        expect:
+        template.rules.size() == 1;
+        template.rules[0].directives.size() == 3;
+        ( (ISteamflakeTmTextDirective) template.rules[0].directives[0] ).text == " abc ";
+        ( (ISteamflakeTmIfDirective) template.rules[0].directives[1] ).conditionPath == "p.condition";
+        ( (ISteamflakeTmIfDirective) template.rules[0].directives[1] ).directives.size() == 1;
+        ( (ISteamflakeTmTextDirective) ( (ISteamflakeTmIfDirective) template.rules[0].directives[1] ).directives
+            [0] ).text == " def ";
+        ( (ISteamflakeTmTextDirective) template.rules[0].directives[2] ).text == " ghi ";
 
     }
 

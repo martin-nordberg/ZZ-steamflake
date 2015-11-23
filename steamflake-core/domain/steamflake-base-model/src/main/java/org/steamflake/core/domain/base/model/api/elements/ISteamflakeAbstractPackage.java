@@ -22,29 +22,6 @@ public interface ISteamflakeAbstractPackage<
     extends ISteamflakeNamedModelElement<IRootPackage, IConcretePackage> {
 
     /**
-     * Creates a package within this one (empty description).
-     *
-     * @param name the name of the new package.
-     *
-     * @return the newly created package.
-     */
-    default IConcretePackage addPackage( Optional<FileOrigin> origin, String name ) {
-        return this.addPackage( origin, name, Optional.empty() );
-    }
-
-    /**
-     * Creates a package within this one (empty description, not implicitly imported).
-     *
-     * @param name        the name of the new package.
-     * @param description a description of the new package.
-     *
-     * @return the newly created package.
-     */
-    default IConcretePackage addPackage( Optional<FileOrigin> origin, String name, String description ) {
-        return this.addPackage( origin, name, Optional.of( description ) );
-    }
-
-    /**
      * Creates a package within this one.
      *
      * @param name        the name of the new package.
