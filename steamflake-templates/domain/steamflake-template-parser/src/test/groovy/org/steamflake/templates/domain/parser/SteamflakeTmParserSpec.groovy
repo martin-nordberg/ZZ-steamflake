@@ -3,6 +3,7 @@ package org.steamflake.templates.domain.parser
 import org.steamflake.templates.domain.model.api.directives.comments.ISteamflakeTmCommentDirective
 import org.steamflake.templates.domain.model.api.directives.logic.ISteamflakeTmIfDirective
 import org.steamflake.templates.domain.model.api.directives.text.ISteamflakeTmTextDirective
+import org.steamflake.templates.domain.model.api.directives.whitespace.ISteamflakeTmNewLineDirective
 import org.steamflake.templates.domain.model.impl.elements.SteamflakeTmRootPackage
 import org.steamflake.templates.domain.parser.api.SteamflakeTmParser
 import spock.lang.Specification
@@ -246,11 +247,78 @@ class SteamflakeTmParserSpec
         template.rules.size() == 1;
         template.rules[0].directives.size() == 3;
         ( (ISteamflakeTmTextDirective) template.rules[0].directives[0] ).text == " abc ";
-        ( (ISteamflakeTmIfDirective) template.rules[0].directives[1] ).conditionPath == "p.condition";
+        ( (ISteamflakeTmIfDirective) template.rules[0].directives[1] ).boolConditionPath == "p.condition";
         ( (ISteamflakeTmIfDirective) template.rules[0].directives[1] ).directives.size() == 1;
         ( (ISteamflakeTmTextDirective) ( (ISteamflakeTmIfDirective) template.rules[0].directives[1] ).directives
             [0] ).text == " def ";
         ( (ISteamflakeTmTextDirective) template.rules[0].directives[2] ).text == " ghi ";
+
+    }
+
+    def "A template parser parses a nested if directive."() {
+
+        given:
+        def rootPackage = new SteamflakeTmRootPackage();
+        def code = '''
+            package p1.p2;
+
+            public template TSample {
+                rule rule1(p:Stuff) {{{ abc {{#if p.condition }} def {{#if p.othercond}} ghi {{/if}}{{/if}} jkl }}}
+            }
+        ''';
+        def template = SteamflakeTmParser.parse( rootPackage, code, "example.stft" );
+
+        expect:
+        template.rules.size() == 1;
+        template.rules[0].directives.size() == 3;
+        ( (ISteamflakeTmTextDirective) template.rules[0].directives[0] ).text == " abc ";
+
+        def outerIf = (ISteamflakeTmIfDirective) template.rules[0].directives[1];
+        outerIf.boolConditionPath == "p.condition";
+        outerIf.directives.size() == 2;
+        ( (ISteamflakeTmTextDirective) outerIf.directives[0] ).text == " def ";
+
+        def innerIf = (ISteamflakeTmIfDirective) outerIf.directives[1];
+        innerIf.boolConditionPath == "p.othercond";
+        innerIf.directives.size() == 1;
+        ( (ISteamflakeTmTextDirective) innerIf.directives[0] ).text == " ghi ";
+
+        ( (ISteamflakeTmTextDirective) template.rules[0].directives[2] ).text == " jkl ";
+
+    }
+
+    def "A template parser parses new-line directives."() {
+
+        given:
+        def rootPackage = new SteamflakeTmRootPackage();
+        def code = '''
+            package p1.p2;
+
+            public template TSample {
+                rule rule1(p:Stuff) {{{ {{%nl}}{{%nl p.condition}}{{%nl_ q.condition}} }}}
+            }
+        ''';
+        def template = SteamflakeTmParser.parse( rootPackage, code, "example.stft" );
+
+        expect:
+        template.rules.size() == 1;
+        template.rules[0].directives.size() == 5;
+
+        ( (ISteamflakeTmTextDirective) template.rules[0].directives[0] ).text == " ";
+
+        def nl1 = (ISteamflakeTmNewLineDirective) template.rules[0].directives[1];
+        !nl1.isSpaceNeededIfNoNewLine();
+        !nl1.boolConditionPath.isPresent();
+
+        def nl2 = (ISteamflakeTmNewLineDirective) template.rules[0].directives[2];
+        !nl2.isSpaceNeededIfNoNewLine();
+        nl2.boolConditionPath.get() == "p.condition";
+
+        def nl3 = (ISteamflakeTmNewLineDirective) template.rules[0].directives[3];
+        nl3.isSpaceNeededIfNoNewLine();
+        nl3.boolConditionPath.get() == "q.condition";
+
+        ( (ISteamflakeTmTextDirective) template.rules[0].directives[4] ).text == " ";
 
     }
 

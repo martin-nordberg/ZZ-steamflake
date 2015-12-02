@@ -13,29 +13,29 @@ import org.steamflake.templates.domain.model.impl.elements.ISteamflakeTmDirectiv
 import java.util.Optional;
 
 /**
- * Implementation of a Steamflake template variable reference directive.
+ * Implementation of a Steamflake template if directive.
  */
 public class SteamflakeTmIfDirective
     extends SteamflakeTmCompositeDirective
     implements ISteamflakeTmIfDirective {
 
     /**
-     * Constructs a new Steamflake variable directive.
+     * Constructs a new Steamflake if directive.
      *
      * @param parent the parent of this directive.
      */
     public SteamflakeTmIfDirective(
         ISteamflakeTmDirectiveContainerMixin parent,
         Optional<FileOrigin> origin,
-        String path
+        String boolConditionPath
     ) {
         super( parent, origin );
-        this.path = path;
+        this.boolConditionPath = boolConditionPath;
     }
 
     @Override
-    public String getConditionPath() {
-        return this.path;
+    public String getBoolConditionPath() {
+        return this.boolConditionPath;
     }
 
     @Override
@@ -43,6 +43,6 @@ public class SteamflakeTmIfDirective
         return "if";
     }
 
-    private final String path;
+    private final String boolConditionPath;
 
 }

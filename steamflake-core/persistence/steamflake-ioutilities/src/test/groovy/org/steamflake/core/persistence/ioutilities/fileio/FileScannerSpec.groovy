@@ -203,4 +203,23 @@ class FileScannerSpec
 
     }
 
+    def "A file scanner scans end of input as often as needed."() {
+
+        given:
+        def text = "x";
+        def scanner = new FileScanner( text, "example.txt" );
+
+        when:
+        scanner.scan( "x" );
+        def tok1 = scanner.acceptEndOfInput()
+        def tok2 = scanner.acceptEndOfInput()
+        scanner.scanEndOfInput()
+        scanner.scanEndOfInput()
+
+        then:
+        tok1.isPresent();
+        tok2.isPresent();
+
+    }
+
 }

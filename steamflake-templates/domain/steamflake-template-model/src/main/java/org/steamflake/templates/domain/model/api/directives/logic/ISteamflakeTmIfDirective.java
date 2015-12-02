@@ -16,6 +16,6 @@ public interface ISteamflakeTmIfDirective
     /**
      * @return the path of the boolean variable tested for true or false.
      */
-    String getConditionPath();
+    String getBoolConditionPath();
 
 }

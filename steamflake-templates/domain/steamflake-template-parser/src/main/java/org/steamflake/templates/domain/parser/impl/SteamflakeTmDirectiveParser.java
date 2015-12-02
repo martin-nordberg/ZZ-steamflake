@@ -12,6 +12,7 @@ import org.steamflake.templates.domain.model.api.directives.variables.ISteamflak
 import org.steamflake.templates.domain.model.api.elements.ISteamflakeTmDirectiveContainer;
 import org.steamflake.templates.domain.parser.api.SteamflakeTmParser;
 
+import static java.util.Optional.empty;
 import static java.util.Optional.of;
 
 /**
@@ -76,6 +77,9 @@ public class SteamflakeTmDirectiveParser {
         else if ( this.scanner.accept( "%" ).isPresent() ) {
             result = this.parseWhitespaceDirective();
         }
+        else if ( this.scanner.accept( "@" ).isPresent() ) {
+            result = this.parseParsingDirective();
+        }
         else if ( this.scanner.accept( "!" ).isPresent() ) {
             result = this.parseCommentDirective();
         }
@@ -111,6 +115,36 @@ public class SteamflakeTmDirectiveParser {
 
     }
 
+    private ISteamflakeTmAbstractDirective parseNewLineDirective( FileOrigin whitespaceOrigin )
+        throws FileScanner.FileScannerException {
+
+        boolean isSpaceNeededIfNoNewLine = this.scanner.accept( "_" ).isPresent();
+
+        // If there is a "_" in the directive, then there must be a condition to test.
+        if ( isSpaceNeededIfNoNewLine ) {
+            this.scanner.scanWhitespace();
+            String conditionPath = SteamflakeTmParserUtil.parsePath( this.scanner );
+            this.scanner.acceptWhitespace();
+            return this.container.addNewLineDirective( of( whitespaceOrigin ), true, of( conditionPath ) );
+        }
+
+        // If there is a condition to test, then scan its path.
+        if ( this.scanner.acceptWhitespace().isPresent() && !this.scanner.acceptEndOfInput().isPresent() ) {
+            String conditionPath = SteamflakeTmParserUtil.parsePath( this.scanner );
+            this.scanner.acceptWhitespace();
+            return this.container.addNewLineDirective( of( whitespaceOrigin ), false, of( conditionPath ) );
+        }
+
+        // Plain {{nl}} directive.
+        return this.container.addNewLineDirective( of( whitespaceOrigin ), false, empty() );
+
+    }
+
+    private ISteamflakeTmAbstractDirective parseParsingDirective() {
+        // TODO
+        return null;
+    }
+
     private ISteamflakeTmAbstractDirective parsePartialDirective() {
         // TODO
         return null;
@@ -139,9 +173,20 @@ public class SteamflakeTmDirectiveParser {
 
     }
 
-    private ISteamflakeTmAbstractDirective parseWhitespaceDirective() {
-        // TODO
-        return null;
+    private ISteamflakeTmAbstractDirective parseWhitespaceDirective()
+        throws SteamflakeTmParser.SteamflakeTmParserException, FileScanner.FileScannerException {
+
+        FileOrigin whitespaceOrigin = this.scanner.getCurrentLocation();
+
+        if ( this.scanner.accept( "nl" ).isPresent() ) {
+            return this.parseNewLineDirective( whitespaceOrigin );
+        }
+
+        throw new SteamflakeTmParser.SteamflakeTmParserException(
+            "Unrecognized whitespace directive.",
+            this.scanner.getCurrentLocation()
+        );
+
     }
 
     /** The rule to which the parsed rule body tokens are to be added. */

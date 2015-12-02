@@ -52,7 +52,7 @@ public class SteamflakeTmRuleBodyParser {
     public void parse() throws SteamflakeTmParser.SteamflakeTmParserException {
 
         try {
-            this.parseRuleBody( this.rule );
+            this.parseDirectiveSequence( this.rule );
         }
         catch ( FileScanner.FileScannerException e ) {
             throw new SteamflakeTmParser.SteamflakeTmParserException( e.getMessage(), e.getOrigin(), e );
@@ -68,14 +68,16 @@ public class SteamflakeTmRuleBodyParser {
      * @throws FileScanner.FileScannerException               if a syntax error is found.
      * @throws SteamflakeTmParser.SteamflakeTmParserException if a parsing error occurs.
      */
-    private void parseRuleBody( ISteamflakeTmDirectiveContainer container ) throws FileScanner.FileScannerException,
-                                                                                   SteamflakeTmParser.SteamflakeTmParserException {
+    private void parseDirectiveSequence( ISteamflakeTmDirectiveContainer container )
+        throws FileScanner.FileScannerException,
+               SteamflakeTmParser.SteamflakeTmParserException {
 
         // Look for text up to the next opening delimiter.
         Optional<FileScanner.Token> text = this.scanner.acceptUntil( this.directiveOpenDelimiter );
 
         // While there is text followed by an opening delimiter...
         while ( text.isPresent() ) {
+
             // Add the text to the rule if not empty.
             if ( !text.get().getText().isEmpty() ) {
                 container.addTextDirective( of( text.get().getOrigin() ), text.get().getText() );
@@ -83,7 +85,7 @@ public class SteamflakeTmRuleBodyParser {
 
             this.scanner.scan( this.directiveOpenDelimiter );
 
-            // Handle a closing tag if present
+            // Handle a closing tag if present.
             if ( this.scanner.accept( "/" ).isPresent() ) {
                 this.scanner.scan( container.getKeyword() );
                 this.scanner.acceptWhitespace();
@@ -94,7 +96,7 @@ public class SteamflakeTmRuleBodyParser {
             // Scan the body of the directive.
             FileScanner.Token directiveBody = this.scanner.scanUntil( this.directiveCloseDelimiter );
 
-            // Parse the code directive into the rule.
+            // Parse the code directive into the rule or composite directive.
             ISteamflakeTmAbstractDirective directive = new SteamflakeTmDirectiveParser(
                 container,
                 directiveBody
@@ -104,15 +106,24 @@ public class SteamflakeTmRuleBodyParser {
 
             // If it was a composite directive...
             if ( directive.isComposite() ) {
-                // Use a stack and parse until the closing directive.
-                this.parseRuleBody( (ISteamflakeTmDirectiveContainer) directive );
+                // Recursively parse until the closing directive.
+                this.parseDirectiveSequence( (ISteamflakeTmDirectiveContainer) directive );
             }
 
-            // Scan the next block of text up to an opening delimiter
+            // Scan the next block of text up to an opening delimiter.
             text = this.scanner.acceptUntil( this.directiveOpenDelimiter );
+
         }
 
-        // Parse the remaining text into the final directive for the rule.
+        // Trigger an error if we found no closing directive for a composite directive.
+        if ( !( container instanceof ISteamflakeTmRule ) ) {
+            throw new SteamflakeTmParser.SteamflakeTmParserException(
+                "Missing closing directive: '" + this.directiveOpenDelimiter + "/" + container.getKeyword() + this.directiveCloseDelimiter + "'.",
+                this.scanner.getCurrentLocation()
+            );
+        }
+
+        // Parse the remaining text, if any, into the final directive for the rule.
         FileScanner.Token remainderText = this.scanner.scanUntilEndOfInput();
 
         if ( !remainderText.getText().isEmpty() ) {
