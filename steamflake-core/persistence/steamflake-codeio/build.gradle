@@ -1,0 +1,7 @@
+buildDir = '../../../build/steamflake-core/persistence/steamflake-codeio'
+
+dependencies {
+
+    // No dependencies - do not add any - redistributable module
+
+}

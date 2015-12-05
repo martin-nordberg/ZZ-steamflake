@@ -5,7 +5,7 @@
 
 package org.steamflake.templates.domain.model.impl.directives.whitespace;
 
-import org.steamflake.core.infrastructure.utilities.files.FileOrigin;
+import org.steamflake.core.domain.base.model.api.utilities.IFileOrigin;
 import org.steamflake.templates.domain.model.api.directives.whitespace.ISteamflakeTmNewLineDirective;
 import org.steamflake.templates.domain.model.impl.directives.SteamflakeTmAbstractDirective;
 import org.steamflake.templates.domain.model.impl.elements.ISteamflakeTmDirectiveContainerMixin;
@@ -30,7 +30,7 @@ public class SteamflakeTmNewLineDirective
      */
     public SteamflakeTmNewLineDirective(
         ISteamflakeTmDirectiveContainerMixin parent,
-        Optional<FileOrigin> origin,
+        Optional<IFileOrigin> origin,
         boolean isSpaceNeededIfNoNewLine,
         Optional<String> boolConditionPath
     ) {

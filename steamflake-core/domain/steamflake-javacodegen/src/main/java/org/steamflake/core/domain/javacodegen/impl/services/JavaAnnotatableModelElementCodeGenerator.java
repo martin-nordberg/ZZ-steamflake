@@ -3,7 +3,7 @@ package org.steamflake.core.domain.javacodegen.impl.services;
 import org.steamflake.core.domain.javamodel.api.elements.IJavaAnnotatableModelElement;
 import org.steamflake.core.domain.javamodel.api.elements.IJavaAnnotation;
 import org.steamflake.core.infrastructure.utilities.collections.IIndexable;
-import org.steamflake.core.persistence.ioutilities.codegen.CodeWriter;
+import org.steamflake.core.persistence.codeio.codegen.api.CodeWriter;
 
 /**
  * Code generator for a Java field.

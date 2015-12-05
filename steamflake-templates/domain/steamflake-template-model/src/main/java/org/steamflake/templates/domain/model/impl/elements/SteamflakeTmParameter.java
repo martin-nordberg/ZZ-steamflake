@@ -5,8 +5,8 @@
 
 package org.steamflake.templates.domain.model.impl.elements;
 
+import org.steamflake.core.domain.base.model.api.utilities.IFileOrigin;
 import org.steamflake.core.domain.base.model.impl.elements.SteamflakeNamedModelElement;
-import org.steamflake.core.infrastructure.utilities.files.FileOrigin;
 import org.steamflake.templates.domain.model.api.elements.ISteamflakeTmPackage;
 import org.steamflake.templates.domain.model.api.elements.ISteamflakeTmParameter;
 import org.steamflake.templates.domain.model.api.elements.ISteamflakeTmRootPackage;
@@ -24,7 +24,7 @@ public class SteamflakeTmParameter
     @SuppressWarnings( "TypeMayBeWeakened" )
     public SteamflakeTmParameter(
         SteamflakeTmRule parent,
-        Optional<FileOrigin> origin,
+        Optional<IFileOrigin> origin,
         String name,
         Optional<String> description,
         String typeName

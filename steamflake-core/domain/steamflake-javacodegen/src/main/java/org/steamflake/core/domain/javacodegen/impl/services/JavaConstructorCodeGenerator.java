@@ -5,7 +5,7 @@ import org.steamflake.core.domain.javamodel.api.elements.IJavaConstructor;
 import org.steamflake.core.domain.javamodel.api.elements.IJavaParameter;
 import org.steamflake.core.domain.javamodel.api.services.IJavaModelConsumerService;
 import org.steamflake.core.domain.javamodel.api.statements.IJavaStatement;
-import org.steamflake.core.persistence.ioutilities.codegen.CodeWriter;
+import org.steamflake.core.persistence.codeio.codegen.api.CodeWriter;
 
 /**
  * Code generator for a Java constructor.

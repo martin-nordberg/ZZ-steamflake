@@ -15,7 +15,6 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="steamflake-ioutilities" exported="" />
     <orderEntry type="module" module-name="steamflake-utilities" exported="" />
     <orderEntry type="library" exported="" name="Gradle: javax.inject:javax.inject:1" level="project" />
     <orderEntry type="library" exported="" name="Gradle: org.apache.logging.log4j:log4j-core:2.1" level="project" />

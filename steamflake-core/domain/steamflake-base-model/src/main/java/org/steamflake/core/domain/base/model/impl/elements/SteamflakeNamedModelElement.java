@@ -8,11 +8,11 @@ package org.steamflake.core.domain.base.model.impl.elements;
 import org.steamflake.core.domain.base.model.api.elements.ISteamflakeAbstractPackage;
 import org.steamflake.core.domain.base.model.api.elements.ISteamflakeModelElement;
 import org.steamflake.core.domain.base.model.api.elements.ISteamflakeNamedModelElement;
+import org.steamflake.core.domain.base.model.api.utilities.IFileOrigin;
 import org.steamflake.core.domain.base.model.api.utilities.IQualifiedName;
 import org.steamflake.core.domain.base.model.impl.utilities.QualifiedName;
 import org.steamflake.core.infrastructure.utilities.collections.IIndexable;
 import org.steamflake.core.infrastructure.utilities.collections.ReadOnlyListAdapter;
-import org.steamflake.core.infrastructure.utilities.files.FileOrigin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +38,7 @@ public abstract class SteamflakeNamedModelElement<
      */
     protected SteamflakeNamedModelElement(
         ISteamflakeNamedModelElement<IRootPackage, IConcretePackage> parent,
-        Optional<FileOrigin> origin,
+        Optional<IFileOrigin> origin,
         String name,
         Optional<String> description
     ) {

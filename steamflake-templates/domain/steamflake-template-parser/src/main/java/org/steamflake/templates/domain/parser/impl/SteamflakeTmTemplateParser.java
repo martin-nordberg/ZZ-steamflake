@@ -7,8 +7,8 @@ package org.steamflake.templates.domain.parser.impl;
 
 import org.steamflake.core.domain.base.model.api.elements.ESteamflakeAbstractness;
 import org.steamflake.core.domain.base.model.api.elements.ESteamflakeAccessibility;
-import org.steamflake.core.infrastructure.utilities.files.FileOrigin;
-import org.steamflake.core.persistence.ioutilities.fileio.FileScanner;
+import org.steamflake.core.domain.base.model.api.utilities.IFileOrigin;
+import org.steamflake.core.persistence.codeio.scanning.FileScanner;
 import org.steamflake.templates.domain.model.api.elements.ISteamflakeTmAbstractPackage;
 import org.steamflake.templates.domain.model.api.elements.ISteamflakeTmPackage;
 import org.steamflake.templates.domain.model.api.elements.ISteamflakeTmRootPackage;
@@ -22,6 +22,8 @@ import java.util.Optional;
 
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
+import static org.steamflake.templates.domain.parser.impl.SteamflakeTmParserUtil.originOf;
+import static org.steamflake.templates.domain.parser.impl.SteamflakeTmParserUtil.parsePath;
 
 /**
  * Implementation of Steamflake template parsing.
@@ -53,7 +55,7 @@ public class SteamflakeTmTemplateParser {
             return this.parseTemplate();
         }
         catch ( FileScanner.FileScannerException e ) {
-            throw new SteamflakeTmParser.SteamflakeTmParserException( e.getMessage(), e.getOrigin(), e );
+            throw new SteamflakeTmParser.SteamflakeTmParserException( e.getMessage(), e );
         }
 
     }
@@ -66,7 +68,7 @@ public class SteamflakeTmTemplateParser {
 
         private Optional<String> alias;
 
-        private Optional<FileOrigin> origin;
+        private Optional<IFileOrigin> origin;
 
         private String typeName;
     }
@@ -192,13 +194,13 @@ public class SteamflakeTmTemplateParser {
 
             // Build the attributes.
             ImportAttributes imp = new ImportAttributes();
-            imp.origin = of( impToken.get().getOrigin() );
+            imp.origin = originOf( impToken.get() );
 
             this.scanner.scanWhitespace();
 
             // Scan the name of the imported type.
 
-            imp.typeName = SteamflakeTmParserUtil.parsePath( this.scanner );
+            imp.typeName = parsePath( this.scanner );
 
             this.scanner.acceptWhitespace();
 
@@ -234,7 +236,7 @@ public class SteamflakeTmTemplateParser {
 
         this.scanner.scanWhitespace();
 
-        String parentPackagePath = SteamflakeTmParserUtil.parsePath( this.scanner );
+        String parentPackagePath = parsePath( this.scanner );
 
         this.scanner.scan( ";" );
 
@@ -263,9 +265,9 @@ public class SteamflakeTmTemplateParser {
             this.scanner.scan( ":" );
             this.scanner.acceptWhitespace();
 
-            String paramTypeName = SteamflakeTmParserUtil.parsePath( this.scanner );
+            String paramTypeName = parsePath( this.scanner );
 
-            rule.addParameter( of( paramName.getOrigin() ), paramName.getText(), empty(), paramTypeName );
+            rule.addParameter( originOf( paramName ), paramName.getText(), empty(), paramTypeName );
 
             this.scanner.acceptWhitespace();
 
@@ -319,7 +321,7 @@ public class SteamflakeTmTemplateParser {
 
         // Build the result so far.
         ISteamflakeTmTemplate result = ( (ISteamflakeTmPackage) parentPackage ).addTemplate(
-            of( templateToken.getOrigin() ),
+            originOf( templateToken ),
             templateToken.getText(),
             description,
             accessibility,
@@ -378,7 +380,7 @@ public class SteamflakeTmTemplateParser {
 
             // Build the rule.
             ISteamflakeTmRule rule = template.addRule(
-                of( ruleToken.getOrigin() ),
+                originOf( ruleToken ),
                 ruleToken.getText(),
                 documentation,
                 accessibility,

@@ -5,8 +5,8 @@
 
 package org.steamflake.templates.domain.model.impl.directives;
 
+import org.steamflake.core.domain.base.model.api.utilities.IFileOrigin;
 import org.steamflake.core.domain.base.model.impl.elements.SteamflakeModelElement;
-import org.steamflake.core.infrastructure.utilities.files.FileOrigin;
 import org.steamflake.templates.domain.model.api.directives.ISteamflakeTmAbstractDirective;
 import org.steamflake.templates.domain.model.api.elements.ISteamflakeTmDirectiveContainer;
 import org.steamflake.templates.domain.model.api.elements.ISteamflakeTmPackage;
@@ -31,7 +31,7 @@ public abstract class SteamflakeTmAbstractDirective
     @SuppressWarnings( { "TypeMayBeWeakened", "ClassReferencesSubclass" } )
     protected SteamflakeTmAbstractDirective(
         ISteamflakeTmDirectiveContainerMixin parent,
-        Optional<FileOrigin> origin
+        Optional<IFileOrigin> origin
     ) {
         super( parent, origin, Optional.empty() );
 

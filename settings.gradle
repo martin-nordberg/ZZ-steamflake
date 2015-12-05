@@ -1,6 +1,4 @@
-
 rootProject.name = 'steamflake'
-
 
 // STEAMFLAKE CORE
 // ---------------
@@ -20,13 +18,19 @@ include 'steamflake-core/domain/steamflake-javamodel'
 rootProject.children.find { it.name == 'steamflake-core/domain/steamflake-javamodel' }.name = 'steamflake-javamodel'
 
 // Persistence
+include 'steamflake-core/persistence/steamflake-codeio'
+rootProject.children.find { it.name == 'steamflake-core/persistence/steamflake-codeio' }.name = 'steamflake-codeio'
+
 include 'steamflake-core/persistence/steamflake-ioutilities'
-rootProject.children.find { it.name == 'steamflake-core/persistence/steamflake-ioutilities' }.name = 'steamflake-ioutilities'
+rootProject.children.find {
+    it.name == 'steamflake-core/persistence/steamflake-ioutilities'
+}.name = 'steamflake-ioutilities'
 
 // Infrastructure
 include 'steamflake-core/infrastructure/steamflake-utilities'
-rootProject.children.find { it.name == 'steamflake-core/infrastructure/steamflake-utilities' }.name = 'steamflake-utilities'
-
+rootProject.children.find {
+    it.name == 'steamflake-core/infrastructure/steamflake-utilities'
+}.name = 'steamflake-utilities'
 
 // STEAMFLAKE TEMPLATES
 // --------------------
@@ -37,10 +41,14 @@ rootProject.children.find { it.name == 'steamflake-core/infrastructure/steamflak
 
 // Domain
 include 'steamflake-templates/domain/steamflake-template-model'
-rootProject.children.find { it.name == 'steamflake-templates/domain/steamflake-template-model' }.name = 'steamflake-template-model'
+rootProject.children.find {
+    it.name == 'steamflake-templates/domain/steamflake-template-model'
+}.name = 'steamflake-template-model'
 
 include 'steamflake-templates/domain/steamflake-template-parser'
-rootProject.children.find { it.name == 'steamflake-templates/domain/steamflake-template-parser' }.name = 'steamflake-template-parser'
+rootProject.children.find {
+    it.name == 'steamflake-templates/domain/steamflake-template-parser'
+}.name = 'steamflake-template-parser'
 
 // Persistence
 

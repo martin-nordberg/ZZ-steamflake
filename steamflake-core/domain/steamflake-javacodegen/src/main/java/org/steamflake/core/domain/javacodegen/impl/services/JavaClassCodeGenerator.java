@@ -9,7 +9,7 @@ import org.steamflake.core.domain.javamodel.api.elements.IJavaMethod;
 import org.steamflake.core.domain.javamodel.api.elements.IJavaStaticInitialization;
 import org.steamflake.core.domain.javamodel.api.elements.IJavaType;
 import org.steamflake.core.domain.javamodel.api.services.IJavaModelConsumerService;
-import org.steamflake.core.persistence.ioutilities.codegen.CodeWriter;
+import org.steamflake.core.persistence.codeio.codegen.api.CodeWriter;
 
 /**
  * Code generator for a Java class.

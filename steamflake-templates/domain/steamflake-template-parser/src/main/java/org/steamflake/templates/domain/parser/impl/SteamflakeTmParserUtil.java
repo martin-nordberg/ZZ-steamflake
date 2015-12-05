@@ -5,7 +5,13 @@
 
 package org.steamflake.templates.domain.parser.impl;
 
-import org.steamflake.core.persistence.ioutilities.fileio.FileScanner;
+import org.steamflake.core.domain.base.model.api.utilities.IFileOrigin;
+import org.steamflake.core.domain.base.model.impl.utilities.FileOrigin;
+import org.steamflake.core.persistence.codeio.scanning.FileScanner;
+
+import java.util.Optional;
+
+import static java.util.Optional.of;
 
 /**
  * Shared methods for Steamflake parsing.
@@ -13,6 +19,10 @@ import org.steamflake.core.persistence.ioutilities.fileio.FileScanner;
 public final class SteamflakeTmParserUtil {
 
     private SteamflakeTmParserUtil() {
+    }
+
+    static Optional<IFileOrigin> originOf( FileScanner.Token token ) {
+        return of( new FileOrigin( token.getFileName(), token.getLine(), token.getColumn() ) );
     }
 
     /**

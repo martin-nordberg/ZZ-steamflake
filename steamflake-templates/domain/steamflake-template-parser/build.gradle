@@ -13,7 +13,7 @@ sourceSets {
 dependencies {
 
     // Other Modules
-    compile project( ':steamflake-ioutilities' )
+    compile project( ':steamflake-codeio' )
     compile project( ':steamflake-template-model' )
     compile project( ':steamflake-utilities' )
 

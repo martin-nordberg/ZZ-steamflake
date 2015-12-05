@@ -5,11 +5,10 @@
 
 package org.steamflake.core.domain.base.model.api.elements;
 
+import org.steamflake.core.domain.base.model.api.utilities.IFileOrigin;
 import org.steamflake.core.infrastructure.utilities.collections.IIndexable;
-import org.steamflake.core.infrastructure.utilities.files.FileOrigin;
 
 import java.util.Optional;
-
 
 /**
  * Model element for the abstract behavior of a package.
@@ -29,7 +28,7 @@ public interface ISteamflakeAbstractPackage<
      *
      * @return the newly created package.
      */
-    IConcretePackage addPackage( Optional<FileOrigin> origin, String name, Optional<String> description );
+    IConcretePackage addPackage( Optional<IFileOrigin> origin, String name, Optional<String> description );
 
     /**
      * Given a qualified name relative to this package, find or create the needed subpackages.

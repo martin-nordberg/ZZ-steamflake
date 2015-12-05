@@ -11,7 +11,7 @@ import org.steamflake.core.domain.javacodegen.impl.services.JavaStaticInitializa
 import org.steamflake.core.domain.javamodel.api.elements.IJavaModelElement;
 import org.steamflake.core.domain.javamodel.api.services.IJavaModelConsumerFactory;
 import org.steamflake.core.domain.javamodel.api.services.IJavaModelConsumerService;
-import org.steamflake.core.persistence.ioutilities.codegen.CodeWriter;
+import org.steamflake.core.persistence.codeio.codegen.api.CodeWriter;
 
 import java.util.HashMap;
 import java.util.Map;

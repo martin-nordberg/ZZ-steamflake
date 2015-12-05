@@ -6,8 +6,8 @@
 package org.steamflake.templates.domain.model.api.elements;
 
 import org.steamflake.core.domain.base.model.api.elements.ISteamflakeModelElement;
+import org.steamflake.core.domain.base.model.api.utilities.IFileOrigin;
 import org.steamflake.core.infrastructure.utilities.collections.IIndexable;
-import org.steamflake.core.infrastructure.utilities.files.FileOrigin;
 import org.steamflake.templates.domain.model.api.directives.ISteamflakeTmAbstractDirective;
 import org.steamflake.templates.domain.model.api.directives.comments.ISteamflakeTmCommentDirective;
 import org.steamflake.templates.domain.model.api.directives.logic.ISteamflakeTmIfDirective;
@@ -32,7 +32,7 @@ public interface ISteamflakeTmDirectiveContainer
      *
      * @return the newly created directive.
      */
-    ISteamflakeTmCommentDirective addCommentDirective( Optional<FileOrigin> origin, String text );
+    ISteamflakeTmCommentDirective addCommentDirective( Optional<IFileOrigin> origin, String text );
 
     /**
      * Creates a new if directive within this rule.
@@ -42,7 +42,7 @@ public interface ISteamflakeTmDirectiveContainer
      *
      * @return the newly created directive.
      */
-    ISteamflakeTmIfDirective addIfDirective( Optional<FileOrigin> origin, String boolCondition );
+    ISteamflakeTmIfDirective addIfDirective( Optional<IFileOrigin> origin, String boolCondition );
 
     /**
      * Creates a new new-line directive within this rule.
@@ -54,7 +54,7 @@ public interface ISteamflakeTmDirectiveContainer
      * @return the newly created directive.
      */
     ISteamflakeTmNewLineDirective addNewLineDirective(
-        Optional<FileOrigin> origin,
+        Optional<IFileOrigin> origin,
         boolean isSpaceNeededIfNoNewLine,
         Optional<String> boolCondition
     );
@@ -67,7 +67,7 @@ public interface ISteamflakeTmDirectiveContainer
      *
      * @return the newly created directive.
      */
-    ISteamflakeTmTextDirective addTextDirective( Optional<FileOrigin> origin, String text );
+    ISteamflakeTmTextDirective addTextDirective( Optional<IFileOrigin> origin, String text );
 
     /**
      * Creates a new variable directive within this rule.
@@ -77,7 +77,7 @@ public interface ISteamflakeTmDirectiveContainer
      *
      * @return te newly created directive.
      */
-    ISteamflakeTmVariableDirective addVariableDirective( Optional<FileOrigin> origin, String path );
+    ISteamflakeTmVariableDirective addVariableDirective( Optional<IFileOrigin> origin, String path );
 
     /**
      * @return the directives within this rule.

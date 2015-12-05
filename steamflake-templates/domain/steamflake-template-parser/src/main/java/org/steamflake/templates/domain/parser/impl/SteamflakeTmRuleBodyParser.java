@@ -5,7 +5,7 @@
 
 package org.steamflake.templates.domain.parser.impl;
 
-import org.steamflake.core.persistence.ioutilities.fileio.FileScanner;
+import org.steamflake.core.persistence.codeio.scanning.FileScanner;
 import org.steamflake.templates.domain.model.api.directives.ISteamflakeTmAbstractDirective;
 import org.steamflake.templates.domain.model.api.elements.ISteamflakeTmDirectiveContainer;
 import org.steamflake.templates.domain.model.api.elements.ISteamflakeTmRule;
@@ -13,7 +13,7 @@ import org.steamflake.templates.domain.parser.api.SteamflakeTmParser;
 
 import java.util.Optional;
 
-import static java.util.Optional.of;
+import static org.steamflake.templates.domain.parser.impl.SteamflakeTmParserUtil.originOf;
 
 /**
  * Implementation of Steamflake template rule body parsing.
@@ -36,9 +36,9 @@ public class SteamflakeTmRuleBodyParser {
         this.rule = rule;
         this.scanner = new FileScanner(
             ruleBody.getText(),
-            ruleBody.getOrigin().getFileName(),
-            ruleBody.getOrigin().getLine(),
-            ruleBody.getOrigin().getColumn()
+            ruleBody.getFileName(),
+            ruleBody.getLine(),
+            ruleBody.getColumn()
         );
         this.directiveOpenDelimiter = directiveOpenDelimiter;
         this.directiveCloseDelimiter = directiveCloseDelimiter;
@@ -55,7 +55,7 @@ public class SteamflakeTmRuleBodyParser {
             this.parseDirectiveSequence( this.rule );
         }
         catch ( FileScanner.FileScannerException e ) {
-            throw new SteamflakeTmParser.SteamflakeTmParserException( e.getMessage(), e.getOrigin(), e );
+            throw new SteamflakeTmParser.SteamflakeTmParserException( e.getMessage(), e );
         }
 
     }
@@ -80,7 +80,7 @@ public class SteamflakeTmRuleBodyParser {
 
             // Add the text to the rule if not empty.
             if ( !text.get().getText().isEmpty() ) {
-                container.addTextDirective( of( text.get().getOrigin() ), text.get().getText() );
+                container.addTextDirective( originOf( text.get() ), text.get().getText() );
             }
 
             this.scanner.scan( this.directiveOpenDelimiter );
@@ -119,7 +119,7 @@ public class SteamflakeTmRuleBodyParser {
         if ( !( container instanceof ISteamflakeTmRule ) ) {
             throw new SteamflakeTmParser.SteamflakeTmParserException(
                 "Missing closing directive: '" + this.directiveOpenDelimiter + "/" + container.getKeyword() + this.directiveCloseDelimiter + "'.",
-                this.scanner.getCurrentLocation()
+                this.scanner.scanNothing()
             );
         }
 
@@ -127,7 +127,7 @@ public class SteamflakeTmRuleBodyParser {
         FileScanner.Token remainderText = this.scanner.scanUntilEndOfInput();
 
         if ( !remainderText.getText().isEmpty() ) {
-            container.addTextDirective( of( remainderText.getOrigin() ), remainderText.getText() );
+            container.addTextDirective( originOf( remainderText ), remainderText.getText() );
         }
 
     }

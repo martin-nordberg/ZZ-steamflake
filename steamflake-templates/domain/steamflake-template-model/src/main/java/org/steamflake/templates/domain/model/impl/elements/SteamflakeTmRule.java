@@ -7,10 +7,10 @@ package org.steamflake.templates.domain.model.impl.elements;
 
 import org.steamflake.core.domain.base.model.api.elements.ESteamflakeAbstractness;
 import org.steamflake.core.domain.base.model.api.elements.ESteamflakeAccessibility;
+import org.steamflake.core.domain.base.model.api.utilities.IFileOrigin;
 import org.steamflake.core.domain.base.model.impl.elements.SteamflakeNamedModelElement;
 import org.steamflake.core.infrastructure.utilities.collections.IIndexable;
 import org.steamflake.core.infrastructure.utilities.collections.ReadOnlyListAdapter;
-import org.steamflake.core.infrastructure.utilities.files.FileOrigin;
 import org.steamflake.templates.domain.model.api.directives.ISteamflakeTmAbstractDirective;
 import org.steamflake.templates.domain.model.api.elements.ISteamflakeTmPackage;
 import org.steamflake.templates.domain.model.api.elements.ISteamflakeTmParameter;
@@ -32,7 +32,7 @@ public class SteamflakeTmRule
     @SuppressWarnings( "TypeMayBeWeakened" )
     public SteamflakeTmRule(
         SteamflakeTmTemplate parent,
-        Optional<FileOrigin> origin,
+        Optional<IFileOrigin> origin,
         String name,
         Optional<String> description,
         ESteamflakeAccessibility accessibility,
@@ -51,7 +51,7 @@ public class SteamflakeTmRule
 
     @Override
     public ISteamflakeTmParameter addParameter(
-        Optional<FileOrigin> origin, String name, Optional<String> description, String typeName
+        Optional<IFileOrigin> origin, String name, Optional<String> description, String typeName
     ) {
         return new SteamflakeTmParameter( this, origin, name, description, typeName );
     }

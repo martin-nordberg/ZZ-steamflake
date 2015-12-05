@@ -5,7 +5,6 @@
 
 package org.steamflake.core.domain.base.model.api.elements;
 
-
 import org.steamflake.core.domain.base.model.api.utilities.IQualifiedName;
 import org.steamflake.core.infrastructure.utilities.collections.IIndexable;
 

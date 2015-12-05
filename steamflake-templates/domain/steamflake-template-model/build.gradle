@@ -14,7 +14,6 @@ dependencies {
 
     // Other Modules
     compile project( ':steamflake-base-model' )
-    compile project( ':steamflake-ioutilities' )
     compile project( ':steamflake-utilities' )
 
     // Dagger

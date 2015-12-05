@@ -7,10 +7,10 @@ package org.steamflake.templates.domain.model.impl.elements;
 
 import org.steamflake.core.domain.base.model.api.elements.ESteamflakeAbstractness;
 import org.steamflake.core.domain.base.model.api.elements.ESteamflakeAccessibility;
+import org.steamflake.core.domain.base.model.api.utilities.IFileOrigin;
 import org.steamflake.core.domain.base.model.impl.elements.SteamflakeNamedModelElement;
 import org.steamflake.core.infrastructure.utilities.collections.IIndexable;
 import org.steamflake.core.infrastructure.utilities.collections.ReadOnlyListAdapter;
-import org.steamflake.core.infrastructure.utilities.files.FileOrigin;
 import org.steamflake.templates.domain.model.api.elements.ISteamflakeTmImport;
 import org.steamflake.templates.domain.model.api.elements.ISteamflakeTmPackage;
 import org.steamflake.templates.domain.model.api.elements.ISteamflakeTmRootPackage;
@@ -31,7 +31,7 @@ public class SteamflakeTmTemplate
     @SuppressWarnings( "TypeMayBeWeakened" )
     public SteamflakeTmTemplate(
         SteamflakeTmPackage parent,
-        Optional<FileOrigin> origin,
+        Optional<IFileOrigin> origin,
         String name,
         Optional<String> description,
         ESteamflakeAccessibility accessibility,
@@ -52,14 +52,14 @@ public class SteamflakeTmTemplate
 
     @Override
     public ISteamflakeTmImport addImport(
-        Optional<FileOrigin> origin, String typeName, Optional<String> alias
+        Optional<IFileOrigin> origin, String typeName, Optional<String> alias
     ) {
         return new SteamflakeTmImport( this, origin, typeName, alias );
     }
 
     @Override
     public ISteamflakeTmRule addRule(
-        Optional<FileOrigin> origin,
+        Optional<IFileOrigin> origin,
         String name,
         Optional<String> description,
         ESteamflakeAccessibility ruleAccessibility,

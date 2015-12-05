@@ -5,9 +5,9 @@
 
 package org.steamflake.templates.domain.model.impl.directives;
 
+import org.steamflake.core.domain.base.model.api.utilities.IFileOrigin;
 import org.steamflake.core.infrastructure.utilities.collections.IIndexable;
 import org.steamflake.core.infrastructure.utilities.collections.ReadOnlyListAdapter;
-import org.steamflake.core.infrastructure.utilities.files.FileOrigin;
 import org.steamflake.templates.domain.model.api.directives.ISteamflakeTmAbstractDirective;
 import org.steamflake.templates.domain.model.api.directives.ISteamflakeTmCompositeDirective;
 import org.steamflake.templates.domain.model.impl.elements.ISteamflakeTmDirectiveContainerMixin;
@@ -30,7 +30,7 @@ public abstract class SteamflakeTmCompositeDirective
      */
     protected SteamflakeTmCompositeDirective(
         ISteamflakeTmDirectiveContainerMixin parent,
-        Optional<FileOrigin> origin
+        Optional<IFileOrigin> origin
     ) {
         super( parent, origin );
 

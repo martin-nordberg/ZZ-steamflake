@@ -3,8 +3,8 @@ package org.steamflake.core.domain.javacodegen.api.services
 import org.steamflake.core.domain.javamodel.api.elements.EJavaAccessibility
 import org.steamflake.core.domain.javamodel.api.elements.IJavaRootPackage
 import org.steamflake.core.domain.javamodel.impl.elements.JavaRootPackage
-import org.steamflake.core.persistence.ioutilities.codegen.CodeWriter
-import org.steamflake.core.persistence.ioutilities.codegen.CodeWriterConfig
+import org.steamflake.core.persistence.codeio.codegen.api.CodeWriter
+import org.steamflake.core.persistence.codeio.codegen.api.CodeWriterConfig
 import spock.lang.Specification
 
 /**

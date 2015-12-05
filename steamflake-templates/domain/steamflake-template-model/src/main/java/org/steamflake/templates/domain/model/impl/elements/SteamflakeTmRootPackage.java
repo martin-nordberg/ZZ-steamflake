@@ -5,7 +5,7 @@
 
 package org.steamflake.templates.domain.model.impl.elements;
 
-import org.steamflake.core.infrastructure.utilities.files.FileOrigin;
+import org.steamflake.core.domain.base.model.api.utilities.IFileOrigin;
 import org.steamflake.templates.domain.model.api.elements.ISteamflakeTmRootPackage;
 
 import static java.util.Optional.of;
@@ -21,7 +21,7 @@ public class SteamflakeTmRootPackage
      * Constructs a new root Steamflake template package.
      */
     public SteamflakeTmRootPackage() {
-        super( null, FileOrigin.UNUSED, "", of( "Steamflake Templates Root Package" ) );
+        super( null, IFileOrigin.UNUSED, "", of( "Steamflake Templates Root Package" ) );
     }
 
 }

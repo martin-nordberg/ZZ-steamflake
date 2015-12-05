@@ -8,8 +8,8 @@ package org.steamflake.templates.domain.model.api.elements;
 import org.steamflake.core.domain.base.model.api.elements.ESteamflakeAbstractness;
 import org.steamflake.core.domain.base.model.api.elements.ESteamflakeAccessibility;
 import org.steamflake.core.domain.base.model.api.elements.ISteamflakeNamedModelElement;
+import org.steamflake.core.domain.base.model.api.utilities.IFileOrigin;
 import org.steamflake.core.infrastructure.utilities.collections.IIndexable;
-import org.steamflake.core.infrastructure.utilities.files.FileOrigin;
 
 import java.util.Optional;
 
@@ -29,7 +29,7 @@ public interface ISteamflakeTmTemplate
      * @return the newly created import.
      */
     ISteamflakeTmImport addImport(
-        Optional<FileOrigin> origin,
+        Optional<IFileOrigin> origin,
         String typeName,
         Optional<String> alias
     );
@@ -47,7 +47,7 @@ public interface ISteamflakeTmTemplate
      */
     @SuppressWarnings( "BooleanParameter" )
     ISteamflakeTmRule addRule(
-        Optional<FileOrigin> origin,
+        Optional<IFileOrigin> origin,
         String name,
         Optional<String> description,
         ESteamflakeAccessibility ruleAccessibility,

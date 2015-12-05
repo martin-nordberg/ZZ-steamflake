@@ -5,7 +5,7 @@
 
 package org.steamflake.templates.domain.parser.api;
 
-import org.steamflake.core.infrastructure.utilities.files.FileOrigin;
+import org.steamflake.core.persistence.codeio.scanning.FileScanner;
 import org.steamflake.templates.domain.model.api.elements.ISteamflakeTmRootPackage;
 import org.steamflake.templates.domain.model.api.elements.ISteamflakeTmTemplate;
 import org.steamflake.templates.domain.parser.impl.SteamflakeTmTemplateParser;
@@ -18,26 +18,24 @@ public final class SteamflakeTmParser {
     /**
      * Exception representing a parsing error.
      */
+    @SuppressWarnings( "ClassWithTooManyConstructors" )
     public static class SteamflakeTmParserException
         extends Exception {
 
-        public SteamflakeTmParserException( String message, FileOrigin origin ) {
-            super( origin.getFileName() + ":" + origin.getLine() + ": error: " + message );
-            this.origin = origin;
+        public SteamflakeTmParserException( String message, FileScanner.Token token ) {
+            this( message, token.getFileName(), token.getLine(), token.getColumn(), null );
         }
 
-        public SteamflakeTmParserException( String message, FileOrigin origin, Exception e ) {
-            super( origin.getFileName() + ":" + origin.getLine() + ": error: " + message, e );
-            this.origin = origin;
+        public SteamflakeTmParserException( String message, FileScanner.FileScannerException e ) {
+            this( message, e.getFileName(), e.getLine(), e.getColumn(), e );
         }
 
-        public FileOrigin getOrigin() {
-            return this.origin;
+        private SteamflakeTmParserException( String message, String fileName, int line, int column, Exception e ) {
+            super( fileName + ":" + line + "(" + column + "): error: " + message, e );
         }
 
         private static final long serialVersionUID = 1L;
 
-        private final FileOrigin origin;
     }
 
     private SteamflakeTmParser() {

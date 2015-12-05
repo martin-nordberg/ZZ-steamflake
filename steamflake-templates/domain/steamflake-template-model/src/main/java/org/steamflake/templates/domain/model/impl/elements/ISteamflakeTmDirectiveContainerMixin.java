@@ -5,7 +5,7 @@
 
 package org.steamflake.templates.domain.model.impl.elements;
 
-import org.steamflake.core.infrastructure.utilities.files.FileOrigin;
+import org.steamflake.core.domain.base.model.api.utilities.IFileOrigin;
 import org.steamflake.templates.domain.model.api.directives.comments.ISteamflakeTmCommentDirective;
 import org.steamflake.templates.domain.model.api.directives.logic.ISteamflakeTmIfDirective;
 import org.steamflake.templates.domain.model.api.directives.text.ISteamflakeTmTextDirective;
@@ -28,29 +28,29 @@ public interface ISteamflakeTmDirectiveContainerMixin
     extends ISteamflakeTmDirectiveContainer {
 
     @Override
-    default ISteamflakeTmCommentDirective addCommentDirective( Optional<FileOrigin> origin, String text ) {
+    default ISteamflakeTmCommentDirective addCommentDirective( Optional<IFileOrigin> origin, String text ) {
         return new SteamflakeTmCommentDirective( this, origin, text );
     }
 
     @Override
-    default ISteamflakeTmIfDirective addIfDirective( Optional<FileOrigin> origin, String boolCondition ) {
+    default ISteamflakeTmIfDirective addIfDirective( Optional<IFileOrigin> origin, String boolCondition ) {
         return new SteamflakeTmIfDirective( this, origin, boolCondition );
     }
 
     @Override
     default ISteamflakeTmNewLineDirective addNewLineDirective(
-        Optional<FileOrigin> origin, boolean isSpaceNeededIfNoNewLine, Optional<String> boolCondition
+        Optional<IFileOrigin> origin, boolean isSpaceNeededIfNoNewLine, Optional<String> boolCondition
     ) {
         return new SteamflakeTmNewLineDirective( this, origin, isSpaceNeededIfNoNewLine, boolCondition );
     }
 
     @Override
-    default ISteamflakeTmTextDirective addTextDirective( Optional<FileOrigin> origin, String text ) {
+    default ISteamflakeTmTextDirective addTextDirective( Optional<IFileOrigin> origin, String text ) {
         return new SteamflakeTmTextDirective( this, origin, text );
     }
 
     @Override
-    default ISteamflakeTmVariableDirective addVariableDirective( Optional<FileOrigin> origin, String path ) {
+    default ISteamflakeTmVariableDirective addVariableDirective( Optional<IFileOrigin> origin, String path ) {
         return new SteamflakeTmVariableDirective( this, origin, path );
     }
 

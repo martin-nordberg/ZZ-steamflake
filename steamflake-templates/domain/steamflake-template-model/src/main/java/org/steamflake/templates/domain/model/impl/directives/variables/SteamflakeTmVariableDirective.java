@@ -5,7 +5,7 @@
 
 package org.steamflake.templates.domain.model.impl.directives.variables;
 
-import org.steamflake.core.infrastructure.utilities.files.FileOrigin;
+import org.steamflake.core.domain.base.model.api.utilities.IFileOrigin;
 import org.steamflake.templates.domain.model.api.directives.variables.ISteamflakeTmVariableDirective;
 import org.steamflake.templates.domain.model.impl.directives.SteamflakeTmAbstractDirective;
 import org.steamflake.templates.domain.model.impl.elements.ISteamflakeTmDirectiveContainerMixin;
@@ -26,7 +26,7 @@ public class SteamflakeTmVariableDirective
      */
     public SteamflakeTmVariableDirective(
         ISteamflakeTmDirectiveContainerMixin parent,
-        Optional<FileOrigin> origin,
+        Optional<IFileOrigin> origin,
         String path
     ) {
         super( parent, origin );
