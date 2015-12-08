@@ -9,17 +9,25 @@ rootProject.name = 'steamflake'
 
 // Domain
 include 'steamflake-core/domain/steamflake-base-model'
-rootProject.children.find { it.name == 'steamflake-core/domain/steamflake-base-model' }.name = 'steamflake-base-model'
+rootProject.children.find {
+    it.name == 'steamflake-core/domain/steamflake-base-model'
+}.name = 'steamflake-base-model'
 
 include 'steamflake-core/domain/steamflake-javacodegen'
-rootProject.children.find { it.name == 'steamflake-core/domain/steamflake-javacodegen' }.name = 'steamflake-javacodegen'
+rootProject.children.find {
+    it.name == 'steamflake-core/domain/steamflake-javacodegen'
+}.name = 'steamflake-javacodegen'
 
 include 'steamflake-core/domain/steamflake-javamodel'
-rootProject.children.find { it.name == 'steamflake-core/domain/steamflake-javamodel' }.name = 'steamflake-javamodel'
+rootProject.children.find {
+    it.name == 'steamflake-core/domain/steamflake-javamodel'
+}.name = 'steamflake-javamodel'
 
 // Persistence
 include 'steamflake-core/persistence/steamflake-codeio'
-rootProject.children.find { it.name == 'steamflake-core/persistence/steamflake-codeio' }.name = 'steamflake-codeio'
+rootProject.children.find {
+    it.name == 'steamflake-core/persistence/steamflake-codeio'
+}.name = 'steamflake-codeio'
 
 include 'steamflake-core/persistence/steamflake-ioutilities'
 rootProject.children.find {
@@ -40,6 +48,11 @@ rootProject.children.find {
 // Application
 
 // Domain
+include 'steamflake-templates/domain/steamflake-template-codegen'
+rootProject.children.find {
+    it.name == 'steamflake-templates/domain/steamflake-template-codegen'
+}.name = 'steamflake-template-codegen'
+
 include 'steamflake-templates/domain/steamflake-template-model'
 rootProject.children.find {
     it.name == 'steamflake-templates/domain/steamflake-template-model'

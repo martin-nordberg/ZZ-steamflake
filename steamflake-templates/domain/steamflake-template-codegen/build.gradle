@@ -1,0 +1,28 @@
+buildDir = '../../../build/steamflake-templates/domain/steamflake-template-codegen'
+
+configurations {
+    provided
+}
+
+sourceSets {
+    main {
+        compileClasspath += configurations.provided
+    }
+}
+
+dependencies {
+
+    // Other Modules
+    compile project( ':steamflake-codeio' )
+    compile project( ':steamflake-javacodegen' )
+    compile project( ':steamflake-javamodel' )
+    compile project( ':steamflake-template-model' )
+    compile project( ':steamflake-utilities' )
+
+    // Dagger
+    compile( group: 'com.squareup.dagger', name: 'dagger', version: daggerVersion )
+
+    // Dagger Annotation Processor
+    provided( group: 'com.squareup.dagger', name: 'dagger-compiler', version: daggerVersion )
+
+}
