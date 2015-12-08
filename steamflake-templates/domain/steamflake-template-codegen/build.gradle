@@ -14,8 +14,8 @@ dependencies {
 
     // Other Modules
     compile project( ':steamflake-codeio' )
-    compile project( ':steamflake-javacodegen' )
-    compile project( ':steamflake-javamodel' )
+    compile project( ':steamflake-java-codegen' )
+    compile project( ':steamflake-java-model' )
     compile project( ':steamflake-template-model' )
     compile project( ':steamflake-utilities' )
 

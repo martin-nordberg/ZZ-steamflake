@@ -13,15 +13,15 @@ rootProject.children.find {
     it.name == 'steamflake-core/domain/steamflake-base-model'
 }.name = 'steamflake-base-model'
 
-include 'steamflake-core/domain/steamflake-javacodegen'
+include 'steamflake-core/domain/steamflake-java-codegen'
 rootProject.children.find {
-    it.name == 'steamflake-core/domain/steamflake-javacodegen'
-}.name = 'steamflake-javacodegen'
+    it.name == 'steamflake-core/domain/steamflake-java-codegen'
+}.name = 'steamflake-java-codegen'
 
-include 'steamflake-core/domain/steamflake-javamodel'
+include 'steamflake-core/domain/steamflake-java-model'
 rootProject.children.find {
-    it.name == 'steamflake-core/domain/steamflake-javamodel'
-}.name = 'steamflake-javamodel'
+    it.name == 'steamflake-core/domain/steamflake-java-model'
+}.name = 'steamflake-java-model'
 
 // Persistence
 include 'steamflake-core/persistence/steamflake-codeio'

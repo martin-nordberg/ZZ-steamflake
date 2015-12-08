@@ -1,4 +1,4 @@
-buildDir = '../../../build/steamflake-core/domain/steamflake-javamodel'
+buildDir = '../../../build/steamflake-core/domain/steamflake-java-model'
 
 configurations {
     provided

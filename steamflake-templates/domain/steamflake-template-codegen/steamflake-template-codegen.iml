@@ -16,8 +16,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="steamflake-codeio" exported="" />
-    <orderEntry type="module" module-name="steamflake-javacodegen" exported="" />
-    <orderEntry type="module" module-name="steamflake-javamodel" exported="" />
     <orderEntry type="module" module-name="steamflake-template-model" exported="" />
     <orderEntry type="module" module-name="steamflake-utilities" exported="" />
     <orderEntry type="library" exported="" name="Gradle: javax.inject:javax.inject:1" level="project" />
@@ -28,5 +26,7 @@
     <orderEntry type="library" scope="TEST" name="Gradle: junit:junit-dep:4.10" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.codehaus.groovy:groovy-all:2.0.5" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.hamcrest:hamcrest-core:1.3" level="project" />
+    <orderEntry type="module" module-name="steamflake-java-codegen" exported="" />
+    <orderEntry type="module" module-name="steamflake-java-model" exported="" />
   </component>
 </module>

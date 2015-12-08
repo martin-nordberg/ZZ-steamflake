@@ -1,4 +1,4 @@
-buildDir = '../../../build/steamflake-core/domain/steamflake-javacodegen'
+buildDir = '../../../build/steamflake-core/domain/steamflake-java-codegen'
 
 configurations {
     provided
@@ -15,7 +15,7 @@ dependencies {
     // Other Modules
     compile project( ':steamflake-codeio' )
     compile project( ':steamflake-ioutilities' )
-    compile project( ':steamflake-javamodel' )
+    compile project( ':steamflake-java-model' )
 
     // Dagger
     compile( group: 'com.squareup.dagger', name: 'dagger', version: daggerVersion )
