@@ -43,7 +43,6 @@ public final class JavaCodeGenerator
 
     }
 
-    @SuppressWarnings( "unchecked" )
     @Override
     public <E extends ISteamflakeModelElement<IJavaRootPackage, IJavaPackage>> ISteamflakeModelConsumerService<IJavaRootPackage, IJavaPackage, CodeWriter> build(
         E element
