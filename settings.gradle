@@ -48,11 +48,6 @@ rootProject.children.find {
 // Application
 
 // Domain
-include 'steamflake-templates/domain/steamflake-template-codegen'
-rootProject.children.find {
-    it.name == 'steamflake-templates/domain/steamflake-template-codegen'
-}.name = 'steamflake-template-codegen'
-
 include 'steamflake-templates/domain/steamflake-template-model'
 rootProject.children.find {
     it.name == 'steamflake-templates/domain/steamflake-template-model'
@@ -62,6 +57,11 @@ include 'steamflake-templates/domain/steamflake-template-parser'
 rootProject.children.find {
     it.name == 'steamflake-templates/domain/steamflake-template-parser'
 }.name = 'steamflake-template-parser'
+
+include 'steamflake-templates/domain/steamflake-template-transform'
+rootProject.children.find {
+    it.name == 'steamflake-templates/domain/steamflake-template-transform'
+}.name = 'steamflake-template-transform'
 
 // Persistence
 

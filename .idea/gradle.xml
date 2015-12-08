@@ -17,9 +17,9 @@
             <option value="$PROJECT_DIR$/steamflake-core/infrastructure/steamflake-utilities" />
             <option value="$PROJECT_DIR$/steamflake-core/persistence/steamflake-codeio" />
             <option value="$PROJECT_DIR$/steamflake-core/persistence/steamflake-ioutilities" />
-            <option value="$PROJECT_DIR$/steamflake-templates/domain/steamflake-template-codegen" />
             <option value="$PROJECT_DIR$/steamflake-templates/domain/steamflake-template-model" />
             <option value="$PROJECT_DIR$/steamflake-templates/domain/steamflake-template-parser" />
+            <option value="$PROJECT_DIR$/steamflake-templates/domain/steamflake-template-transform" />
           </set>
         </option>
       </GradleProjectSettings>

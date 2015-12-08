@@ -3,7 +3,7 @@
 // Apache 2.0 License
 //
 
-package org.steamflake.templates.domain.codegen.api.services;
+package org.steamflake.templates.domain.transform.api.services;
 
 import org.steamflake.core.domain.javamodel.api.elements.IJavaRootPackage;
 import org.steamflake.templates.domain.model.api.elements.ISteamflakeTmRootPackage;

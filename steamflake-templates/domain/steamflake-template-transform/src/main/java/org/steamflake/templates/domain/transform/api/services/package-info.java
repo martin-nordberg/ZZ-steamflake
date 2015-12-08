@@ -7,4 +7,4 @@
  * Package defining the API for Steamflake template model transformations to Java.
  */
 
-package org.steamflake.templates.domain.codegen.api.services;
+package org.steamflake.templates.domain.transform.api.services;
