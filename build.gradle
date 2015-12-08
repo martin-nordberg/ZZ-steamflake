@@ -9,8 +9,6 @@ subprojects {
     }
 
     // Versions of all external libraries used throughout Steamflake
-    ext.daggerVersion = '1.2.2'
-    ext.jsonpVersion = '1.0.4'
     ext.log4j2Version = '2.1'
     ext.spockVersion = '0.7-groovy-2.0'
 
@@ -22,12 +20,6 @@ subprojects {
     }
 
     dependencies {
-
-        // Java CDI
-        compile( group: 'javax.inject', name: 'javax.inject', version: '1' )
-
-        // Log4j 2
-        compile( group: 'org.apache.logging.log4j', name: 'log4j-core', version: log4j2Version )
 
         // Spock
         testCompile( group: 'org.spockframework', name: 'spock-core', version: spockVersion )

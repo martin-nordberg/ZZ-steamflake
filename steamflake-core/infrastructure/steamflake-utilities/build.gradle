@@ -1,1 +1,8 @@
 buildDir = '../../../build/steamflake-core/infrastructure/steamflake-utilities'
+
+dependencies {
+
+    // Log4j 2
+    compile( group: 'org.apache.logging.log4j', name: 'log4j-core', version: log4j2Version )
+
+}
