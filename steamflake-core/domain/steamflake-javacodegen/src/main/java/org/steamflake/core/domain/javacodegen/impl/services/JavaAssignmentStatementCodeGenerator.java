@@ -1,6 +1,9 @@
 package org.steamflake.core.domain.javacodegen.impl.services;
 
-import org.steamflake.core.domain.javamodel.api.services.IJavaModelConsumerService;
+import org.steamflake.core.domain.base.model.api.elements.ISteamflakeModelElement;
+import org.steamflake.core.domain.base.model.spi.ISteamflakeModelConsumerService;
+import org.steamflake.core.domain.javamodel.api.elements.IJavaPackage;
+import org.steamflake.core.domain.javamodel.api.elements.IJavaRootPackage;
 import org.steamflake.core.domain.javamodel.api.statements.IJavaAssignmentStatement;
 import org.steamflake.core.persistence.codeio.codegen.api.CodeWriter;
 
@@ -9,16 +12,18 @@ import org.steamflake.core.persistence.codeio.codegen.api.CodeWriter;
  */
 public final class JavaAssignmentStatementCodeGenerator
     extends JavaMemberCodeGenerator
-    implements IJavaModelConsumerService<IJavaAssignmentStatement, CodeWriter> {
+    implements ISteamflakeModelConsumerService<IJavaRootPackage, IJavaPackage, CodeWriter> {
 
     private JavaAssignmentStatementCodeGenerator() {
     }
 
     @SuppressWarnings( "ParameterNameDiffersFromOverriddenParameter" )
     @Override
-    public void consume(
-        IJavaAssignmentStatement statement, CodeWriter writer
+    public <E extends ISteamflakeModelElement<IJavaRootPackage, IJavaPackage>> void consume(
+        E element, CodeWriter writer
     ) {
+
+        IJavaAssignmentStatement statement = (IJavaAssignmentStatement) element;
 
         // Description
         if ( statement.getDescription().isPresent() ) {

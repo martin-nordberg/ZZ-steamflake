@@ -11,9 +11,6 @@ package org.steamflake.core.domain.javamodel.api.elements;
 public interface IJavaAnnotationInterface
     extends IJavaAnnotatableModelElement, IJavaTyped {
 
-    /** @return the fully qualified name of this component. */
-    String getFullyQualifiedJavaName();
-
     @Override
     IJavaPackage getParent();
 

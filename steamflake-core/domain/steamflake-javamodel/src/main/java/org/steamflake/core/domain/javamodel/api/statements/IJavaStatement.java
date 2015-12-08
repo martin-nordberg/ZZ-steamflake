@@ -5,13 +5,15 @@
 
 package org.steamflake.core.domain.javamodel.api.statements;
 
-import org.steamflake.core.domain.javamodel.api.elements.IJavaModelElement;
+import org.steamflake.core.domain.base.model.api.elements.ISteamflakeModelElement;
+import org.steamflake.core.domain.javamodel.api.elements.IJavaPackage;
+import org.steamflake.core.domain.javamodel.api.elements.IJavaRootPackage;
 
 /**
  * Interface to a Java statement.
  */
 public interface IJavaStatement
-    extends IJavaModelElement {
+    extends ISteamflakeModelElement<IJavaRootPackage, IJavaPackage> {
 
     /**
      * @return the parent code block containing this statement.

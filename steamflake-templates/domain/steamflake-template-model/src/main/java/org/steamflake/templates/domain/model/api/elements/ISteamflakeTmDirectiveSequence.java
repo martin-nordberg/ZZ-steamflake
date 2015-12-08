@@ -5,7 +5,7 @@
 
 package org.steamflake.templates.domain.model.api.elements;
 
-import org.steamflake.core.domain.base.model.api.elements.ISteamflakeModelElement;
+import org.steamflake.core.domain.base.model.api.elements.ISteamflakeContainerElement;
 import org.steamflake.core.domain.base.model.api.utilities.IFileOrigin;
 import org.steamflake.core.infrastructure.utilities.collections.IIndexable;
 import org.steamflake.templates.domain.model.api.directives.ISteamflakeTmAbstractDirective;
@@ -21,8 +21,8 @@ import java.util.Optional;
  * A template rule.
  */
 @SuppressWarnings( { "ClassReferencesSubclass", "BooleanParameter" } )
-public interface ISteamflakeTmDirectiveContainer
-    extends ISteamflakeModelElement<ISteamflakeTmRootPackage, ISteamflakeTmPackage> {
+public interface ISteamflakeTmDirectiveSequence
+    extends ISteamflakeContainerElement<ISteamflakeTmRootPackage, ISteamflakeTmPackage> {
 
     /**
      * Creates a new comment directive within this rule.
@@ -83,10 +83,5 @@ public interface ISteamflakeTmDirectiveContainer
      * @return the directives within this rule.
      */
     IIndexable<ISteamflakeTmAbstractDirective> getDirectives();
-
-    /**
-     * @return the keyword of this directive container.
-     */
-    String getKeyword();
 
 }

@@ -7,6 +7,7 @@ package org.steamflake.core.domain.javamodel.impl.elements;
 
 import org.steamflake.core.domain.javamodel.api.elements.IJavaAnnotationInterface;
 import org.steamflake.core.domain.javamodel.api.elements.IJavaPackage;
+import org.steamflake.core.domain.javamodel.api.elements.IJavaType;
 
 import java.util.Optional;
 
@@ -27,17 +28,12 @@ public class JavaAnnotationInterface
     }
 
     @Override
-    public String getFullyQualifiedJavaName() {
-        return this.getParent().getFullyQualifiedJavaName() + "." + this.getJavaName();
-    }
-
-    @Override
     public IJavaPackage getParent() {
         return (IJavaPackage) super.getParent();
     }
 
     @Override
-    public JavaType getType() {
+    public IJavaType getType() {
         return new JavaAnnotationType( this );
     }
 

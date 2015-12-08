@@ -22,11 +22,23 @@ public abstract class SteamflakeTmAbstractPackage
     implements ISteamflakeTmAbstractPackage {
 
     /**
-     * Constructs a new abstract Steamflake package (package or root package).
+     * Constructs a new abstract Steamflake root package (no parent).
      */
     @SuppressWarnings( "TypeMayBeWeakened" )
     protected SteamflakeTmAbstractPackage(
-        ISteamflakeTmAbstractPackage parent,
+        Optional<IFileOrigin> origin,
+        String name,
+        Optional<String> description
+    ) {
+        super( origin, name, description );
+    }
+
+    /**
+     * Constructs a new abstract Steamflake concrete package.
+     */
+    @SuppressWarnings( "TypeMayBeWeakened" )
+    protected SteamflakeTmAbstractPackage(
+        SteamflakeTmAbstractPackage parent,
         Optional<IFileOrigin> origin,
         String name,
         Optional<String> description
@@ -49,7 +61,7 @@ public abstract class SteamflakeTmAbstractPackage
 
         // look for an existing sub-package
         for ( ISteamflakeTmPackage jpackage : this.getPackages() ) {
-            if ( jpackage.getId().getName().equals( packageNames[0] ) ) {
+            if ( jpackage.getName().equals( packageNames[0] ) ) {
                 return jpackage.findTemplate( packageNames[1] );
             }
         }

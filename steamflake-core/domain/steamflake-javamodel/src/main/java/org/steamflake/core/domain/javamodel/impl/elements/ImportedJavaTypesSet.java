@@ -19,7 +19,7 @@ public class ImportedJavaTypesSet
     public ImportedJavaTypesSet() {
         super(
             ( IJavaType t1, IJavaType t2 ) -> {
-                return t1.getFullyQualifiedJavaName().compareTo( t2.getFullyQualifiedJavaName() );
+                return t1.getQualifiedName().getPath().compareTo( t2.getQualifiedName().getPath() );
             }
         );
     }

@@ -7,7 +7,8 @@ package org.steamflake.templates.domain.parser.impl;
 
 import org.steamflake.core.persistence.codeio.scanning.FileScanner;
 import org.steamflake.templates.domain.model.api.directives.ISteamflakeTmAbstractDirective;
-import org.steamflake.templates.domain.model.api.elements.ISteamflakeTmDirectiveContainer;
+import org.steamflake.templates.domain.model.api.directives.ISteamflakeTmCompositeDirective;
+import org.steamflake.templates.domain.model.api.elements.ISteamflakeTmDirectiveSequence;
 import org.steamflake.templates.domain.model.api.elements.ISteamflakeTmRule;
 import org.steamflake.templates.domain.parser.api.SteamflakeTmParser;
 
@@ -52,7 +53,7 @@ public class SteamflakeTmRuleBodyParser {
     public void parse() throws SteamflakeTmParser.SteamflakeTmParserException {
 
         try {
-            this.parseDirectiveSequence( this.rule );
+            this.parseDirectiveSequence( this.rule.getDirectiveSequence(), "rule" );
         }
         catch ( FileScanner.FileScannerException e ) {
             throw new SteamflakeTmParser.SteamflakeTmParserException( e.getMessage(), e );
@@ -68,7 +69,7 @@ public class SteamflakeTmRuleBodyParser {
      * @throws FileScanner.FileScannerException               if a syntax error is found.
      * @throws SteamflakeTmParser.SteamflakeTmParserException if a parsing error occurs.
      */
-    private void parseDirectiveSequence( ISteamflakeTmDirectiveContainer container )
+    private void parseDirectiveSequence( ISteamflakeTmDirectiveSequence container, String keyword )
         throws FileScanner.FileScannerException,
                SteamflakeTmParser.SteamflakeTmParserException {
 
@@ -87,7 +88,7 @@ public class SteamflakeTmRuleBodyParser {
 
             // Handle a closing tag if present.
             if ( this.scanner.accept( "/" ).isPresent() ) {
-                this.scanner.scan( container.getKeyword() );
+                this.scanner.scan( keyword );
                 this.scanner.acceptWhitespace();
                 this.scanner.scan( this.directiveCloseDelimiter );
                 return;
@@ -106,8 +107,13 @@ public class SteamflakeTmRuleBodyParser {
 
             // If it was a composite directive...
             if ( directive.isComposite() ) {
+                ISteamflakeTmCompositeDirective compositeDirective = (ISteamflakeTmCompositeDirective) directive;
+
                 // Recursively parse until the closing directive.
-                this.parseDirectiveSequence( (ISteamflakeTmDirectiveContainer) directive );
+                this.parseDirectiveSequence(
+                    compositeDirective.getDirectiveSequence(),
+                    compositeDirective.getKeyword()
+                );
             }
 
             // Scan the next block of text up to an opening delimiter.
@@ -116,9 +122,9 @@ public class SteamflakeTmRuleBodyParser {
         }
 
         // Trigger an error if we found no closing directive for a composite directive.
-        if ( !( container instanceof ISteamflakeTmRule ) ) {
+        if ( !"rule".equals( keyword ) ) {
             throw new SteamflakeTmParser.SteamflakeTmParserException(
-                "Missing closing directive: '" + this.directiveOpenDelimiter + "/" + container.getKeyword() + this.directiveCloseDelimiter + "'.",
+                "Missing closing directive: '" + this.directiveOpenDelimiter + "/" + keyword + this.directiveCloseDelimiter + "'.",
                 this.scanner.scanNothing()
             );
         }

@@ -6,7 +6,7 @@
 package org.steamflake.templates.domain.model.api.directives;
 
 import org.steamflake.core.domain.base.model.api.elements.ISteamflakeModelElement;
-import org.steamflake.templates.domain.model.api.elements.ISteamflakeTmDirectiveContainer;
+import org.steamflake.templates.domain.model.api.elements.ISteamflakeTmDirectiveSequence;
 import org.steamflake.templates.domain.model.api.elements.ISteamflakeTmPackage;
 import org.steamflake.templates.domain.model.api.elements.ISteamflakeTmRootPackage;
 
@@ -17,7 +17,7 @@ public interface ISteamflakeTmAbstractDirective
     extends ISteamflakeModelElement<ISteamflakeTmRootPackage, ISteamflakeTmPackage> {
 
     @Override
-    ISteamflakeTmDirectiveContainer getParent();
+    ISteamflakeTmDirectiveSequence getParent();
 
     /**
      * @return whether this directive (potentially) has sub-directives within it.

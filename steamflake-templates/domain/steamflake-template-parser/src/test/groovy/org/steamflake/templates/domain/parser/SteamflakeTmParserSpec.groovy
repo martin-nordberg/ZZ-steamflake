@@ -29,7 +29,7 @@ class SteamflakeTmParserSpec
         expect:
         template.abstractness.isAbstract();
         template.accessibility.isPublic();
-        template.id.name == "TSample";
+        template.name == "TSample";
         template.origin.get().fileName == "example.stft";
         template.origin.get().line == 4;
         template.origin.get().column == 38;
@@ -54,7 +54,7 @@ class SteamflakeTmParserSpec
         expect:
         template.abstractness.isAbstract();
         template.accessibility.isPublic();
-        template.id.name == "TSample";
+        template.name == "TSample";
         template.origin.get().fileName == "example.stft";
         template.origin.get().line == 7;
         template.origin.get().column == 38;
@@ -91,15 +91,15 @@ class SteamflakeTmParserSpec
         expect:
         template.abstractness.isAbstract();
         template.accessibility.isPublic();
-        template.id.name == "TSample";
+        template.name == "TSample";
         template.origin.get().fileName == "example.stft";
         template.origin.get().line == 4;
         template.origin.get().column == 38;
         template.rules.size() == 2;
-        template.rules[0].id.name == "rule1";
-        template.rules[0].id.path == "p1.p2.TSample.rule1";
-        template.rules[1].id.name == "rule2";
-        template.rules[1].id.path == "p1.p2.TSample.rule2";
+        template.rules[0].name == "rule1";
+        template.rules[0].qualifiedName.path == "p1.p2.TSample.rule1";
+        template.rules[1].name == "rule2";
+        template.rules[1].qualifiedName.path == "p1.p2.TSample.rule2";
 
     }
 
@@ -122,17 +122,17 @@ class SteamflakeTmParserSpec
         expect:
         template.abstractness.isAbstract();
         template.accessibility.isPublic();
-        template.id.name == "TSample";
+        template.name == "TSample";
         template.origin.get().fileName == "example.stft";
         template.origin.get().line == 4;
         template.origin.get().column == 38;
         template.rules.size() == 1;
         template.rules[0].parameters.size() == 3;
-        template.rules[0].parameters[0].id.name == "a";
+        template.rules[0].parameters[0].name == "a";
         template.rules[0].parameters[0].typeName == "Stuff";
-        template.rules[0].parameters[1].id.name == "b";
+        template.rules[0].parameters[1].name == "b";
         template.rules[0].parameters[1].typeName == "p1.p2.Widget";
-        template.rules[0].parameters[2].id.name == "c";
+        template.rules[0].parameters[2].name == "c";
         template.rules[0].parameters[2].typeName == "p1.MoreStuff";
 
     }
@@ -159,7 +159,7 @@ class SteamflakeTmParserSpec
         expect:
         template.abstractness.isAbstract();
         template.accessibility.isPublic();
-        template.id.name == "TSample";
+        template.name == "TSample";
         template.rules.size() == 7;
 
     }
@@ -180,9 +180,9 @@ class SteamflakeTmParserSpec
         expect:
         template.abstractness.isAbstract();
         template.accessibility.isPublic();
-        template.id.name == "TSample";
+        template.name == "TSample";
         template.rules.size() == 1;
-        template.rules[0].directives.size() == 6;
+        template.rules[0].directiveSequence.directives.size() == 6;
 
     }
 
@@ -202,9 +202,9 @@ class SteamflakeTmParserSpec
         expect:
         template.abstractness.isAbstract();
         template.accessibility.isPublic();
-        template.id.name == "TSample";
+        template.name == "TSample";
         template.rules.size() == 1;
-        template.rules[0].directives.size() == 3;
+        template.rules[0].directiveSequence.directives.size() == 3;
 
     }
 
@@ -223,10 +223,11 @@ class SteamflakeTmParserSpec
 
         expect:
         template.rules.size() == 1;
-        template.rules[0].directives.size() == 3;
-        ( (ISteamflakeTmTextDirective) template.rules[0].directives[0] ).text == " Hello ";
-        ( (ISteamflakeTmCommentDirective) template.rules[0].directives[1] ).text == "Here be comments.";
-        ( (ISteamflakeTmTextDirective) template.rules[0].directives[2] ).text == "world. ";
+        template.rules[0].directiveSequence.directives.size() == 3;
+        ( (ISteamflakeTmTextDirective) template.rules[0].directiveSequence.directives[0] ).text == " Hello ";
+        ( (ISteamflakeTmCommentDirective) template.rules[0].directiveSequence.directives
+            [1] ).text == "Here be comments.";
+        ( (ISteamflakeTmTextDirective) template.rules[0].directiveSequence.directives[2] ).text == "world. ";
 
     }
 
@@ -245,13 +246,16 @@ class SteamflakeTmParserSpec
 
         expect:
         template.rules.size() == 1;
-        template.rules[0].directives.size() == 3;
-        ( (ISteamflakeTmTextDirective) template.rules[0].directives[0] ).text == " abc ";
-        ( (ISteamflakeTmIfDirective) template.rules[0].directives[1] ).boolConditionPath == "p.condition";
-        ( (ISteamflakeTmIfDirective) template.rules[0].directives[1] ).directives.size() == 1;
-        ( (ISteamflakeTmTextDirective) ( (ISteamflakeTmIfDirective) template.rules[0].directives[1] ).directives
+        template.rules[0].directiveSequence.directives.size() == 3;
+        ( (ISteamflakeTmTextDirective) template.rules[0].directiveSequence.directives[0] ).text == " abc ";
+        ( (ISteamflakeTmIfDirective) template.rules[0].directiveSequence.directives
+            [1] ).boolConditionPath == "p.condition";
+        ( (ISteamflakeTmIfDirective) template.rules[0].directiveSequence.directives[1] ).directiveSequence.directives.
+            size() == 1;
+        ( (ISteamflakeTmTextDirective) ( (ISteamflakeTmIfDirective) template.rules[0].directiveSequence.directives
+            [1] ).directiveSequence.directives
             [0] ).text == " def ";
-        ( (ISteamflakeTmTextDirective) template.rules[0].directives[2] ).text == " ghi ";
+        ( (ISteamflakeTmTextDirective) template.rules[0].directiveSequence.directives[2] ).text == " ghi ";
 
     }
 
@@ -270,20 +274,20 @@ class SteamflakeTmParserSpec
 
         expect:
         template.rules.size() == 1;
-        template.rules[0].directives.size() == 3;
-        ( (ISteamflakeTmTextDirective) template.rules[0].directives[0] ).text == " abc ";
+        template.rules[0].directiveSequence.directives.size() == 3;
+        ( (ISteamflakeTmTextDirective) template.rules[0].directiveSequence.directives[0] ).text == " abc ";
 
-        def outerIf = (ISteamflakeTmIfDirective) template.rules[0].directives[1];
+        def outerIf = (ISteamflakeTmIfDirective) template.rules[0].directiveSequence.directives[1];
         outerIf.boolConditionPath == "p.condition";
-        outerIf.directives.size() == 2;
-        ( (ISteamflakeTmTextDirective) outerIf.directives[0] ).text == " def ";
+        outerIf.directiveSequence.directives.size() == 2;
+        ( (ISteamflakeTmTextDirective) outerIf.directiveSequence.directives[0] ).text == " def ";
 
-        def innerIf = (ISteamflakeTmIfDirective) outerIf.directives[1];
+        def innerIf = (ISteamflakeTmIfDirective) outerIf.directiveSequence.directives[1];
         innerIf.boolConditionPath == "p.othercond";
-        innerIf.directives.size() == 1;
-        ( (ISteamflakeTmTextDirective) innerIf.directives[0] ).text == " ghi ";
+        innerIf.directiveSequence.directives.size() == 1;
+        ( (ISteamflakeTmTextDirective) innerIf.directiveSequence.directives[0] ).text == " ghi ";
 
-        ( (ISteamflakeTmTextDirective) template.rules[0].directives[2] ).text == " jkl ";
+        ( (ISteamflakeTmTextDirective) template.rules[0].directiveSequence.directives[2] ).text == " jkl ";
 
     }
 
@@ -302,23 +306,23 @@ class SteamflakeTmParserSpec
 
         expect:
         template.rules.size() == 1;
-        template.rules[0].directives.size() == 5;
+        template.rules[0].directiveSequence.directives.size() == 5;
 
-        ( (ISteamflakeTmTextDirective) template.rules[0].directives[0] ).text == " ";
+        ( (ISteamflakeTmTextDirective) template.rules[0].directiveSequence.directives[0] ).text == " ";
 
-        def nl1 = (ISteamflakeTmNewLineDirective) template.rules[0].directives[1];
+        def nl1 = (ISteamflakeTmNewLineDirective) template.rules[0].directiveSequence.directives[1];
         !nl1.isSpaceNeededIfNoNewLine();
         !nl1.boolConditionPath.isPresent();
 
-        def nl2 = (ISteamflakeTmNewLineDirective) template.rules[0].directives[2];
+        def nl2 = (ISteamflakeTmNewLineDirective) template.rules[0].directiveSequence.directives[2];
         !nl2.isSpaceNeededIfNoNewLine();
         nl2.boolConditionPath.get() == "p.condition";
 
-        def nl3 = (ISteamflakeTmNewLineDirective) template.rules[0].directives[3];
+        def nl3 = (ISteamflakeTmNewLineDirective) template.rules[0].directiveSequence.directives[3];
         nl3.isSpaceNeededIfNoNewLine();
         nl3.boolConditionPath.get() == "q.condition";
 
-        ( (ISteamflakeTmTextDirective) template.rules[0].directives[4] ).text == " ";
+        ( (ISteamflakeTmTextDirective) template.rules[0].directiveSequence.directives[4] ).text == " ";
 
     }
 

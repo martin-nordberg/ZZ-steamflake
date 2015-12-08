@@ -39,7 +39,7 @@ public final class JavaSourceCodeGenerator {
 
         // Compute the folder for the package.
         File pkgFolder = sourceRootFolder;
-        for ( String parentPkg : pkg.getFullyQualifiedJavaName().split( "\\." ) ) {
+        for ( String parentPkg : pkg.getQualifiedName().getPath().split( "\\." ) ) {
             pkgFolder = new File( pkgFolder, parentPkg );
         }
 
@@ -49,7 +49,7 @@ public final class JavaSourceCodeGenerator {
                 Writer writer = new FileWriterComparer(
                     new File(
                         pkgFolder,
-                        cls.getJavaName()
+                        cls.getName()
                     )
                 );
                 CodeWriter codeWriter = new CodeWriter( writer, config );
@@ -81,7 +81,7 @@ public final class JavaSourceCodeGenerator {
 
         // Compute the folder for the package.
         File pkgFolder = sourceRootFolder;
-        for ( String parentPkg : pkg.getFullyQualifiedJavaName().split( "\\." ) ) {
+        for ( String parentPkg : pkg.getQualifiedName().getPath().split( "\\." ) ) {
             pkgFolder = new File( pkgFolder, parentPkg );
         }
 
@@ -96,7 +96,7 @@ public final class JavaSourceCodeGenerator {
                 Writer writer = new FileRewriter(
                     new File(
                         pkgFolder,
-                        cls.getJavaName()
+                        cls.getName()
                     )
                 );
                 CodeWriter codeWriter = new CodeWriter( writer, config );

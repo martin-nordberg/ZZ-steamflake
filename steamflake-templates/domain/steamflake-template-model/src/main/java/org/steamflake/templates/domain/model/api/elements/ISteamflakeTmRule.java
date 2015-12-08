@@ -7,7 +7,7 @@ package org.steamflake.templates.domain.model.api.elements;
 
 import org.steamflake.core.domain.base.model.api.elements.ESteamflakeAbstractness;
 import org.steamflake.core.domain.base.model.api.elements.ESteamflakeAccessibility;
-import org.steamflake.core.domain.base.model.api.elements.ISteamflakeNamedModelElement;
+import org.steamflake.core.domain.base.model.api.elements.ISteamflakeNamedContainerElement;
 import org.steamflake.core.domain.base.model.api.utilities.IFileOrigin;
 import org.steamflake.core.infrastructure.utilities.collections.IIndexable;
 
@@ -17,8 +17,7 @@ import java.util.Optional;
  * A template rule.
  */
 public interface ISteamflakeTmRule
-    extends ISteamflakeNamedModelElement<ISteamflakeTmRootPackage, ISteamflakeTmPackage>,
-            ISteamflakeTmDirectiveContainer {
+    extends ISteamflakeNamedContainerElement<ISteamflakeTmRootPackage, ISteamflakeTmPackage> {
 
     /**
      * Creates a parameter for this method.
@@ -46,6 +45,11 @@ public interface ISteamflakeTmRule
      * @return the accessibility of this rule.
      */
     ESteamflakeAccessibility getAccessibility();
+
+    /**
+     * @return the sequence of directives nested inside this one.
+     */
+    ISteamflakeTmDirectiveSequence getDirectiveSequence();
 
     /**
      * @return the parameters within this method.

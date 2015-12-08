@@ -44,7 +44,7 @@ public interface ISteamflakeModelElement<
     /**
      * @return The parent of this model element.
      */
-    ISteamflakeModelElement<IRootPackage, IConcretePackage> getParent();
+    ISteamflakeContainerElement<IRootPackage, IConcretePackage> getParent();
 
     /**
      * @return The highest root package containing this model element.

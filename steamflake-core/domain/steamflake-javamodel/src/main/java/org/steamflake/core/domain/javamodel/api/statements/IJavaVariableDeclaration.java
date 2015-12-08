@@ -5,7 +5,9 @@
 
 package org.steamflake.core.domain.javamodel.api.statements;
 
-import org.steamflake.core.domain.javamodel.api.elements.IJavaNamed;
+import org.steamflake.core.domain.base.model.api.elements.ISteamflakeNamedModelElement;
+import org.steamflake.core.domain.javamodel.api.elements.IJavaPackage;
+import org.steamflake.core.domain.javamodel.api.elements.IJavaRootPackage;
 import org.steamflake.core.domain.javamodel.api.elements.IJavaTyped;
 
 import java.util.Optional;
@@ -14,7 +16,7 @@ import java.util.Optional;
  * A statement defining a variable.
  */
 public interface IJavaVariableDeclaration
-    extends IJavaStatement, IJavaNamed, IJavaTyped {
+    extends ISteamflakeNamedModelElement<IJavaRootPackage, IJavaPackage>, IJavaStatement, IJavaTyped {
 
     /**
      * @return the initial value of the variable.

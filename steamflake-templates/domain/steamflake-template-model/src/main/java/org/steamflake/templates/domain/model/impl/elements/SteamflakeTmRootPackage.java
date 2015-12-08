@@ -21,7 +21,7 @@ public class SteamflakeTmRootPackage
      * Constructs a new root Steamflake template package.
      */
     public SteamflakeTmRootPackage() {
-        super( null, IFileOrigin.UNUSED, "", of( "Steamflake Templates Root Package" ) );
+        super( IFileOrigin.UNUSED, "", of( "Steamflake Templates Root Package" ) );
     }
 
 }

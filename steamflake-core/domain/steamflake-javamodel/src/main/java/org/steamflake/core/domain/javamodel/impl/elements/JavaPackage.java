@@ -94,7 +94,7 @@ public final class JavaPackage
 
         // look for an existing component
         for ( IJavaAnnotationInterface annotationInterface : this.annotationInterfaces ) {
-            if ( annotationInterface.getJavaName().equals( relativeQualifiedName ) ) {
+            if ( annotationInterface.getName().equals( relativeQualifiedName ) ) {
                 return Optional.of( annotationInterface );
             }
         }
@@ -112,7 +112,7 @@ public final class JavaPackage
 
         // look for an existing component
         for ( IJavaComponent component : this.components ) {
-            if ( component.getJavaName().equals( relativeQualifiedName ) ) {
+            if ( component.getName().equals( relativeQualifiedName ) ) {
                 return Optional.of( component );
             }
         }

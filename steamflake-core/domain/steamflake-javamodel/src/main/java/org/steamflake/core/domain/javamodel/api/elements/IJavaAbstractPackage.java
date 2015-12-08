@@ -5,7 +5,8 @@
 
 package org.steamflake.core.domain.javamodel.api.elements;
 
-import org.steamflake.core.infrastructure.utilities.collections.IIndexable;
+import org.steamflake.core.domain.base.model.api.elements.ISteamflakeAbstractPackage;
+import org.steamflake.core.domain.base.model.api.utilities.IFileOrigin;
 
 import java.util.Optional;
 
@@ -14,7 +15,14 @@ import java.util.Optional;
  */
 @SuppressWarnings( "ClassReferencesSubclass" )
 public interface IJavaAbstractPackage
-    extends IJavaNamedModelElement {
+    extends ISteamflakeAbstractPackage<IJavaRootPackage, IJavaPackage> {
+
+    @Override
+    default IJavaPackage addPackage(
+        Optional<IFileOrigin> origin, String name, Optional<String> description
+    ) {
+        return this.addPackage( name, description, false );
+    }
 
     /**
      * Creates a package within this one (empty description, not implicitly imported).
@@ -68,23 +76,5 @@ public interface IJavaAbstractPackage
      * @return the component found.
      */
     Optional<IJavaComponent> findComponent( String relativeQualifiedName );
-
-    /**
-     * Given a qualified name relative to this package, find or create the needed subpackages.
-     *
-     * @param relativeQualifiedName the relative name of the package to find or create if it does not exist.
-     *
-     * @return the found or created package.
-     */
-    IJavaPackage findOrCreatePackage( String relativeQualifiedName );
-
-    /** @return the fully qualified name of this package. */
-    String getFullyQualifiedJavaName();
-
-    /** @return the packages within this package. */
-    IIndexable<IJavaPackage> getPackages();
-
-    @Override
-    IJavaAbstractPackage getParent();
 
 }

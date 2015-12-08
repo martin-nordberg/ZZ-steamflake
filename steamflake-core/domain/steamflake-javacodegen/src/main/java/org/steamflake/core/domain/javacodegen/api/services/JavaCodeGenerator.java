@@ -1,5 +1,8 @@
 package org.steamflake.core.domain.javacodegen.api.services;
 
+import org.steamflake.core.domain.base.model.api.elements.ISteamflakeModelElement;
+import org.steamflake.core.domain.base.model.spi.ISteamflakeModelConsumerFactory;
+import org.steamflake.core.domain.base.model.spi.ISteamflakeModelConsumerService;
 import org.steamflake.core.domain.javacodegen.impl.services.JavaAssignmentStatementCodeGenerator;
 import org.steamflake.core.domain.javacodegen.impl.services.JavaBuiltinTypeCodeGenerator;
 import org.steamflake.core.domain.javacodegen.impl.services.JavaClassCodeGenerator;
@@ -8,9 +11,8 @@ import org.steamflake.core.domain.javacodegen.impl.services.JavaFieldCodeGenerat
 import org.steamflake.core.domain.javacodegen.impl.services.JavaMethodCodeGenerator;
 import org.steamflake.core.domain.javacodegen.impl.services.JavaParameterCodeGenerator;
 import org.steamflake.core.domain.javacodegen.impl.services.JavaStaticInitializationCodeGenerator;
-import org.steamflake.core.domain.javamodel.api.elements.IJavaModelElement;
-import org.steamflake.core.domain.javamodel.api.services.IJavaModelConsumerFactory;
-import org.steamflake.core.domain.javamodel.api.services.IJavaModelConsumerService;
+import org.steamflake.core.domain.javamodel.api.elements.IJavaPackage;
+import org.steamflake.core.domain.javamodel.api.elements.IJavaRootPackage;
 import org.steamflake.core.persistence.codeio.codegen.api.CodeWriter;
 
 import java.util.HashMap;
@@ -20,7 +22,7 @@ import java.util.Map;
  * Java model extension service for generating Java source code.
  */
 public final class JavaCodeGenerator
-    implements IJavaModelConsumerFactory<CodeWriter> {
+    implements ISteamflakeModelConsumerFactory<IJavaRootPackage, IJavaPackage, CodeWriter> {
 
     /**
      * Constructs a new code generator.
@@ -43,15 +45,17 @@ public final class JavaCodeGenerator
 
     @SuppressWarnings( "unchecked" )
     @Override
-    public <E extends IJavaModelElement> IJavaModelConsumerService<E, CodeWriter> build( Class<? extends IJavaModelElement> elementType ) {
+    public <E extends ISteamflakeModelElement<IJavaRootPackage, IJavaPackage>> ISteamflakeModelConsumerService<IJavaRootPackage, IJavaPackage, CodeWriter> build(
+        E element
+    ) {
 
-        String elementTypeName = elementType.getSimpleName();
+        String elementTypeName = element.getClass().getSimpleName();
 
         if ( !this.consumers.containsKey( elementTypeName ) ) {
             throw new IllegalArgumentException( "Unhandled Java model element type: " + elementTypeName );
         }
 
-        return (IJavaModelConsumerService<E, CodeWriter>) this.consumers.get( elementTypeName );
+        return this.consumers.get( elementTypeName );
 
     }
 
@@ -63,6 +67,6 @@ public final class JavaCodeGenerator
     /**
      * Map of code generators by concrete class name.
      */
-    private final Map<String, IJavaModelConsumerService<? extends IJavaModelElement, CodeWriter>> consumers;
+    private final Map<String, ISteamflakeModelConsumerService<IJavaRootPackage, IJavaPackage, CodeWriter>> consumers;
 
 }

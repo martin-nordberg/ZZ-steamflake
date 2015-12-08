@@ -7,7 +7,6 @@ package org.steamflake.core.domain.javamodel.impl.statements;
 
 import org.steamflake.core.domain.javamodel.api.elements.IJavaType;
 import org.steamflake.core.domain.javamodel.api.statements.IJavaVariableDeclaration;
-import org.steamflake.core.domain.javamodel.impl.elements.JavaNamedModelElement;
 
 import java.util.Optional;
 
@@ -28,7 +27,7 @@ public class JavaVariableDeclaration
      * @param type         the type of the variable
      */
     protected JavaVariableDeclaration(
-        JavaCodeBlockImpl codeBlock,
+        JavaCodeBlock codeBlock,
         String name,
         Optional<String> description,
         IJavaType type,
@@ -44,11 +43,6 @@ public class JavaVariableDeclaration
     @Override
     public Optional<String> getInitialValue() {
         return this.initialValue;
-    }
-
-    @Override
-    public String getJavaName() {
-        return JavaNamedModelElement.makeJavaName( this.name );
     }
 
     @Override

@@ -1,8 +1,11 @@
 package org.steamflake.core.domain.javacodegen.impl.services;
 
+import org.steamflake.core.domain.base.model.api.elements.ISteamflakeModelElement;
+import org.steamflake.core.domain.base.model.spi.ISteamflakeModelConsumerService;
 import org.steamflake.core.domain.javacodegen.api.services.JavaCodeGenerator;
 import org.steamflake.core.domain.javamodel.api.elements.IJavaField;
-import org.steamflake.core.domain.javamodel.api.services.IJavaModelConsumerService;
+import org.steamflake.core.domain.javamodel.api.elements.IJavaPackage;
+import org.steamflake.core.domain.javamodel.api.elements.IJavaRootPackage;
 import org.steamflake.core.persistence.codeio.codegen.api.CodeWriter;
 
 /**
@@ -10,16 +13,18 @@ import org.steamflake.core.persistence.codeio.codegen.api.CodeWriter;
  */
 public final class JavaFieldCodeGenerator
     extends JavaMemberCodeGenerator
-    implements IJavaModelConsumerService<IJavaField, CodeWriter> {
+    implements ISteamflakeModelConsumerService<IJavaRootPackage, IJavaPackage, CodeWriter> {
 
     private JavaFieldCodeGenerator() {
     }
 
     @SuppressWarnings( "ParameterNameDiffersFromOverriddenParameter" )
     @Override
-    public void consume(
-        IJavaField field, CodeWriter writer
+    public <E extends ISteamflakeModelElement<IJavaRootPackage, IJavaPackage>> void consume(
+        E element, CodeWriter writer
     ) {
+
+        IJavaField field = (IJavaField) element;
 
         // JavaDoc
         if ( field.getDescription().isPresent() ) {
@@ -42,7 +47,7 @@ public final class JavaFieldCodeGenerator
 
         // Name
         writer.spaceOrWrap()
-              .append( field.getJavaName() );
+              .append( field.getName() );
 
         // Initial value
         if ( field.getInitialValueCode().isPresent() ) {

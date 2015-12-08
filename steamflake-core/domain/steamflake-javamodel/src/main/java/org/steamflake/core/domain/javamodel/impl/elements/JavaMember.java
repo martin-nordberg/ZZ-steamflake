@@ -24,7 +24,7 @@ public abstract class JavaMember
      */
     @SuppressWarnings( "TypeMayBeWeakened" )
     protected JavaMember(
-        IJavaComponent parent,
+        JavaComponent parent,
         String name,
         Optional<String> description,
         EJavaAccessibility accessibility,

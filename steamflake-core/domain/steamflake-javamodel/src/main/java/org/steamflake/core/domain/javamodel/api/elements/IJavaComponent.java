@@ -65,9 +65,6 @@ public interface IJavaComponent
         IJavaType returnType
     );
 
-    /** @return the fully qualified name of this component. */
-    String getFullyQualifiedJavaName();
-
     /** @return the interfaces implemented by this component. */
     IIndexable<IJavaImplementedInterface> getImplementedInterfaces();
 

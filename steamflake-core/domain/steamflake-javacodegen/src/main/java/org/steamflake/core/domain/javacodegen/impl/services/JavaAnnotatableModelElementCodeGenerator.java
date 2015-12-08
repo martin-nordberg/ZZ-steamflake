@@ -29,7 +29,7 @@ abstract class JavaAnnotatableModelElementCodeGenerator {
 
         for ( IJavaAnnotation annotation : annotations ) {
             writer.append( "@" )
-                  .append( annotation.getAnnotationInterface().getJavaName() );
+                  .append( annotation.getAnnotationInterface().getName() );
 
             if ( annotation.getParametersCode().isPresent() ) {
                 writer.append( "( " )

@@ -5,33 +5,42 @@
 
 package org.steamflake.core.domain.javamodel.impl.elements;
 
+import org.steamflake.core.domain.base.model.api.utilities.IFileOrigin;
+import org.steamflake.core.domain.base.model.api.utilities.IQualifiedName;
+import org.steamflake.core.domain.base.model.impl.elements.SteamflakeNamedModelElement;
+import org.steamflake.core.domain.base.model.impl.utilities.QualifiedName;
 import org.steamflake.core.domain.javamodel.api.elements.IJavaBuiltinType;
+import org.steamflake.core.domain.javamodel.api.elements.IJavaPackage;
+import org.steamflake.core.domain.javamodel.api.elements.IJavaRootPackage;
+
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
 
 /**
  * A built-in type.
  */
 @SuppressWarnings( "javadoc" )
 public final class JavaBuiltinType
-    extends JavaType
+    extends SteamflakeNamedModelElement<IJavaRootPackage, IJavaPackage>
     implements IJavaBuiltinType {
 
     /**
      * Constructs a new built in type.
      */
-    JavaBuiltinType( String javaName ) {
-        super();
+    JavaBuiltinType( JavaPackage parent, String name ) {
+        super( parent, IFileOrigin.UNUSED, name, empty() );
 
-        this.javaName = javaName;
+        this.qualifiedName = new QualifiedName( name, of( parent.getQualifiedName() ) );
     }
 
     @Override
-    public String getFullyQualifiedJavaName() {
-        return this.javaName;
+    public String getName() {
+        return this.qualifiedName.getName();
     }
 
     @Override
-    public String getJavaName() {
-        return this.javaName;
+    public IQualifiedName getQualifiedName() {
+        return this.qualifiedName;
     }
 
     @Override
@@ -39,6 +48,6 @@ public final class JavaBuiltinType
         return true;
     }
 
-    private final String javaName;
+    private final QualifiedName qualifiedName;
 
 }

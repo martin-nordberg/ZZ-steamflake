@@ -6,6 +6,7 @@
 package org.steamflake.core.domain.base.model.impl.elements;
 
 import org.steamflake.core.domain.base.model.api.elements.ISteamflakeAbstractPackage;
+import org.steamflake.core.domain.base.model.api.elements.ISteamflakeContainerElement;
 import org.steamflake.core.domain.base.model.api.elements.ISteamflakeModelElement;
 import org.steamflake.core.domain.base.model.api.utilities.IFileOrigin;
 
@@ -14,12 +15,28 @@ import java.util.Optional;
 /**
  * Implementation of ISteamflakeModelElement.
  */
-@SuppressWarnings( "AbstractClassWithoutAbstractMethods" )
+@SuppressWarnings( { "AbstractClassWithoutAbstractMethods", "ClassReferencesSubclass" } )
 public abstract class SteamflakeModelElement<
     IRootPackage extends ISteamflakeAbstractPackage<IRootPackage, IConcretePackage>,
     IConcretePackage extends ISteamflakeAbstractPackage<IRootPackage, IConcretePackage>
     >
     implements ISteamflakeModelElement<IRootPackage, IConcretePackage> {
+
+    /**
+     * Constructs a new Steamflake parentless model element.
+     *
+     * @param description a description of this model element.
+     */
+    protected SteamflakeModelElement(
+        Optional<IFileOrigin> origin,
+        Optional<String> description
+    ) {
+        super();
+
+        this.description = description;
+        this.parent = (ISteamflakeContainerElement<IRootPackage, IConcretePackage>) this;
+        this.origin = origin;
+    }
 
     /**
      * Constructs a new Steamflake model element
@@ -28,7 +45,7 @@ public abstract class SteamflakeModelElement<
      * @param description a description of this model element.
      */
     protected SteamflakeModelElement(
-        ISteamflakeModelElement<IRootPackage, IConcretePackage> parent,
+        SteamflakeContainerElement<IRootPackage, IConcretePackage> parent,
         Optional<IFileOrigin> origin,
         Optional<String> description
     ) {
@@ -36,6 +53,8 @@ public abstract class SteamflakeModelElement<
         this.description = description;
         this.parent = parent;
         this.origin = origin;
+
+        parent.onAddChild( this );
     }
 
     @Override
@@ -49,7 +68,7 @@ public abstract class SteamflakeModelElement<
     }
 
     @Override
-    public ISteamflakeModelElement<IRootPackage, IConcretePackage> getParent() {
+    public ISteamflakeContainerElement<IRootPackage, IConcretePackage> getParent() {
         return this.parent;
     }
 
@@ -62,6 +81,6 @@ public abstract class SteamflakeModelElement<
 
     private final Optional<IFileOrigin> origin;
 
-    private final ISteamflakeModelElement<IRootPackage, IConcretePackage> parent;
+    private final ISteamflakeContainerElement<IRootPackage, IConcretePackage> parent;
 
 }

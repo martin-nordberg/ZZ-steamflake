@@ -34,7 +34,7 @@ class JavaCodeGeneratorSpec
         def con2 = cls.addConstructor( "Constructs a new instance.", EJavaAccessibility.PUBLIC );
         con2.addParameter( "p1", "first parameter", root.builtinDouble );
         con2.addParameter( "p2", "second parameter", root.builtinFloat );
-        con2.addAssignmentStatement( "this.field1", "p1" );
+        con2.codeBlock.addAssignmentStatement( "this.field1", "p1" );
 
         cls.addMethod( "method1", "A method to do stuff.", root.builtinBoolean );
 

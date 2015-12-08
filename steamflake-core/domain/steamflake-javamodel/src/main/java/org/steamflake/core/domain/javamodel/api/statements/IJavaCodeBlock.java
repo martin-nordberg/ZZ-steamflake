@@ -5,18 +5,20 @@
 
 package org.steamflake.core.domain.javamodel.api.statements;
 
-import org.steamflake.core.domain.javamodel.api.elements.IJavaModelElement;
+import org.steamflake.core.domain.base.model.api.elements.ISteamflakeContainerElement;
+import org.steamflake.core.domain.javamodel.api.elements.IJavaPackage;
+import org.steamflake.core.domain.javamodel.api.elements.IJavaRootPackage;
 import org.steamflake.core.domain.javamodel.api.elements.IJavaType;
 import org.steamflake.core.infrastructure.utilities.collections.IIndexable;
 
 import java.util.Optional;
 
 /**
- * Mixin interface defining the behavior of a block of code (function, static initialization, loop, etc.).
+ * Interface defining the behavior of a block of code (function, static initialization, loop, etc.).
  */
 @SuppressWarnings( "ClassReferencesSubclass" )
 public interface IJavaCodeBlock
-    extends IJavaModelElement {
+    extends ISteamflakeContainerElement<IJavaRootPackage, IJavaPackage> {
 
     /**
      * Adds an assignment statement to this code block.

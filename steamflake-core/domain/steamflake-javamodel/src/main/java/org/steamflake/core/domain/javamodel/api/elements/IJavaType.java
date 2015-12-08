@@ -5,17 +5,26 @@
 
 package org.steamflake.core.domain.javamodel.api.elements;
 
+import org.steamflake.core.domain.base.model.api.elements.ISteamflakeNamedModelElement;
+import org.steamflake.core.domain.base.model.api.utilities.IQualifiedName;
+
 /**
  * A Java type.
  */
+@SuppressWarnings( "ComparableImplementedButEqualsNotOverridden" )
 public interface IJavaType
-    extends IJavaModelElement, Comparable<IJavaType> {
+    extends ISteamflakeNamedModelElement<IJavaRootPackage, IJavaPackage>, Comparable<IJavaType> {
 
-    /** Returns the fully qualified name of this type. */
-    String getFullyQualifiedJavaName();
+    @SuppressWarnings( "NullableProblems" )
+    @Override
+    default int compareTo( IJavaType that ) {
+        return this.getQualifiedName().getPath().compareTo( that.getQualifiedName().getPath() );
+    }
 
-    /** Returns the name of this element for Java code purposes. */
-    String getJavaName();
+    /**
+     * @return the qualified name of this model element.
+     */
+    IQualifiedName getQualifiedName();
 
     /** Whether this type is implicitly imported. */
     boolean isImplicitlyImported();

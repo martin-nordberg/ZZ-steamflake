@@ -1,8 +1,11 @@
 package org.steamflake.core.domain.javacodegen.impl.services;
 
+import org.steamflake.core.domain.base.model.api.elements.ISteamflakeModelElement;
+import org.steamflake.core.domain.base.model.spi.ISteamflakeModelConsumerService;
 import org.steamflake.core.domain.javacodegen.api.services.JavaCodeGenerator;
+import org.steamflake.core.domain.javamodel.api.elements.IJavaPackage;
 import org.steamflake.core.domain.javamodel.api.elements.IJavaParameter;
-import org.steamflake.core.domain.javamodel.api.services.IJavaModelConsumerService;
+import org.steamflake.core.domain.javamodel.api.elements.IJavaRootPackage;
 import org.steamflake.core.persistence.codeio.codegen.api.CodeWriter;
 
 /**
@@ -10,23 +13,25 @@ import org.steamflake.core.persistence.codeio.codegen.api.CodeWriter;
  */
 public final class JavaParameterCodeGenerator
     extends JavaAnnotatableModelElementCodeGenerator
-    implements IJavaModelConsumerService<IJavaParameter, CodeWriter> {
+    implements ISteamflakeModelConsumerService<IJavaRootPackage, IJavaPackage, CodeWriter> {
 
     private JavaParameterCodeGenerator() {
     }
 
     @SuppressWarnings( "ParameterNameDiffersFromOverriddenParameter" )
     @Override
-    public void consume(
-        IJavaParameter parameter, CodeWriter writer
+    public <E extends ISteamflakeModelElement<IJavaRootPackage, IJavaPackage>> void consume(
+        E element, CodeWriter writer
     ) {
+
+        IJavaParameter parameter = (IJavaParameter) element;
 
         this.writeAnnotations( parameter, writer, false );
 
         parameter.getType().consume( JavaCodeGenerator.INSTANCE, writer );
 
         writer.spaceOrWrap()
-              .append( parameter.getJavaName() );
+              .append( parameter.getName() );
 
     }
 

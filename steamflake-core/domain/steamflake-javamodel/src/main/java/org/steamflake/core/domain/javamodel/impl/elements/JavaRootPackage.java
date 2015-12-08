@@ -22,16 +22,17 @@ public final class JavaRootPackage
      * Constructs a new Java package.
      */
     public JavaRootPackage() {
-        super( null, "$", Optional.of( "(Top level Java package)" ) );
+        super( "", Optional.of( "(Top level Java package)" ) );
 
-        this.builtinBoolean = new JavaBuiltinType( "boolean" );
-        this.builtinDouble = new JavaBuiltinType( "double" );
-        this.builtinFloat = new JavaBuiltinType( "float" );
-        this.builtinInt = new JavaBuiltinType( "int" );
-        this.builtinLong = new JavaBuiltinType( "long" );
-        this.builtinVoid = new JavaBuiltinType( "void" );
+        JavaPackage lang = this.establishJavaLangPackage();
 
-        this.establishJavaLangPackage();
+        this.builtinBoolean = new JavaBuiltinType( lang, "boolean" );
+        this.builtinDouble = new JavaBuiltinType( lang, "double" );
+        this.builtinFloat = new JavaBuiltinType( lang, "float" );
+        this.builtinInt = new JavaBuiltinType( lang, "int" );
+        this.builtinLong = new JavaBuiltinType( lang, "long" );
+        this.builtinVoid = new JavaBuiltinType( lang, "void" );
+
     }
 
     @Override
@@ -64,10 +65,15 @@ public final class JavaRootPackage
         return this.builtinVoid;
     }
 
+    @Override
+    public JavaRootPackage getRootPackage() {
+        return this;
+    }
+
     /**
      * Creates the external classes of the java.lang package.
      */
-    private void establishJavaLangPackage() {
+    private JavaPackage establishJavaLangPackage() {
 
         IJavaPackage lang = this.addPackage( "java" )
                                 .addPackage( "lang", Optional.of( "Standard java language package." ), true );
@@ -82,21 +88,7 @@ public final class JavaRootPackage
         lang.addExternalClass( "Thread" );
         // TODO: lots more if/when needed ...
 
-    }
-
-    @Override
-    public String getFullyQualifiedJavaName() {
-        return "";
-    }
-
-    @Override
-    public String getJavaName() {
-        return "";
-    }
-
-    @Override
-    public JavaRootPackage getRootPackage() {
-        return this;
+        return (JavaPackage) lang;
     }
 
     private final JavaBuiltinType builtinBoolean;

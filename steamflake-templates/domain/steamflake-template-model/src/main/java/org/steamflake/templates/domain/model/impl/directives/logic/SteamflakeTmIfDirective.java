@@ -8,7 +8,7 @@ package org.steamflake.templates.domain.model.impl.directives.logic;
 import org.steamflake.core.domain.base.model.api.utilities.IFileOrigin;
 import org.steamflake.templates.domain.model.api.directives.logic.ISteamflakeTmIfDirective;
 import org.steamflake.templates.domain.model.impl.directives.SteamflakeTmCompositeDirective;
-import org.steamflake.templates.domain.model.impl.elements.ISteamflakeTmDirectiveContainerMixin;
+import org.steamflake.templates.domain.model.impl.elements.SteamflakeTmDirectiveSequence;
 
 import java.util.Optional;
 
@@ -25,7 +25,7 @@ public class SteamflakeTmIfDirective
      * @param parent the parent of this directive.
      */
     public SteamflakeTmIfDirective(
-        ISteamflakeTmDirectiveContainerMixin parent,
+        SteamflakeTmDirectiveSequence parent,
         Optional<IFileOrigin> origin,
         String boolConditionPath
     ) {

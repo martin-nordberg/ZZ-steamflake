@@ -1,8 +1,11 @@
 package org.steamflake.core.domain.javacodegen.impl.services;
 
+import org.steamflake.core.domain.base.model.api.elements.ISteamflakeModelElement;
+import org.steamflake.core.domain.base.model.spi.ISteamflakeModelConsumerService;
 import org.steamflake.core.domain.javacodegen.api.services.JavaCodeGenerator;
-import org.steamflake.core.domain.javamodel.api.elements.IJavaStaticInitialization;
-import org.steamflake.core.domain.javamodel.api.services.IJavaModelConsumerService;
+import org.steamflake.core.domain.javamodel.api.elements.IJavaPackage;
+import org.steamflake.core.domain.javamodel.api.elements.IJavaRootPackage;
+import org.steamflake.core.domain.javamodel.api.statements.IJavaCodeBlock;
 import org.steamflake.core.domain.javamodel.api.statements.IJavaStatement;
 import org.steamflake.core.persistence.codeio.codegen.api.CodeWriter;
 
@@ -11,16 +14,18 @@ import org.steamflake.core.persistence.codeio.codegen.api.CodeWriter;
  */
 public final class JavaStaticInitializationCodeGenerator
     extends JavaMemberCodeGenerator
-    implements IJavaModelConsumerService<IJavaStaticInitialization, CodeWriter> {
+    implements ISteamflakeModelConsumerService<IJavaRootPackage, IJavaPackage, CodeWriter> {
 
     private JavaStaticInitializationCodeGenerator() {
     }
 
     @SuppressWarnings( "ParameterNameDiffersFromOverriddenParameter" )
     @Override
-    public void consume(
-        IJavaStaticInitialization staticInitialization, CodeWriter writer
+    public <E extends ISteamflakeModelElement<IJavaRootPackage, IJavaPackage>> void consume(
+        E element, CodeWriter writer
     ) {
+
+        IJavaCodeBlock staticInitialization = (IJavaCodeBlock) element;
 
         // JavaDoc
         if ( staticInitialization.getDescription().isPresent() ) {

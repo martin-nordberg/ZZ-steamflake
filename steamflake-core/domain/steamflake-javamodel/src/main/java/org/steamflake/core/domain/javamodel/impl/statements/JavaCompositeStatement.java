@@ -6,40 +6,47 @@
 package org.steamflake.core.domain.javamodel.impl.statements;
 
 import org.steamflake.core.domain.base.model.api.utilities.IFileOrigin;
-import org.steamflake.core.domain.base.model.impl.elements.SteamflakeModelElement;
+import org.steamflake.core.domain.base.model.impl.elements.SteamflakeContainerElement;
 import org.steamflake.core.domain.javamodel.api.elements.IJavaPackage;
 import org.steamflake.core.domain.javamodel.api.elements.IJavaRootPackage;
 import org.steamflake.core.domain.javamodel.api.statements.IJavaCodeBlock;
-import org.steamflake.core.domain.javamodel.api.statements.IJavaStatement;
+import org.steamflake.core.domain.javamodel.api.statements.IJavaCompositeStatement;
 
 import java.util.Optional;
 
+import static java.util.Optional.empty;
+
 /**
- * Implementation for a Java statement.
+ * A Java return statement.
  */
-public class JavaStatement
-    extends SteamflakeModelElement<IJavaRootPackage, IJavaPackage>
-    implements IJavaStatement {
+public class JavaCompositeStatement
+    extends SteamflakeContainerElement<IJavaRootPackage, IJavaPackage>
+    implements IJavaCompositeStatement {
 
     /**
-     * Constructs a new Java statement.
+     * Constructs a new Java composite statement.
      *
-     * @param parent      the helper object containing the statements of the parent code block.
+     * @param parent      the parent container of this statement.
      * @param description a description of this model element.
      */
-    @SuppressWarnings( "TypeMayBeWeakened" )
-    protected JavaStatement(
+    protected JavaCompositeStatement(
         JavaCodeBlock parent,
         Optional<String> description
     ) {
         super( parent, IFileOrigin.UNUSED, description );
+        this.codeBlock = new JavaCodeBlock( this, empty() );
+    }
 
-        parent.onAddChild( this );
+    @Override
+    public IJavaCodeBlock getCodeBlock() {
+        return this.codeBlock;
     }
 
     @Override
     public IJavaCodeBlock getParent() {
         return (IJavaCodeBlock) super.getParent();
     }
+
+    private final JavaCodeBlock codeBlock;
 
 }

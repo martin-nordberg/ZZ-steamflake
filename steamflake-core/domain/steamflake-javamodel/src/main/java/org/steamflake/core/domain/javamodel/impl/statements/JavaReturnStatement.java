@@ -24,7 +24,7 @@ public class JavaReturnStatement
      * @param returnValue expression for the value returned.
      */
     protected JavaReturnStatement(
-        JavaCodeBlockImpl codeBlock,
+        JavaCodeBlock codeBlock,
         Optional<String> description, Optional<String> returnValue
     ) {
         super( codeBlock, description );

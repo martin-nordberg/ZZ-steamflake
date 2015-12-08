@@ -5,10 +5,13 @@
 
 package org.steamflake.core.domain.javamodel.impl.elements;
 
+import org.steamflake.core.domain.base.model.api.utilities.IFileOrigin;
+import org.steamflake.core.domain.base.model.impl.elements.SteamflakeNamedContainerElement;
 import org.steamflake.core.domain.javamodel.api.elements.IJavaAnnotatableModelElement;
 import org.steamflake.core.domain.javamodel.api.elements.IJavaAnnotation;
 import org.steamflake.core.domain.javamodel.api.elements.IJavaAnnotationInterface;
-import org.steamflake.core.domain.javamodel.api.elements.IJavaNamedModelElement;
+import org.steamflake.core.domain.javamodel.api.elements.IJavaPackage;
+import org.steamflake.core.domain.javamodel.api.elements.IJavaRootPackage;
 import org.steamflake.core.domain.javamodel.api.elements.IJavaType;
 import org.steamflake.core.domain.javamodel.api.elements.IJavaTyped;
 import org.steamflake.core.infrastructure.utilities.collections.IIndexable;
@@ -24,7 +27,7 @@ import java.util.Set;
  * An anotatable model element.
  */
 public abstract class JavaAnnotatableModelElement
-    extends JavaNamedModelElement
+    extends SteamflakeNamedContainerElement<IJavaRootPackage, IJavaPackage>
     implements IJavaAnnotatableModelElement {
 
     /**
@@ -35,9 +38,11 @@ public abstract class JavaAnnotatableModelElement
      * @param description A description of the element
      */
     protected JavaAnnotatableModelElement(
-        IJavaNamedModelElement parent, String name, Optional<String> description
+        SteamflakeNamedContainerElement<IJavaRootPackage, IJavaPackage> parent,
+        String name,
+        Optional<String> description
     ) {
-        super( parent, name, description );
+        super( parent, IFileOrigin.UNUSED, name, description );
 
         this.annotations = new ArrayList<>();
         this.importedElements = new HashSet<>();

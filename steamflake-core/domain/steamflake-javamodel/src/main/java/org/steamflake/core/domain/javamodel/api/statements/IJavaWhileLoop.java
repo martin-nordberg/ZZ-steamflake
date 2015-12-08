@@ -9,7 +9,7 @@ package org.steamflake.core.domain.javamodel.api.statements;
  * Interface to a while loop.
  */
 public interface IJavaWhileLoop
-    extends IJavaStatement, IJavaCodeBlock {
+    extends IJavaCompositeStatement {
 
     /**
      * @return the code for the expression controlling the loop.

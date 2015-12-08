@@ -5,12 +5,26 @@
 
 package org.steamflake.templates.domain.model.api.directives;
 
-import org.steamflake.templates.domain.model.api.elements.ISteamflakeTmDirectiveContainer;
+import org.steamflake.core.domain.base.model.api.elements.ISteamflakeContainerElement;
+import org.steamflake.templates.domain.model.api.elements.ISteamflakeTmDirectiveSequence;
+import org.steamflake.templates.domain.model.api.elements.ISteamflakeTmPackage;
+import org.steamflake.templates.domain.model.api.elements.ISteamflakeTmRootPackage;
 
 /**
  * A Steamflake template directive which has directives inside it.
  */
 public interface ISteamflakeTmCompositeDirective
-    extends ISteamflakeTmAbstractDirective, ISteamflakeTmDirectiveContainer {
+    extends ISteamflakeTmAbstractDirective,
+            ISteamflakeContainerElement<ISteamflakeTmRootPackage, ISteamflakeTmPackage> {
+
+    /**
+     * @return the sequence of directives nested inside this one.
+     */
+    ISteamflakeTmDirectiveSequence getDirectiveSequence();
+
+    /**
+     * @return the keyword of this composite directive.
+     */
+    String getKeyword();
 
 }

@@ -1,9 +1,12 @@
 package org.steamflake.core.domain.javacodegen.impl.services;
 
+import org.steamflake.core.domain.base.model.api.elements.ISteamflakeModelElement;
+import org.steamflake.core.domain.base.model.spi.ISteamflakeModelConsumerService;
 import org.steamflake.core.domain.javacodegen.api.services.JavaCodeGenerator;
 import org.steamflake.core.domain.javamodel.api.elements.IJavaMethod;
+import org.steamflake.core.domain.javamodel.api.elements.IJavaPackage;
 import org.steamflake.core.domain.javamodel.api.elements.IJavaParameter;
-import org.steamflake.core.domain.javamodel.api.services.IJavaModelConsumerService;
+import org.steamflake.core.domain.javamodel.api.elements.IJavaRootPackage;
 import org.steamflake.core.domain.javamodel.api.statements.IJavaStatement;
 import org.steamflake.core.persistence.codeio.codegen.api.CodeWriter;
 
@@ -12,16 +15,18 @@ import org.steamflake.core.persistence.codeio.codegen.api.CodeWriter;
  */
 public final class JavaMethodCodeGenerator
     extends JavaMemberCodeGenerator
-    implements IJavaModelConsumerService<IJavaMethod, CodeWriter> {
+    implements ISteamflakeModelConsumerService<IJavaRootPackage, IJavaPackage, CodeWriter> {
 
     private JavaMethodCodeGenerator() {
     }
 
     @SuppressWarnings( "ParameterNameDiffersFromOverriddenParameter" )
     @Override
-    public void consume(
-        IJavaMethod method, CodeWriter writer
+    public <E extends ISteamflakeModelElement<IJavaRootPackage, IJavaPackage>> void consume(
+        E element, CodeWriter writer
     ) {
+
+        IJavaMethod method = (IJavaMethod) element;
 
         // JavaDoc
         if ( method.getDescription().isPresent() ) {
@@ -35,7 +40,7 @@ public final class JavaMethodCodeGenerator
                 for ( IJavaParameter parameter : method.getParameters() ) {
 
                     writer.alwaysWrap( " * @param " )
-                          .append( parameter.getJavaName() );
+                          .append( parameter.getName() );
 
                     if ( parameter.getDescription().isPresent() ) {
                         writer.append( " " )
@@ -67,7 +72,7 @@ public final class JavaMethodCodeGenerator
 
         // Name
         writer.spaceOrWrap()
-              .append( method.getJavaName() );
+              .append( method.getName() );
 
         // Parameters
         writer.append( "(" )
@@ -98,7 +103,7 @@ public final class JavaMethodCodeGenerator
                   .newLine()
                   .indent();
 
-            for ( IJavaStatement statement : method.getStatements() ) {
+            for ( IJavaStatement statement : method.getCodeBlock().getStatements() ) {
                 statement.consume( JavaCodeGenerator.INSTANCE, writer );
             }
 

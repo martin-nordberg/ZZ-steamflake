@@ -5,17 +5,24 @@
 
 package org.steamflake.core.domain.javamodel.impl.elements;
 
+import org.steamflake.core.domain.base.model.api.utilities.IFileOrigin;
+import org.steamflake.core.domain.base.model.api.utilities.IQualifiedName;
+import org.steamflake.core.domain.base.model.impl.elements.SteamflakeModelElement;
 import org.steamflake.core.domain.javamodel.api.elements.IJavaComponent;
+import org.steamflake.core.domain.javamodel.api.elements.IJavaPackage;
 import org.steamflake.core.domain.javamodel.api.elements.IJavaReferenceType;
+import org.steamflake.core.domain.javamodel.api.elements.IJavaRootPackage;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static java.util.Optional.empty;
 
 /**
  * A reference type.
  */
 public final class JavaReferenceType
-    extends JavaType
+    extends SteamflakeModelElement<IJavaRootPackage, IJavaPackage>
     implements IJavaReferenceType {
 
     /**
@@ -24,7 +31,7 @@ public final class JavaReferenceType
      * @param component The referenced component defining this type
      */
     JavaReferenceType( JavaComponent component ) {
-        super();
+        super( IFileOrigin.UNUSED, empty() );
 
         this.component = component;
         this.typeArgs = new ArrayList<>();
@@ -36,13 +43,13 @@ public final class JavaReferenceType
     }
 
     @Override
-    public String getFullyQualifiedJavaName() {
-        return this.component.getFullyQualifiedJavaName();
+    public String getName() {
+        return this.component.getName() + this.getTypeArgsForName();
     }
 
     @Override
-    public String getJavaName() {
-        return this.component.getJavaName() + this.getTypeArgsForName();
+    public IQualifiedName getQualifiedName() {
+        return this.component.getQualifiedName();
     }
 
     @Override
@@ -60,7 +67,7 @@ public final class JavaReferenceType
         String delimiter = "";
         for ( IJavaComponent typeArg : this.typeArgs ) {
             result.append( delimiter );
-            result.append( typeArg.getJavaName() );
+            result.append( typeArg.getName() );
             delimiter = ",";
         }
         result.append( ">" );

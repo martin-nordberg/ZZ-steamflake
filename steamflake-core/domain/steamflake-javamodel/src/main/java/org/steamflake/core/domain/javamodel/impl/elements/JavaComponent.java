@@ -5,15 +5,16 @@
 
 package org.steamflake.core.domain.javamodel.impl.elements;
 
+import org.steamflake.core.domain.base.model.impl.elements.SteamflakeNamedContainerElement;
 import org.steamflake.core.domain.javamodel.api.elements.EJavaAccessibility;
 import org.steamflake.core.domain.javamodel.api.elements.IJavaComponent;
 import org.steamflake.core.domain.javamodel.api.elements.IJavaFunction;
 import org.steamflake.core.domain.javamodel.api.elements.IJavaImplementedInterface;
 import org.steamflake.core.domain.javamodel.api.elements.IJavaMember;
 import org.steamflake.core.domain.javamodel.api.elements.IJavaMethod;
-import org.steamflake.core.domain.javamodel.api.elements.IJavaNamedModelElement;
 import org.steamflake.core.domain.javamodel.api.elements.IJavaPackage;
 import org.steamflake.core.domain.javamodel.api.elements.IJavaReferenceType;
+import org.steamflake.core.domain.javamodel.api.elements.IJavaRootPackage;
 import org.steamflake.core.domain.javamodel.api.elements.IJavaType;
 import org.steamflake.core.infrastructure.utilities.collections.IIndexable;
 import org.steamflake.core.infrastructure.utilities.collections.ReadOnlyListAdapter;
@@ -35,7 +36,10 @@ public abstract class JavaComponent
      * Constructs a new component.
      */
     protected JavaComponent(
-        IJavaNamedModelElement parent, String name, Optional<String> description, boolean isExternal
+        SteamflakeNamedContainerElement<IJavaRootPackage, IJavaPackage> parent,
+        String name,
+        Optional<String> description,
+        boolean isExternal
     ) {
         super( parent, name, description );
 
@@ -61,11 +65,6 @@ public abstract class JavaComponent
         return new JavaMethod(
             this, name, description, accessibility, isAbstract, isStatic, isFinal, returnType
         );
-    }
-
-    @Override
-    public String getFullyQualifiedJavaName() {
-        return this.getParent().getFullyQualifiedJavaName() + "." + this.getJavaName();
     }
 
     @Override
@@ -98,7 +97,7 @@ public abstract class JavaComponent
                     cresult = m1.getAccessibility().compareTo( m2.getAccessibility() );
                 }
                 if ( cresult == 0 ) {
-                    cresult = m1.compareTo( m2 );
+                    cresult = m1.getName().compareTo( m2.getName() );
                 }
                 if ( cresult == 0 ) {
                     cresult = m1.getParameters().size() - m2.getParameters().size();

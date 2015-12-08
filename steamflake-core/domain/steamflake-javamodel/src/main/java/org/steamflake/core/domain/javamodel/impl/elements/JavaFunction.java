@@ -9,12 +9,8 @@ import org.steamflake.core.domain.javamodel.api.elements.EJavaAccessibility;
 import org.steamflake.core.domain.javamodel.api.elements.IJavaFunction;
 import org.steamflake.core.domain.javamodel.api.elements.IJavaParameter;
 import org.steamflake.core.domain.javamodel.api.elements.IJavaType;
-import org.steamflake.core.domain.javamodel.api.statements.IJavaAssignmentStatement;
-import org.steamflake.core.domain.javamodel.api.statements.IJavaReturnStatement;
-import org.steamflake.core.domain.javamodel.api.statements.IJavaStatement;
-import org.steamflake.core.domain.javamodel.api.statements.IJavaVariableDeclaration;
-import org.steamflake.core.domain.javamodel.api.statements.IJavaWhileLoop;
-import org.steamflake.core.domain.javamodel.impl.statements.JavaCodeBlockImpl;
+import org.steamflake.core.domain.javamodel.api.statements.IJavaCodeBlock;
+import org.steamflake.core.domain.javamodel.impl.statements.JavaCodeBlock;
 import org.steamflake.core.infrastructure.utilities.collections.IIndexable;
 import org.steamflake.core.infrastructure.utilities.collections.ReadOnlyListAdapter;
 
@@ -22,6 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+
+import static java.util.Optional.empty;
 
 /**
  * A Java function (constructor or member).
@@ -45,16 +43,9 @@ public abstract class JavaFunction
         super( parent, name, description, accessibility, isStatic, isFinal, returnType );
 
         this.parameters = new ArrayList<>();
-        this.codeBlock = new JavaCodeBlockImpl( this );
+        this.codeBlock = new JavaCodeBlock( this, empty() );
 
         parent.onAddChild( this );
-    }
-
-    @Override
-    public IJavaAssignmentStatement addAssignmentStatement(
-        Optional<String> description, String leftHandSide, String rightHandSide, Optional<String> extraOperator
-    ) {
-        return this.codeBlock.addAssignmentStatement( description, leftHandSide, rightHandSide, extraOperator );
     }
 
     @Override
@@ -63,22 +54,8 @@ public abstract class JavaFunction
     }
 
     @Override
-    public IJavaReturnStatement addReturnStatement(
-        Optional<String> description, Optional<String> returnValue
-    ) {
-        return this.codeBlock.addReturnStatement( description, returnValue );
-    }
-
-    @Override
-    public IJavaVariableDeclaration addVariableDeclaration(
-        String name, Optional<String> description, IJavaType type, Optional<String> initialValue
-    ) {
-        return this.codeBlock.addVariableDeclaration( name, description, type, initialValue );
-    }
-
-    @Override
-    public IJavaWhileLoop addWhileLoop( Optional<String> description, String loopCondition ) {
-        return this.codeBlock.addWhileLoop( description, loopCondition );
+    public IJavaCodeBlock getCodeBlock() {
+        return this.codeBlock;
     }
 
     @Override
@@ -102,18 +79,13 @@ public abstract class JavaFunction
         return this.getType();
     }
 
-    @Override
-    public IIndexable<IJavaStatement> getStatements() {
-        return this.codeBlock.getStatements();
-    }
-
     /** Responds to the event of adding a child to this model element. */
     void onAddChild( IJavaParameter child ) {
         super.onAddChild( child );
         this.parameters.add( child );
     }
 
-    private final JavaCodeBlockImpl codeBlock;
+    private final JavaCodeBlock codeBlock;
 
     private final List<IJavaParameter> parameters;
 

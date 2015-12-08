@@ -1,9 +1,12 @@
 package org.steamflake.core.domain.javacodegen.impl.services;
 
+import org.steamflake.core.domain.base.model.api.elements.ISteamflakeModelElement;
+import org.steamflake.core.domain.base.model.spi.ISteamflakeModelConsumerService;
 import org.steamflake.core.domain.javacodegen.api.services.JavaCodeGenerator;
-import org.steamflake.core.domain.javamodel.api.elements.IJavaConstructor;
+import org.steamflake.core.domain.javamodel.api.elements.IJavaFunction;
+import org.steamflake.core.domain.javamodel.api.elements.IJavaPackage;
 import org.steamflake.core.domain.javamodel.api.elements.IJavaParameter;
-import org.steamflake.core.domain.javamodel.api.services.IJavaModelConsumerService;
+import org.steamflake.core.domain.javamodel.api.elements.IJavaRootPackage;
 import org.steamflake.core.domain.javamodel.api.statements.IJavaStatement;
 import org.steamflake.core.persistence.codeio.codegen.api.CodeWriter;
 
@@ -12,16 +15,19 @@ import org.steamflake.core.persistence.codeio.codegen.api.CodeWriter;
  */
 public final class JavaConstructorCodeGenerator
     extends JavaMemberCodeGenerator
-    implements IJavaModelConsumerService<IJavaConstructor, CodeWriter> {
+    implements ISteamflakeModelConsumerService<IJavaRootPackage, IJavaPackage, CodeWriter> {
 
     private JavaConstructorCodeGenerator() {
     }
 
     @SuppressWarnings( "ParameterNameDiffersFromOverriddenParameter" )
     @Override
-    public void consume(
-        IJavaConstructor constructor, CodeWriter writer
+    public <E extends ISteamflakeModelElement<IJavaRootPackage, IJavaPackage>> void consume(
+        E element, CodeWriter writer
     ) {
+
+        IJavaFunction constructor = (IJavaFunction) element;
+
 
         // JavaDoc
         if ( constructor.getDescription().isPresent() ) {
@@ -35,7 +41,7 @@ public final class JavaConstructorCodeGenerator
                 for ( IJavaParameter parameter : constructor.getParameters() ) {
 
                     writer.alwaysWrap( " * @param " )
-                          .append( parameter.getJavaName() );
+                          .append( parameter.getName() );
 
                     if ( parameter.getDescription().isPresent() ) {
                         writer.append( " " )
@@ -61,7 +67,7 @@ public final class JavaConstructorCodeGenerator
         this.writeQualifiers( constructor, writer );
 
         // Name
-        writer.append( constructor.getJavaName() );
+        writer.append( constructor.getName() );
 
         // Parameters
         writer.append( "(" )
@@ -87,7 +93,7 @@ public final class JavaConstructorCodeGenerator
               .newLine()
               .indent();
 
-        for ( IJavaStatement statement : constructor.getStatements() ) {
+        for ( IJavaStatement statement : constructor.getCodeBlock().getStatements() ) {
             statement.consume( JavaCodeGenerator.INSTANCE, writer );
         }
 

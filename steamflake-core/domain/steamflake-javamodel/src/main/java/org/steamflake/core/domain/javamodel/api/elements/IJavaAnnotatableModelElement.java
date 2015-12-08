@@ -5,6 +5,7 @@
 
 package org.steamflake.core.domain.javamodel.api.elements;
 
+import org.steamflake.core.domain.base.model.api.elements.ISteamflakeNamedContainerElement;
 import org.steamflake.core.infrastructure.utilities.collections.IIndexable;
 
 import java.util.Optional;
@@ -15,7 +16,7 @@ import java.util.Set;
  */
 @SuppressWarnings( "ClassReferencesSubclass" )
 public interface IJavaAnnotatableModelElement
-    extends IJavaNamedModelElement {
+    extends ISteamflakeNamedContainerElement<IJavaRootPackage, IJavaPackage> {
 
     /**
      * Creates an annotation for this named model element.

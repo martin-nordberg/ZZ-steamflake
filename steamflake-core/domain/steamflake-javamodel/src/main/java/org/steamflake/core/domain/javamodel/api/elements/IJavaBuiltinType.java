@@ -8,7 +8,7 @@ package org.steamflake.core.domain.javamodel.api.elements;
 /**
  * A built-in type.
  */
-@SuppressWarnings( "javadoc" )
+@SuppressWarnings( "ComparableImplementedButEqualsNotOverridden" )
 public interface IJavaBuiltinType
     extends IJavaType {
 

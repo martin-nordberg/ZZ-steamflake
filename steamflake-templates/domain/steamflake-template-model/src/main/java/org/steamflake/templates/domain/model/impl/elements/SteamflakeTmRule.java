@@ -8,10 +8,9 @@ package org.steamflake.templates.domain.model.impl.elements;
 import org.steamflake.core.domain.base.model.api.elements.ESteamflakeAbstractness;
 import org.steamflake.core.domain.base.model.api.elements.ESteamflakeAccessibility;
 import org.steamflake.core.domain.base.model.api.utilities.IFileOrigin;
-import org.steamflake.core.domain.base.model.impl.elements.SteamflakeNamedModelElement;
+import org.steamflake.core.domain.base.model.impl.elements.SteamflakeNamedContainerElement;
 import org.steamflake.core.infrastructure.utilities.collections.IIndexable;
 import org.steamflake.core.infrastructure.utilities.collections.ReadOnlyListAdapter;
-import org.steamflake.templates.domain.model.api.directives.ISteamflakeTmAbstractDirective;
 import org.steamflake.templates.domain.model.api.elements.ISteamflakeTmPackage;
 import org.steamflake.templates.domain.model.api.elements.ISteamflakeTmParameter;
 import org.steamflake.templates.domain.model.api.elements.ISteamflakeTmRootPackage;
@@ -22,12 +21,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static java.util.Optional.empty;
+
 /**
  * Implementation of a Steamflake template rule.
  */
 public class SteamflakeTmRule
-    extends SteamflakeNamedModelElement<ISteamflakeTmRootPackage, ISteamflakeTmPackage>
-    implements ISteamflakeTmRule, ISteamflakeTmDirectiveContainerMixin {
+    extends SteamflakeNamedContainerElement<ISteamflakeTmRootPackage, ISteamflakeTmPackage>
+    implements ISteamflakeTmRule {
 
     @SuppressWarnings( "TypeMayBeWeakened" )
     public SteamflakeTmRule(
@@ -44,7 +45,8 @@ public class SteamflakeTmRule
         this.abstractness = abstractness;
 
         this.parameters = new ArrayList<>();
-        this.directives = new ArrayList<>();
+
+        this.directiveSequence = new SteamflakeTmDirectiveSequence( this, IFileOrigin.UNUSED, empty() );
 
         parent.onAddChild( this );
     }
@@ -67,13 +69,8 @@ public class SteamflakeTmRule
     }
 
     @Override
-    public IIndexable<ISteamflakeTmAbstractDirective> getDirectives() {
-        return new ReadOnlyListAdapter<>( this.directives );
-    }
-
-    @Override
-    public String getKeyword() {
-        return "rule";
+    public SteamflakeTmDirectiveSequence getDirectiveSequence() {
+        return this.directiveSequence;
     }
 
     @Override
@@ -86,12 +83,6 @@ public class SteamflakeTmRule
         return (ISteamflakeTmTemplate) super.getParent();
     }
 
-    /** Responds to the event of adding a child directive to this rule. */
-    public void onAddChild( ISteamflakeTmAbstractDirective child ) {
-        super.onAddChild( child );
-        this.directives.add( child );
-    }
-
     /** Responds to the event of adding a child parameter to this rule. */
     void onAddChild( ISteamflakeTmParameter child ) {
         super.onAddChild( child );
@@ -102,7 +93,7 @@ public class SteamflakeTmRule
 
     private final ESteamflakeAccessibility accessibility;
 
-    private final List<ISteamflakeTmAbstractDirective> directives;
+    private final SteamflakeTmDirectiveSequence directiveSequence;
 
     private final List<ISteamflakeTmParameter> parameters;
 

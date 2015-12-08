@@ -18,7 +18,7 @@ public interface ISteamflakeAbstractPackage<
     IRootPackage extends ISteamflakeAbstractPackage<IRootPackage, IConcretePackage>,
     IConcretePackage extends ISteamflakeAbstractPackage<IRootPackage, IConcretePackage>
     >
-    extends ISteamflakeNamedModelElement<IRootPackage, IConcretePackage> {
+    extends ISteamflakeNamedContainerElement<IRootPackage, IConcretePackage> {
 
     /**
      * Creates a package within this one.

@@ -8,7 +8,7 @@ package org.steamflake.templates.domain.model.impl.elements;
 import org.steamflake.core.domain.base.model.api.elements.ESteamflakeAbstractness;
 import org.steamflake.core.domain.base.model.api.elements.ESteamflakeAccessibility;
 import org.steamflake.core.domain.base.model.api.utilities.IFileOrigin;
-import org.steamflake.core.domain.base.model.impl.elements.SteamflakeNamedModelElement;
+import org.steamflake.core.domain.base.model.impl.elements.SteamflakeNamedContainerElement;
 import org.steamflake.core.infrastructure.utilities.collections.IIndexable;
 import org.steamflake.core.infrastructure.utilities.collections.ReadOnlyListAdapter;
 import org.steamflake.templates.domain.model.api.elements.ISteamflakeTmImport;
@@ -25,7 +25,7 @@ import java.util.Optional;
  * Implementation of Steamflake template.
  */
 public class SteamflakeTmTemplate
-    extends SteamflakeNamedModelElement<ISteamflakeTmRootPackage, ISteamflakeTmPackage>
+    extends SteamflakeNamedContainerElement<ISteamflakeTmRootPackage, ISteamflakeTmPackage>
     implements ISteamflakeTmTemplate {
 
     @SuppressWarnings( "TypeMayBeWeakened" )

@@ -26,7 +26,7 @@ public class JavaAssignmentStatement
      * @param extraOperator an extra operator to include in the assignment, e.g. "+" for += assignment.
      */
     protected JavaAssignmentStatement(
-        JavaCodeBlockImpl codeBlock,
+        JavaCodeBlock codeBlock,
         Optional<String> description,
         String leftHandSide,
         String rightHandSide,

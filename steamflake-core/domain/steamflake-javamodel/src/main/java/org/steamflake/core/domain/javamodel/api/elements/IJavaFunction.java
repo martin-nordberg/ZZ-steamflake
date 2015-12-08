@@ -14,7 +14,7 @@ import java.util.Optional;
  * A Java function (constructor or member).
  */
 public interface IJavaFunction
-    extends IJavaMember, IJavaCodeBlock {
+    extends IJavaMember {
 
     /**
      * Creates a parameter for this method.
@@ -39,6 +39,9 @@ public interface IJavaFunction
      * @return the newly created parameter.
      */
     IJavaParameter addParameter( String name, Optional<String> description, IJavaType type );
+
+    /** @return the code block within this function. */
+    IJavaCodeBlock getCodeBlock();
 
     /** @return the parameters within this method. */
     IIndexable<IJavaParameter> getParameters();

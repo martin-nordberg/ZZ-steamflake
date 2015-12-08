@@ -5,9 +5,13 @@
 
 package org.steamflake.core.domain.javamodel.impl.elements;
 
+import org.steamflake.core.domain.base.model.api.utilities.IFileOrigin;
+import org.steamflake.core.domain.base.model.impl.elements.SteamflakeModelElement;
 import org.steamflake.core.domain.javamodel.api.elements.IJavaAnnotatableModelElement;
 import org.steamflake.core.domain.javamodel.api.elements.IJavaAnnotation;
 import org.steamflake.core.domain.javamodel.api.elements.IJavaAnnotationInterface;
+import org.steamflake.core.domain.javamodel.api.elements.IJavaPackage;
+import org.steamflake.core.domain.javamodel.api.elements.IJavaRootPackage;
 
 import java.util.Optional;
 
@@ -15,7 +19,7 @@ import java.util.Optional;
  * An annotation
  */
 public final class JavaAnnotation
-    extends JavaModelElement
+    extends SteamflakeModelElement<IJavaRootPackage, IJavaPackage>
     implements IJavaAnnotation {
 
     /**
@@ -27,7 +31,7 @@ public final class JavaAnnotation
         IJavaAnnotationInterface annotationInterface,
         Optional<String> parametersCode
     ) {
-        super( parent, description );
+        super( parent, IFileOrigin.UNUSED, description );
 
         this.annotationInterface = annotationInterface;
         this.parametersCode = parametersCode;

@@ -5,11 +5,13 @@
 
 package org.steamflake.core.domain.javamodel.api.elements;
 
+import org.steamflake.core.domain.base.model.api.elements.ISteamflakeModelElement;
+
 /**
  * An implements clause.
  */
 public interface IJavaImplementedInterface
-    extends IJavaModelElement {
+    extends ISteamflakeModelElement<IJavaRootPackage, IJavaPackage> {
 
     /** Returns the implementedInterface. */
     IJavaInterface getImplementedInterface();

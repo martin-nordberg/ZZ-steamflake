@@ -8,11 +8,10 @@ package org.steamflake.templates.domain.model.impl.directives;
 import org.steamflake.core.domain.base.model.api.utilities.IFileOrigin;
 import org.steamflake.core.domain.base.model.impl.elements.SteamflakeModelElement;
 import org.steamflake.templates.domain.model.api.directives.ISteamflakeTmAbstractDirective;
-import org.steamflake.templates.domain.model.api.elements.ISteamflakeTmDirectiveContainer;
+import org.steamflake.templates.domain.model.api.elements.ISteamflakeTmDirectiveSequence;
 import org.steamflake.templates.domain.model.api.elements.ISteamflakeTmPackage;
 import org.steamflake.templates.domain.model.api.elements.ISteamflakeTmRootPackage;
-import org.steamflake.templates.domain.model.impl.elements.ISteamflakeTmDirectiveContainerMixin;
-import org.steamflake.templates.domain.model.impl.elements.SteamflakeTmRule;
+import org.steamflake.templates.domain.model.impl.elements.SteamflakeTmDirectiveSequence;
 
 import java.util.Optional;
 
@@ -30,22 +29,17 @@ public abstract class SteamflakeTmAbstractDirective
      */
     @SuppressWarnings( { "TypeMayBeWeakened", "ClassReferencesSubclass" } )
     protected SteamflakeTmAbstractDirective(
-        ISteamflakeTmDirectiveContainerMixin parent,
+        SteamflakeTmDirectiveSequence parent,
         Optional<IFileOrigin> origin
     ) {
         super( parent, origin, Optional.empty() );
 
-        if ( parent instanceof SteamflakeTmRule ) {
-            ( (SteamflakeTmRule) parent ).onAddChild( this );
-        }
-        else {
-            ( (SteamflakeTmCompositeDirective) parent ).onAddChild( this );
-        }
+        parent.onAddChild( this );
     }
 
     @Override
-    public ISteamflakeTmDirectiveContainer getParent() {
-        return (ISteamflakeTmDirectiveContainer) super.getParent();
+    public ISteamflakeTmDirectiveSequence getParent() {
+        return (ISteamflakeTmDirectiveSequence) super.getParent();
     }
 
 }

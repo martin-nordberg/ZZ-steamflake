@@ -7,7 +7,7 @@ package org.steamflake.templates.domain.model.api.elements;
 
 import org.steamflake.core.domain.base.model.api.elements.ESteamflakeAbstractness;
 import org.steamflake.core.domain.base.model.api.elements.ESteamflakeAccessibility;
-import org.steamflake.core.domain.base.model.api.elements.ISteamflakeNamedModelElement;
+import org.steamflake.core.domain.base.model.api.elements.ISteamflakeNamedContainerElement;
 import org.steamflake.core.domain.base.model.api.utilities.IFileOrigin;
 import org.steamflake.core.infrastructure.utilities.collections.IIndexable;
 
@@ -17,7 +17,7 @@ import java.util.Optional;
  * Interface to a Steamflake template.
  */
 public interface ISteamflakeTmTemplate
-    extends ISteamflakeNamedModelElement<ISteamflakeTmRootPackage, ISteamflakeTmPackage> {
+    extends ISteamflakeNamedContainerElement<ISteamflakeTmRootPackage, ISteamflakeTmPackage> {
 
     /**
      * Adds a new import to this template.

@@ -8,7 +8,7 @@ package org.steamflake.templates.domain.model.impl.directives.whitespace;
 import org.steamflake.core.domain.base.model.api.utilities.IFileOrigin;
 import org.steamflake.templates.domain.model.api.directives.whitespace.ISteamflakeTmNewLineDirective;
 import org.steamflake.templates.domain.model.impl.directives.SteamflakeTmAbstractDirective;
-import org.steamflake.templates.domain.model.impl.elements.ISteamflakeTmDirectiveContainerMixin;
+import org.steamflake.templates.domain.model.impl.elements.SteamflakeTmDirectiveSequence;
 
 import java.util.Optional;
 
@@ -29,7 +29,7 @@ public class SteamflakeTmNewLineDirective
      * @param boolConditionPath        path for a condition to test whether the new line is really needed.
      */
     public SteamflakeTmNewLineDirective(
-        ISteamflakeTmDirectiveContainerMixin parent,
+        SteamflakeTmDirectiveSequence parent,
         Optional<IFileOrigin> origin,
         boolean isSpaceNeededIfNoNewLine,
         Optional<String> boolConditionPath

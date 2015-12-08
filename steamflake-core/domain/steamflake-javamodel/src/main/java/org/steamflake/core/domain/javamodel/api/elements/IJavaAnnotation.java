@@ -5,13 +5,15 @@
 
 package org.steamflake.core.domain.javamodel.api.elements;
 
+import org.steamflake.core.domain.base.model.api.elements.ISteamflakeModelElement;
+
 import java.util.Optional;
 
 /**
  * An annotation.
  */
 public interface IJavaAnnotation
-    extends IJavaModelElement {
+    extends ISteamflakeModelElement<IJavaRootPackage, IJavaPackage> {
 
     /** @return the annotationInterface. */
     IJavaAnnotationInterface getAnnotationInterface();

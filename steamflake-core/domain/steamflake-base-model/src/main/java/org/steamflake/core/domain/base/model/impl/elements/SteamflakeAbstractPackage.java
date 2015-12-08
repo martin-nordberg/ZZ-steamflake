@@ -21,15 +21,29 @@ public abstract class SteamflakeAbstractPackage<
     IRootPackage extends ISteamflakeAbstractPackage<IRootPackage, IConcretePackage>,
     IConcretePackage extends ISteamflakeAbstractPackage<IRootPackage, IConcretePackage>
     >
-    extends SteamflakeNamedModelElement<IRootPackage, IConcretePackage>
+    extends SteamflakeNamedContainerElement<IRootPackage, IConcretePackage>
     implements ISteamflakeAbstractPackage<IRootPackage, IConcretePackage> {
+
+    /**
+     * Constructs a new abstract Steamflake root package (no parent).
+     */
+    @SuppressWarnings( "TypeMayBeWeakened" )
+    protected SteamflakeAbstractPackage(
+        Optional<IFileOrigin> origin,
+        String name,
+        Optional<String> description
+    ) {
+        super( origin, name, description );
+
+        this.packages = new ArrayList<>();
+    }
 
     /**
      * Constructs a new abstract Steamflake package (package or root package).
      */
     @SuppressWarnings( "TypeMayBeWeakened" )
     protected SteamflakeAbstractPackage(
-        ISteamflakeAbstractPackage<IRootPackage, IConcretePackage> parent,
+        SteamflakeAbstractPackage<IRootPackage, IConcretePackage> parent,
         Optional<IFileOrigin> origin,
         String name,
         Optional<String> description
@@ -52,7 +66,7 @@ public abstract class SteamflakeAbstractPackage<
 
         // look for an existing sub-package
         for ( IConcretePackage stpackage : this.packages ) {
-            if ( stpackage.getId().getName().equals( packageNames[0] ) ) {
+            if ( stpackage.getName().equals( packageNames[0] ) ) {
                 if ( packageNames.length == 1 ) {
                     return stpackage;
                 }

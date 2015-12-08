@@ -5,7 +5,9 @@
 
 package org.steamflake.core.domain.javamodel.impl.elements;
 
-import org.steamflake.core.domain.javamodel.api.elements.IJavaNamedModelElement;
+import org.steamflake.core.domain.base.model.impl.elements.SteamflakeNamedContainerElement;
+import org.steamflake.core.domain.javamodel.api.elements.IJavaPackage;
+import org.steamflake.core.domain.javamodel.api.elements.IJavaRootPackage;
 import org.steamflake.core.domain.javamodel.api.elements.IJavaType;
 import org.steamflake.core.domain.javamodel.api.elements.IJavaTypedModelElement;
 
@@ -23,7 +25,10 @@ public abstract class JavaTypedModelElement
      * Constructs a new member.
      */
     protected JavaTypedModelElement(
-        IJavaNamedModelElement parent, String name, Optional<String> description, IJavaType type
+        SteamflakeNamedContainerElement<IJavaRootPackage, IJavaPackage> parent,
+        String name,
+        Optional<String> description,
+        IJavaType type
     ) {
         super( parent, name, description );
 

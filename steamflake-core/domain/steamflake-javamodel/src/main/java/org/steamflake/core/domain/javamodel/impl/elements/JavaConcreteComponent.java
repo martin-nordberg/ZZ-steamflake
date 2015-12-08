@@ -84,7 +84,7 @@ public abstract class JavaConcreteComponent
                     cresult = f1.getAccessibility().compareTo( f2.getAccessibility() );
                 }
                 if ( cresult == 0 ) {
-                    cresult = f1.compareTo( f2 );
+                    cresult = f1.getName().compareTo( f2.getName() );
                 }
                 return cresult;
             }

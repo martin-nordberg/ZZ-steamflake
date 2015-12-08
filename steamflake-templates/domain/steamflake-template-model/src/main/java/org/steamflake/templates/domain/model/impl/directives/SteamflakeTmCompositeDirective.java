@@ -6,22 +6,24 @@
 package org.steamflake.templates.domain.model.impl.directives;
 
 import org.steamflake.core.domain.base.model.api.utilities.IFileOrigin;
-import org.steamflake.core.infrastructure.utilities.collections.IIndexable;
-import org.steamflake.core.infrastructure.utilities.collections.ReadOnlyListAdapter;
-import org.steamflake.templates.domain.model.api.directives.ISteamflakeTmAbstractDirective;
+import org.steamflake.core.domain.base.model.impl.elements.SteamflakeContainerElement;
 import org.steamflake.templates.domain.model.api.directives.ISteamflakeTmCompositeDirective;
-import org.steamflake.templates.domain.model.impl.elements.ISteamflakeTmDirectiveContainerMixin;
+import org.steamflake.templates.domain.model.api.elements.ISteamflakeTmDirectiveSequence;
+import org.steamflake.templates.domain.model.api.elements.ISteamflakeTmPackage;
+import org.steamflake.templates.domain.model.api.elements.ISteamflakeTmRootPackage;
+import org.steamflake.templates.domain.model.impl.elements.SteamflakeTmDirectiveSequence;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
+
+import static java.util.Optional.empty;
 
 /**
  * Base class for Steamflake directives that contain sub-directives.
  */
+@SuppressWarnings( "BooleanParameter" )
 public abstract class SteamflakeTmCompositeDirective
-    extends SteamflakeTmAbstractDirective
-    implements ISteamflakeTmCompositeDirective, ISteamflakeTmDirectiveContainerMixin {
+    extends SteamflakeContainerElement<ISteamflakeTmRootPackage, ISteamflakeTmPackage>
+    implements ISteamflakeTmCompositeDirective {
 
     /**
      * Constructs a new Steamflake directive.
@@ -29,17 +31,24 @@ public abstract class SteamflakeTmCompositeDirective
      * @param parent the parent of this directive.
      */
     protected SteamflakeTmCompositeDirective(
-        ISteamflakeTmDirectiveContainerMixin parent,
+        SteamflakeTmDirectiveSequence parent,
         Optional<IFileOrigin> origin
     ) {
-        super( parent, origin );
+        super( parent, origin, empty() );
 
-        this.directives = new ArrayList<>();
+        this.directiveSequence = new SteamflakeTmDirectiveSequence( this, IFileOrigin.UNUSED, empty() );
+
+        parent.onAddChild( this );
     }
 
     @Override
-    public IIndexable<ISteamflakeTmAbstractDirective> getDirectives() {
-        return new ReadOnlyListAdapter<>( this.directives );
+    public SteamflakeTmDirectiveSequence getDirectiveSequence() {
+        return this.directiveSequence;
+    }
+
+    @Override
+    public ISteamflakeTmDirectiveSequence getParent() {
+        return (ISteamflakeTmDirectiveSequence) super.getParent();
     }
 
     @Override
@@ -47,12 +56,6 @@ public abstract class SteamflakeTmCompositeDirective
         return true;
     }
 
-    /** Responds to the event of adding a child directive to this rule. */
-    public void onAddChild( ISteamflakeTmAbstractDirective child ) {
-        this.directives.add( child );
-    }
-
-    /** The sub-directives within this composite directive. */
-    private final List<ISteamflakeTmAbstractDirective> directives;
+    private final SteamflakeTmDirectiveSequence directiveSequence;
 
 }

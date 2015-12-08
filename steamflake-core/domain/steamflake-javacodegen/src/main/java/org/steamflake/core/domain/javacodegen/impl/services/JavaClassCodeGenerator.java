@@ -1,14 +1,17 @@
 package org.steamflake.core.domain.javacodegen.impl.services;
 
+import org.steamflake.core.domain.base.model.api.elements.ISteamflakeModelElement;
+import org.steamflake.core.domain.base.model.spi.ISteamflakeModelConsumerService;
 import org.steamflake.core.domain.javacodegen.api.services.JavaCodeGenerator;
 import org.steamflake.core.domain.javamodel.api.elements.IJavaClass;
 import org.steamflake.core.domain.javamodel.api.elements.IJavaConstructor;
 import org.steamflake.core.domain.javamodel.api.elements.IJavaField;
 import org.steamflake.core.domain.javamodel.api.elements.IJavaImplementedInterface;
 import org.steamflake.core.domain.javamodel.api.elements.IJavaMethod;
+import org.steamflake.core.domain.javamodel.api.elements.IJavaPackage;
+import org.steamflake.core.domain.javamodel.api.elements.IJavaRootPackage;
 import org.steamflake.core.domain.javamodel.api.elements.IJavaStaticInitialization;
 import org.steamflake.core.domain.javamodel.api.elements.IJavaType;
-import org.steamflake.core.domain.javamodel.api.services.IJavaModelConsumerService;
 import org.steamflake.core.persistence.codeio.codegen.api.CodeWriter;
 
 /**
@@ -16,19 +19,23 @@ import org.steamflake.core.persistence.codeio.codegen.api.CodeWriter;
  */
 public final class JavaClassCodeGenerator
     extends JavaAnnotatableModelElementCodeGenerator
-    implements IJavaModelConsumerService<IJavaClass, CodeWriter> {
+    implements ISteamflakeModelConsumerService<IJavaRootPackage, IJavaPackage, CodeWriter> {
 
     private JavaClassCodeGenerator() {
     }
 
     @SuppressWarnings( "ParameterNameDiffersFromOverriddenParameter" )
     @Override
-    public void consume( IJavaClass klass, CodeWriter writer ) {
+    public <E extends ISteamflakeModelElement<IJavaRootPackage, IJavaPackage>> void consume(
+        E element, CodeWriter writer
+    ) {
+
+        IJavaClass klass = (IJavaClass) element;
 
         // Package declaration
         writer.newLine()
               .append( "package " )
-              .append( klass.getParent().getFullyQualifiedJavaName() )
+              .append( klass.getParent().getQualifiedName().getPath() )
               .append( ";" )
               .newLine()
               .newLine();
@@ -36,7 +43,7 @@ public final class JavaClassCodeGenerator
         // Imports
         for ( IJavaType imp : klass.getImports() ) {
             writer.append( "import " )
-                  .append( imp.getFullyQualifiedJavaName() )
+                  .append( imp.getQualifiedName().getPath() )
                   .append( ";" )
                   .newLine();
         }
@@ -63,7 +70,7 @@ public final class JavaClassCodeGenerator
               .appendIf( klass.isFinal(), "final " )
               .appendIf( klass.isAbstract(), "abstract " )
               .append( "class " )
-              .append( klass.getJavaName() );
+              .append( klass.getName() );
         // TODO: type args
 
         // Extends
@@ -71,7 +78,7 @@ public final class JavaClassCodeGenerator
             writer.newLine()
                   .indent()
                   .append( "extends " )
-                  .append( klass.getBaseClass().get().getJavaName() )
+                  .append( klass.getBaseClass().get().getName() )
                   .unindent();
         }
 
@@ -81,7 +88,7 @@ public final class JavaClassCodeGenerator
                   .indent()
                   .append( "implements " );
             for ( IJavaImplementedInterface implInterface : klass.getImplementedInterfaces() ) {
-                writer.append( implInterface.getImplementedInterface().getJavaName() )
+                writer.append( implInterface.getImplementedInterface().getName() )
                       .mark()
                       .append( ", " );
             }

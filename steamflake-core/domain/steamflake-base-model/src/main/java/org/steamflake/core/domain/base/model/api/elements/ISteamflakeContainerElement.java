@@ -5,18 +5,20 @@
 
 package org.steamflake.core.domain.base.model.api.elements;
 
+import org.steamflake.core.infrastructure.utilities.collections.IIndexable;
+
 /**
- * A generic model element with a name.
+ * A generic model element that contains sub-elements.
  */
-public interface ISteamflakeNamedModelElement<
+public interface ISteamflakeContainerElement<
     IRootPackage extends ISteamflakeAbstractPackage<IRootPackage, IConcretePackage>,
     IConcretePackage extends ISteamflakeAbstractPackage<IRootPackage, IConcretePackage>
     >
     extends ISteamflakeModelElement<IRootPackage, IConcretePackage> {
 
     /**
-     * @return The name of this element.
+     * @return The children of this model element.
      */
-    String getName();
+    IIndexable<ISteamflakeModelElement<IRootPackage, IConcretePackage>> getChildren();
 
 }

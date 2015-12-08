@@ -9,7 +9,7 @@ import org.steamflake.core.domain.base.model.api.utilities.IFileOrigin;
 import org.steamflake.core.persistence.codeio.scanning.FileScanner;
 import org.steamflake.templates.domain.model.api.directives.ISteamflakeTmAbstractDirective;
 import org.steamflake.templates.domain.model.api.directives.variables.ISteamflakeTmVariableDirective;
-import org.steamflake.templates.domain.model.api.elements.ISteamflakeTmDirectiveContainer;
+import org.steamflake.templates.domain.model.api.elements.ISteamflakeTmDirectiveSequence;
 import org.steamflake.templates.domain.parser.api.SteamflakeTmParser;
 
 import java.util.Optional;
@@ -30,7 +30,7 @@ public class SteamflakeTmDirectiveParser {
      * @param tokenBody the code to parse.
      */
     public SteamflakeTmDirectiveParser(
-        ISteamflakeTmDirectiveContainer container,
+        ISteamflakeTmDirectiveSequence container,
         FileScanner.Token tokenBody
     ) {
 
@@ -193,7 +193,7 @@ public class SteamflakeTmDirectiveParser {
     }
 
     /** The rule to which the parsed rule body tokens are to be added. */
-    private final ISteamflakeTmDirectiveContainer container;
+    private final ISteamflakeTmDirectiveSequence container;
 
     /** The scanner of template file input. */
     private final FileScanner scanner;
