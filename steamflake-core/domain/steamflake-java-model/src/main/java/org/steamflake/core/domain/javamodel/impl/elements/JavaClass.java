@@ -5,6 +5,7 @@
 
 package org.steamflake.core.domain.javamodel.impl.elements;
 
+import org.steamflake.core.domain.base.model.api.elements.ESteamflakeAbstractness;
 import org.steamflake.core.domain.javamodel.api.elements.IJavaClass;
 import org.steamflake.core.domain.javamodel.api.elements.IJavaType;
 
@@ -26,17 +27,20 @@ public final class JavaClass
         String name,
         Optional<String> description,
         boolean isExternal,
-        boolean isAbstract,
-        boolean isFinal,
+        ESteamflakeAbstractness abstractness,
         Optional<IJavaClass> baseClass
     ) {
         super( parent, name, description, isExternal );
 
-        this.isAbstract = isAbstract;
-        this.isFinal = isFinal;
+        this.abstractness = abstractness;
         this.baseClass = baseClass;
 
         parent.onAddChild( this );
+    }
+
+    @Override
+    public ESteamflakeAbstractness getAbstractness() {
+        return this.abstractness;
     }
 
     @Override
@@ -56,25 +60,13 @@ public final class JavaClass
     }
 
     @Override
-    public boolean isAbstract() {
-        return this.isAbstract;
-    }
-
-    @Override
-    public boolean isFinal() {
-        return this.isFinal;
-    }
-
-    @Override
     public void setBaseClass( IJavaClass baseClass ) {
         assert !this.baseClass.isPresent() : "Cannot change base class once set.";
         this.baseClass = Optional.of( baseClass );
     }
 
+    private final ESteamflakeAbstractness abstractness;
+
     private Optional<IJavaClass> baseClass;
-
-    private final boolean isAbstract;
-
-    private final boolean isFinal;
 
 }

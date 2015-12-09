@@ -5,6 +5,8 @@
 
 package org.steamflake.core.domain.javamodel.api.elements;
 
+import org.steamflake.core.domain.base.model.api.elements.ESteamflakeAbstractness;
+import org.steamflake.core.domain.base.model.api.elements.ESteamflakeAccessibility;
 import org.steamflake.core.infrastructure.utilities.collections.IIndexable;
 
 import java.util.Optional;
@@ -33,8 +35,8 @@ public interface IJavaComponent
         return this.addMethod(
             name,
             Optional.of( description ),
-            EJavaAccessibility.PUBLIC,
-            false,
+            ESteamflakeAccessibility.PUBLIC,
+            ESteamflakeAbstractness.CONCRETE,
             false,
             false,
             returnType
@@ -47,7 +49,7 @@ public interface IJavaComponent
      * @param name          the name of the method.
      * @param description   a description of the method.
      * @param accessibility the accessibility of the method.
-     * @param isAbstract    whether the new method is abstract.
+     * @param abstractness  whether the new method is abstract.
      * @param isStatic      whether the new method is static.
      * @param isFinal       whether the new method is final.
      * @param returnType    the return type of the method.
@@ -58,8 +60,8 @@ public interface IJavaComponent
     IJavaMethod addMethod(
         String name,
         Optional<String> description,
-        EJavaAccessibility accessibility,
-        boolean isAbstract,
+        ESteamflakeAccessibility accessibility,
+        ESteamflakeAbstractness abstractness,
         boolean isStatic,
         boolean isFinal,
         IJavaType returnType

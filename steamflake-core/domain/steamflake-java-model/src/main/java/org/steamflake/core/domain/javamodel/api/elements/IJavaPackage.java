@@ -5,6 +5,7 @@
 
 package org.steamflake.core.domain.javamodel.api.elements;
 
+import org.steamflake.core.domain.base.model.api.elements.ESteamflakeAbstractness;
 import org.steamflake.core.infrastructure.utilities.collections.IIndexable;
 
 import java.util.Optional;
@@ -33,8 +34,7 @@ public interface IJavaPackage
     IJavaClass addClass(
         String name,
         Optional<String> description,
-        boolean isAbstract,
-        boolean isFinal,
+        ESteamflakeAbstractness abstractness,
         Optional<IJavaClass> baseClass
     );
 

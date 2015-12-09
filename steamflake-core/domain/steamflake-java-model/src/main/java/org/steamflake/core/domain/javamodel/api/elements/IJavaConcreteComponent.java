@@ -5,6 +5,7 @@
 
 package org.steamflake.core.domain.javamodel.api.elements;
 
+import org.steamflake.core.domain.base.model.api.elements.ESteamflakeAccessibility;
 import org.steamflake.core.infrastructure.utilities.collections.IIndexable;
 
 import java.util.Optional;
@@ -17,14 +18,14 @@ public interface IJavaConcreteComponent
 
     /** Creates a constructor within this class. */
     default IJavaConstructor addConstructor(
-        String description, EJavaAccessibility accessibility
+        String description, ESteamflakeAccessibility accessibility
     ) {
         return this.addConstructor( Optional.of( description ), accessibility );
     }
 
     /** Creates a constructor within this class. */
     IJavaConstructor addConstructor(
-        Optional<String> description, EJavaAccessibility accessibility
+        Optional<String> description, ESteamflakeAccessibility accessibility
     );
 
     /**
@@ -40,7 +41,15 @@ public interface IJavaConcreteComponent
         String name,
         IJavaType type
     ) {
-        return this.addField( name, Optional.empty(), EJavaAccessibility.PRIVATE, false, true, type, Optional.empty() );
+        return this.addField(
+            name,
+            Optional.empty(),
+            ESteamflakeAccessibility.PRIVATE,
+            false,
+            true,
+            type,
+            Optional.empty()
+        );
     }
 
     /**
@@ -60,7 +69,7 @@ public interface IJavaConcreteComponent
     IJavaField addField(
         String name,
         Optional<String> description,
-        EJavaAccessibility accessibility,
+        ESteamflakeAccessibility accessibility,
         boolean isStatic,
         boolean isFinalField,
         IJavaType type,

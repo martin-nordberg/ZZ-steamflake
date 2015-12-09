@@ -67,8 +67,8 @@ public final class JavaClassCodeGenerator
 
         // Class name
         writer.append( "public " )
-              .appendIf( klass.isFinal(), "final " )
-              .appendIf( klass.isAbstract(), "abstract " )
+              .appendIf( klass.getAbstractness().isConcrete(), "final " )
+              .appendIf( klass.getAbstractness().isAbstract(), "abstract " )
               .append( "class " )
               .append( klass.getName() );
         // TODO: type args

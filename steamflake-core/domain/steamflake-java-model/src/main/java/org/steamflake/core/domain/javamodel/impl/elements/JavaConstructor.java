@@ -5,7 +5,7 @@
 
 package org.steamflake.core.domain.javamodel.impl.elements;
 
-import org.steamflake.core.domain.javamodel.api.elements.EJavaAccessibility;
+import org.steamflake.core.domain.base.model.api.elements.ESteamflakeAccessibility;
 import org.steamflake.core.domain.javamodel.api.elements.IJavaConcreteComponent;
 import org.steamflake.core.domain.javamodel.api.elements.IJavaConstructor;
 
@@ -22,7 +22,7 @@ public class JavaConstructor
      * Constructs a new constructor.
      */
     JavaConstructor(
-        JavaConcreteComponent parent, Optional<String> description, EJavaAccessibility accessibility
+        JavaConcreteComponent parent, Optional<String> description, ESteamflakeAccessibility accessibility
     ) {
         super(
             parent,

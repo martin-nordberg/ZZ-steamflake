@@ -1,6 +1,7 @@
 package org.steamflake.core.domain.javacodegen.api.services
 
-import org.steamflake.core.domain.javamodel.api.elements.EJavaAccessibility
+import org.steamflake.core.domain.base.model.api.elements.ESteamflakeAbstractness
+import org.steamflake.core.domain.base.model.api.elements.ESteamflakeAccessibility
 import org.steamflake.core.domain.javamodel.api.elements.IJavaRootPackage
 import org.steamflake.core.domain.javamodel.impl.elements.JavaRootPackage
 import org.steamflake.core.persistence.codeio.codegen.api.CodeWriter
@@ -25,13 +26,13 @@ class JavaCodeGeneratorSpec
         IJavaRootPackage root = new JavaRootPackage();
 
         def pkg = root.addPackage( "pkg1" ).addPackage( "pkg2" );
-        def cls = pkg.addClass( "MyClass", Optional.empty(), false, true, Optional.empty() );
+        def cls = pkg.addClass( "MyClass", Optional.empty(), ESteamflakeAbstractness.CONCRETE, Optional.empty() );
 
         cls.addField( "field1", root.builtinInt );
 
-        cls.addConstructor( "Default constructor.", EJavaAccessibility.PROTECTED );
+        cls.addConstructor( "Default constructor.", ESteamflakeAccessibility.PROTECTED );
 
-        def con2 = cls.addConstructor( "Constructs a new instance.", EJavaAccessibility.PUBLIC );
+        def con2 = cls.addConstructor( "Constructs a new instance.", ESteamflakeAccessibility.PUBLIC );
         con2.addParameter( "p1", "first parameter", root.builtinDouble );
         con2.addParameter( "p2", "second parameter", root.builtinFloat );
         con2.codeBlock.addAssignmentStatement( "this.field1", "p1" );

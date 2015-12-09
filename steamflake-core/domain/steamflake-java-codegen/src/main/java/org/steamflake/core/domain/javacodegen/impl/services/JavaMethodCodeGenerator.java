@@ -93,7 +93,7 @@ public final class JavaMethodCodeGenerator
         // Throws
         // TODO
 
-        if ( method.isAbstract() ) {
+        if ( method.getAbstractness().isAbstract() ) {
             // Abstract empty body
             writer.append( ";" );
         }

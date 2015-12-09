@@ -5,7 +5,7 @@
 
 package org.steamflake.core.domain.javamodel.impl.elements;
 
-import org.steamflake.core.domain.javamodel.api.elements.EJavaAccessibility;
+import org.steamflake.core.domain.base.model.api.elements.ESteamflakeAccessibility;
 import org.steamflake.core.domain.javamodel.api.elements.IJavaConcreteComponent;
 import org.steamflake.core.domain.javamodel.api.elements.IJavaField;
 import org.steamflake.core.domain.javamodel.api.elements.IJavaType;
@@ -26,7 +26,7 @@ public final class JavaField
         JavaConcreteComponent parent,
         String name,
         Optional<String> description,
-        EJavaAccessibility accessibility,
+        ESteamflakeAccessibility accessibility,
         boolean isStatic,
         boolean isFinal,
         IJavaType type,

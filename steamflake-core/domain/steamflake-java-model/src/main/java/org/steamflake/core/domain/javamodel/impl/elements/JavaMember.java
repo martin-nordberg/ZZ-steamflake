@@ -5,7 +5,7 @@
 
 package org.steamflake.core.domain.javamodel.impl.elements;
 
-import org.steamflake.core.domain.javamodel.api.elements.EJavaAccessibility;
+import org.steamflake.core.domain.base.model.api.elements.ESteamflakeAccessibility;
 import org.steamflake.core.domain.javamodel.api.elements.IJavaComponent;
 import org.steamflake.core.domain.javamodel.api.elements.IJavaMember;
 import org.steamflake.core.domain.javamodel.api.elements.IJavaType;
@@ -27,7 +27,7 @@ public abstract class JavaMember
         JavaComponent parent,
         String name,
         Optional<String> description,
-        EJavaAccessibility accessibility,
+        ESteamflakeAccessibility accessibility,
         boolean isStatic,
         boolean isFinal,
         IJavaType type
@@ -40,7 +40,7 @@ public abstract class JavaMember
     }
 
     @Override
-    public EJavaAccessibility getAccessibility() {
+    public ESteamflakeAccessibility getAccessibility() {
         return this.accessibility;
     }
 
@@ -59,7 +59,7 @@ public abstract class JavaMember
         return this.isStatic;
     }
 
-    private final EJavaAccessibility accessibility;
+    private final ESteamflakeAccessibility accessibility;
 
     private final boolean isFinal;
 

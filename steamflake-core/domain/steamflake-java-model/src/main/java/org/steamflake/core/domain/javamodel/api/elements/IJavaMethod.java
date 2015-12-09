@@ -5,6 +5,8 @@
 
 package org.steamflake.core.domain.javamodel.api.elements;
 
+import org.steamflake.core.domain.base.model.api.elements.ESteamflakeAbstractness;
+
 /**
  * A method.
  */
@@ -12,6 +14,6 @@ public interface IJavaMethod
     extends IJavaFunction {
 
     /** @return whether this is an abstract method. */
-    boolean isAbstract();
+    ESteamflakeAbstractness getAbstractness();
 
 }

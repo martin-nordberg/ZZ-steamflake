@@ -11,27 +11,19 @@ package org.steamflake.core.domain.base.model.api.elements;
 public enum ESteamflakeAccessibility {
 
     /** Accessible by any client. */
-    PUBLIC( "public" ),
+    PUBLIC,
 
     /** Accessible by any inheriting element. */
-    PROTECTED( "protected" ),
+    PROTECTED,
 
     /** Accessible from any package in the parent module. */
-    MODULE( "module" ),
+    MODULE,
 
     /** Accessible only within the parent package. */
-    LOCAL( "local" ),
+    LOCAL,
 
     /** Accessible only from the enclosing element. */
-    PRIVATE( "private" );
-
-    ESteamflakeAccessibility( String keyWord ) {
-        this.keyWord = keyWord;
-    }
-
-    public String getKeyWord() {
-        return this.keyWord;
-    }
+    PRIVATE;
 
     public boolean isLocal() {
         return this == ESteamflakeAccessibility.LOCAL;
@@ -52,7 +44,5 @@ public enum ESteamflakeAccessibility {
     public boolean isPublic() {
         return this == ESteamflakeAccessibility.PUBLIC;
     }
-
-    private final String keyWord;
 
 }

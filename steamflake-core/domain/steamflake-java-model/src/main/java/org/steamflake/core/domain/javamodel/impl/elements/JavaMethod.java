@@ -5,7 +5,8 @@
 
 package org.steamflake.core.domain.javamodel.impl.elements;
 
-import org.steamflake.core.domain.javamodel.api.elements.EJavaAccessibility;
+import org.steamflake.core.domain.base.model.api.elements.ESteamflakeAbstractness;
+import org.steamflake.core.domain.base.model.api.elements.ESteamflakeAccessibility;
 import org.steamflake.core.domain.javamodel.api.elements.IJavaMethod;
 import org.steamflake.core.domain.javamodel.api.elements.IJavaType;
 
@@ -25,24 +26,24 @@ public final class JavaMethod
         JavaComponent parent,
         String name,
         Optional<String> description,
-        EJavaAccessibility accessibility,
-        boolean isAbstract,
+        ESteamflakeAccessibility accessibility,
+        ESteamflakeAbstractness abstractness,
         boolean isStatic,
         boolean isFinal,
         IJavaType returnType
     ) {
         super( parent, name, description, accessibility, isStatic, isFinal, returnType );
 
-        this.isAbstract = isAbstract;
+        this.abstractness = abstractness;
 
         parent.onAddChild( this );
     }
 
     @Override
-    public boolean isAbstract() {
-        return this.isAbstract;
+    public ESteamflakeAbstractness getAbstractness() {
+        return this.abstractness;
     }
 
-    private final boolean isAbstract;
+    private final ESteamflakeAbstractness abstractness;
 
 }

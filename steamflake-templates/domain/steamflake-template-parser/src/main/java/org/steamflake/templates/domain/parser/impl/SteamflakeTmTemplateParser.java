@@ -127,14 +127,23 @@ public class SteamflakeTmTemplateParser {
 
         this.scanner.acceptWhitespace();
 
-        for ( ESteamflakeAbstractness abstractness : ESteamflakeAbstractness.values() ) {
-            if ( this.scanner.accept( abstractness.getKeyWord() ).isPresent() ) {
-                this.scanner.scanWhitespace();
-                return abstractness;
-            }
+        ESteamflakeAbstractness result = null;
+
+        if ( this.scanner.accept( "abstract" ).isPresent() ) {
+            result = ESteamflakeAbstractness.ABSTRACT;
+        }
+        else if ( this.scanner.accept( "concrete" ).isPresent() ) {
+            result = ESteamflakeAbstractness.CONCRETE;
         }
 
-        return ESteamflakeAbstractness.CONCRETE;
+        if ( result == null ) {
+            result = ESteamflakeAbstractness.CONCRETE;
+        }
+        else {
+            this.scanner.scanWhitespace();
+        }
+
+        return result;
 
     }
 
@@ -147,14 +156,32 @@ public class SteamflakeTmTemplateParser {
 
         this.scanner.acceptWhitespace();
 
-        for ( ESteamflakeAccessibility accessibility : ESteamflakeAccessibility.values() ) {
-            if ( this.scanner.accept( accessibility.getKeyWord() ).isPresent() ) {
-                this.scanner.scanWhitespace();
-                return accessibility;
-            }
+        ESteamflakeAccessibility result = null;
+
+        if ( this.scanner.accept( "public" ).isPresent() ) {
+            result = ESteamflakeAccessibility.PUBLIC;
+        }
+        else if ( this.scanner.accept( "protected" ).isPresent() ) {
+            result = ESteamflakeAccessibility.PROTECTED;
+        }
+        else if ( this.scanner.accept( "module" ).isPresent() ) {
+            result = ESteamflakeAccessibility.MODULE;
+        }
+        else if ( this.scanner.accept( "local" ).isPresent() ) {
+            result = ESteamflakeAccessibility.LOCAL;
+        }
+        else if ( this.scanner.accept( "private" ).isPresent() ) {
+            result = ESteamflakeAccessibility.PRIVATE;
         }
 
-        return ESteamflakeAccessibility.MODULE;
+        if ( result == null ) {
+            result = ESteamflakeAccessibility.MODULE;
+        }
+        else {
+            this.scanner.scanWhitespace();
+        }
+
+        return result;
 
     }
 

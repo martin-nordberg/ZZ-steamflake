@@ -23,8 +23,23 @@ abstract class JavaMemberCodeGenerator
         IJavaMember member, CodeWriter writer
     ) {
 
-        writer.append( member.getAccessibility().getKeyWord() )
-              .appendIf( member.isStatic(), " static" )
+        switch ( member.getAccessibility() ) {
+            case PUBLIC:
+                writer.append( "public" );
+                break;
+            case PROTECTED:
+                writer.append( "protected" );
+                break;
+            case PRIVATE:
+                writer.append( "private" );
+                break;
+            case MODULE:
+            case LOCAL:
+                writer.append( "/*default*/" );
+                break;
+        }
+
+        writer.appendIf( member.isStatic(), " static" )
               .appendIf( member.isFinal(), " final" )
               .spaceOrWrap();
 

@@ -5,8 +5,9 @@
 
 package org.steamflake.core.domain.javamodel.impl.elements;
 
+import org.steamflake.core.domain.base.model.api.elements.ESteamflakeAbstractness;
+import org.steamflake.core.domain.base.model.api.elements.ESteamflakeAccessibility;
 import org.steamflake.core.domain.base.model.impl.elements.SteamflakeNamedContainerElement;
-import org.steamflake.core.domain.javamodel.api.elements.EJavaAccessibility;
 import org.steamflake.core.domain.javamodel.api.elements.IJavaComponent;
 import org.steamflake.core.domain.javamodel.api.elements.IJavaFunction;
 import org.steamflake.core.domain.javamodel.api.elements.IJavaImplementedInterface;
@@ -56,14 +57,14 @@ public abstract class JavaComponent
     public IJavaMethod addMethod(
         String name,
         Optional<String> description,
-        EJavaAccessibility accessibility,
-        boolean isAbstract,
+        ESteamflakeAccessibility accessibility,
+        ESteamflakeAbstractness abstractness,
         boolean isStatic,
         boolean isFinal,
         IJavaType returnType
     ) {
         return new JavaMethod(
-            this, name, description, accessibility, isAbstract, isStatic, isFinal, returnType
+            this, name, description, accessibility, abstractness, isStatic, isFinal, returnType
         );
     }
 

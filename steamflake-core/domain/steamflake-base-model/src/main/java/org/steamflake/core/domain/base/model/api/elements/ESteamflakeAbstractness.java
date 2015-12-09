@@ -10,19 +10,11 @@ package org.steamflake.core.domain.base.model.api.elements;
  */
 public enum ESteamflakeAbstractness {
 
-    ABSTRACT( "abstract" ),
+    ABSTRACT,
 
-    CONCRETE( "concrete" );
+    EXTENSIBLE,
 
-    /** Constructs a new abstractness instance. */
-    ESteamflakeAbstractness( String keyWord ) {
-        this.keyWord = keyWord;
-    }
-
-    /** @return the keyword for this abstractness. */
-    public String getKeyWord() {
-        return this.keyWord;
-    }
+    CONCRETE;
 
     /** @return whether this instance is abstract. */
     public boolean isAbstract() {
@@ -34,6 +26,9 @@ public enum ESteamflakeAbstractness {
         return this == ESteamflakeAbstractness.CONCRETE;
     }
 
-    private final String keyWord;
+    /** @return whether this instance is extensible (non-final). */
+    public boolean isExtensible() {
+        return this == ESteamflakeAbstractness.EXTENSIBLE;
+    }
 
 }

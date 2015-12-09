@@ -5,6 +5,8 @@
 
 package org.steamflake.core.domain.javamodel.api.elements;
 
+import org.steamflake.core.domain.base.model.api.elements.ESteamflakeAccessibility;
+
 /**
  * A member.
  */
@@ -12,7 +14,7 @@ public interface IJavaMember
     extends IJavaTypedModelElement {
 
     /** @return the accessibility of this member. */
-    EJavaAccessibility getAccessibility();
+    ESteamflakeAccessibility getAccessibility();
 
     /** @return the parent of this member. */
     @Override

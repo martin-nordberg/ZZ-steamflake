@@ -5,7 +5,7 @@
 
 package org.steamflake.core.domain.javamodel.impl.elements;
 
-import org.steamflake.core.domain.javamodel.api.elements.EJavaAccessibility;
+import org.steamflake.core.domain.base.model.api.elements.ESteamflakeAccessibility;
 import org.steamflake.core.domain.javamodel.api.elements.IJavaEnumConstant;
 import org.steamflake.core.domain.javamodel.api.elements.IJavaEnumeration;
 
@@ -28,7 +28,7 @@ public final class JavaEnumConstant
         Optional<String> parametersCode
     ) {
         super(
-            parent, name, description, EJavaAccessibility.PUBLIC, true, true, new JavaReferenceType( parent )
+            parent, name, description, ESteamflakeAccessibility.PUBLIC, true, true, new JavaReferenceType( parent )
         );
 
         this.parametersCode = parametersCode;

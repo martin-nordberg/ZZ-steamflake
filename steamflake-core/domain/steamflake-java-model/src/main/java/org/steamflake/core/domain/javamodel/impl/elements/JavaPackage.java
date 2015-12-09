@@ -5,6 +5,7 @@
 
 package org.steamflake.core.domain.javamodel.impl.elements;
 
+import org.steamflake.core.domain.base.model.api.elements.ESteamflakeAbstractness;
 import org.steamflake.core.domain.javamodel.api.elements.IJavaAnnotationInterface;
 import org.steamflake.core.domain.javamodel.api.elements.IJavaClass;
 import org.steamflake.core.domain.javamodel.api.elements.IJavaComponent;
@@ -54,12 +55,11 @@ public final class JavaPackage
     public IJavaClass addClass(
         String name,
         Optional<String> description,
-        boolean isAbstract,
-        boolean isFinal,
+        ESteamflakeAbstractness abstractness,
         Optional<IJavaClass> baseClass
     ) {
         return new JavaClass(
-            this, name, description, false, isAbstract, isFinal, baseClass
+            this, name, description, false, abstractness, baseClass
         );
     }
 
@@ -71,7 +71,7 @@ public final class JavaPackage
 
     @Override
     public IJavaClass addExternalClass( String name ) {
-        return new JavaClass( this, name, Optional.empty(), true, false, false, null );
+        return new JavaClass( this, name, Optional.empty(), true, ESteamflakeAbstractness.CONCRETE, null );
     }
 
     @Override

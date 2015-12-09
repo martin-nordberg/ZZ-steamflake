@@ -5,7 +5,7 @@
 
 package org.steamflake.core.domain.javamodel.impl.elements;
 
-import org.steamflake.core.domain.javamodel.api.elements.EJavaAccessibility;
+import org.steamflake.core.domain.base.model.api.elements.ESteamflakeAccessibility;
 import org.steamflake.core.domain.javamodel.api.elements.IJavaConcreteComponent;
 import org.steamflake.core.domain.javamodel.api.elements.IJavaConstructor;
 import org.steamflake.core.domain.javamodel.api.elements.IJavaField;
@@ -43,7 +43,7 @@ public abstract class JavaConcreteComponent
 
     @Override
     public IJavaConstructor addConstructor(
-        Optional<String> description, EJavaAccessibility accessibility
+        Optional<String> description, ESteamflakeAccessibility accessibility
     ) {
         return new JavaConstructor( this, description, accessibility );
     }
@@ -53,7 +53,7 @@ public abstract class JavaConcreteComponent
     public IJavaField addField(
         String name,
         Optional<String> description,
-        EJavaAccessibility accessibility,
+        ESteamflakeAccessibility accessibility,
         boolean isStatic,
         boolean isFinalField,
         IJavaType type,

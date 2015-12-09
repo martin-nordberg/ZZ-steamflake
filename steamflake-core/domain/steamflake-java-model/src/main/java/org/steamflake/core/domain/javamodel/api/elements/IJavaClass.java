@@ -5,6 +5,8 @@
 
 package org.steamflake.core.domain.javamodel.api.elements;
 
+import org.steamflake.core.domain.base.model.api.elements.ESteamflakeAbstractness;
+
 import java.util.Optional;
 
 /**
@@ -13,14 +15,11 @@ import java.util.Optional;
 public interface IJavaClass
     extends IJavaConcreteComponent {
 
+    /** @return whether this is an abstract class. */
+    ESteamflakeAbstractness getAbstractness();
+
     /** @return the baseClass. */
     Optional<IJavaClass> getBaseClass();
-
-    /** @return whether this is an abstract class. */
-    boolean isAbstract();
-
-    /** @return whether this is a final class. */
-    boolean isFinal();
 
     /**
      * Sets the base class.
