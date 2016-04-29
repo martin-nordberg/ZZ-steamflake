@@ -18,5 +18,25 @@
         <processorPath useClasspath="true" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="steamflake-base-model_main" target="1.8" />
+      <module name="steamflake-base-model_test" target="1.8" />
+      <module name="steamflake-codeio_main" target="1.8" />
+      <module name="steamflake-codeio_test" target="1.8" />
+      <module name="steamflake-ioutilities_main" target="1.8" />
+      <module name="steamflake-ioutilities_test" target="1.8" />
+      <module name="steamflake-java-codegen_main" target="1.8" />
+      <module name="steamflake-java-codegen_test" target="1.8" />
+      <module name="steamflake-java-model_main" target="1.8" />
+      <module name="steamflake-java-model_test" target="1.8" />
+      <module name="steamflake-template-model_main" target="1.8" />
+      <module name="steamflake-template-model_test" target="1.8" />
+      <module name="steamflake-template-parser_main" target="1.8" />
+      <module name="steamflake-template-parser_test" target="1.8" />
+      <module name="steamflake-template-transform_main" target="1.8" />
+      <module name="steamflake-template-transform_test" target="1.8" />
+      <module name="steamflake-utilities_main" target="1.8" />
+      <module name="steamflake-utilities_test" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>
